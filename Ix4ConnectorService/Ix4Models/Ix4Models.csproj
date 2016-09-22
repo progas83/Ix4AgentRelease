@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FC7C4D19-401C-43B8-A054-1F4C1C6B8228}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ix4Models</RootNamespace>
+    <AssemblyName>Ix4Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\ServiceProgram\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\ServiceProgram\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="PresentationFramework" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseViewModel.cs" />
+    <Compile Include="Class1.cs" />
+    <Compile Include="Converters\XmlDataConverterExtensions.cs" />
+    <Compile Include="CurrentServiceInformation.cs" />
+    <Compile Include="CustomDataSourceTypes.cs" />
+    <Compile Include="DataSourceInfo.cs" />
+    <Compile Include="Enums\MailLogLevel.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="Interfaces\ICryptor.cs" />
+    <Compile Include="Interfaces\ICustomerDataConnector.cs" />
+    <Compile Include="Interfaces\IPluginSettings.cs" />
+    <Compile Include="Ix4ComplexModel.cs" />
+    <Compile Include="Ix4RequestProps.cs" />
+    <Compile Include="MappedItem.cs" />
+    <Compile Include="Schema\LICSRequest.cs">
+      <DependentUpon>LICSRequest.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\WV\ExportDataResponse.cs" />
+    <Compile Include="Schema\WV\MSGHeaderAttribute.cs" />
+    <Compile Include="Schema\WV\MSGPosAttribute.cs" />
+    <Compile Include="Schema\WV\MSGSystemAttribute.cs" />
+    <Compile Include="Schema\WV\Wv_ExportData.cs" />
+    <Compile Include="SettingsDataModel\CsvPluginSettings.cs" />
+    <Compile Include="SettingsDataModel\CustomerInfo.cs" />
+    <Compile Include="SettingsDataModel\MailNotificationSettings.cs" />
+    <Compile Include="SettingsDataModel\MsSqlPluginSettings.cs" />
+    <Compile Include="SettingsDataModel\MsSqlSettings.cs" />
+    <Compile Include="SettingsDataModel\PluginsSettings.cs" />
+    <Compile Include="SettingsDataModel\ScheduledItem.cs" />
+    <Compile Include="SettingsDataModel\SchedulerSettings.cs" />
+    <Compile Include="SettingsDataModel\TimeSign.cs" />
+    <Compile Include="SettingsDataModel\XmlPluginSettings.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Schema\LICSResponse.cs">
+      <DependentUpon>LICSResponse.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Schema\NavisionXmlOut.cs">
+      <DependentUpon>NavisionXmlOut.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsManager\CustomerInfoSerializer.cs" />
+    <Compile Include="SettingsManager\XmlConfigurationManager.cs" />
+    <Compile Include="Utf8StringWriter.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Schema\LICSRequest.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schema\LICSResponse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Schema\NavisionXmlOut.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CryptoModule\CryptoModule.csproj">
+      <Project>{20BC0FD4-CEC0-4DF9-B96A-AFD6026DC84E}</Project>
+      <Name>CryptoModule</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

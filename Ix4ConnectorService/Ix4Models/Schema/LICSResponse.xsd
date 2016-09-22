@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://logistikbroker.com/LICSResponse.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="LICSResponse"> <!--Complex Response to each Request-File-->
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ClientId" type="xs:int" /> <!--Your ClientId-->
+        <xs:element name="State" type="xs:int" /> <!--Overall state-->
+        <xs:element name="Message" type="xs:string" /> <!--Overall message-->
+        <xs:element name="ArticleImport" minOccurs="0" maxOccurs="1"> <!--Complex reponse to ArticleImport-Request -->
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="State" type="xs:int" /> <!--State of import-->
+              <xs:element name="Message" type="xs:string" /> <!--Message-->
+              <xs:element name="CountOfSuccessful" type="xs:int" /> <!--Count of successful imported article-->
+              <xs:element name="CountOfFailed" type="xs:int" /> <!--Count of not imported article-->
+              <xs:element maxOccurs="unbounded" name="Article"> <!--Response for each single article-->
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ClientNo" type="xs:int" /> <!--Your ClientId-->
+                    <xs:element name="ArticleNo" type="xs:string" /> <!--Article number-->
+                    <xs:element name="State" type="xs:int" /> <!--State of import-->
+                    <xs:element name="Message" type="xs:string" /> <!--Message-->
+                    <xs:element name="LICSId" type="xs:int" /> <!--IX4 Identifier-->
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="OrderImport"> <!--Complex response for OrderImport-Request-->
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="State" type="xs:int" /> <!--State of import-->
+              <xs:element name="Message" type="xs:string" /> <!--Message-->
+              <xs:element name="CountOfSuccessful" type="xs:int" /> <!--Count of successful imported orders-->
+              <xs:element name="CountOfFailed" type="xs:int" /> <!--Count of not imported orders-->
+              <xs:element maxOccurs="unbounded" name="Order"> <!--Response to each single order-->
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="State" type="xs:int" /> <!--State of import-->
+                    <xs:element name="Message" type="xs:string" /> <!--Message-->
+                    <xs:element name="ReferenceNo" type="xs:string" /> <!--External reference number-->
+                    <xs:element name="OrderNo" type="xs:string" /> <!--Order number-->
+                    <xs:element name="ClientNo" type="xs:int" /> <!--Your ClientId-->
+                    <xs:element name="CustomerNo" type="xs:string" /> <!--Customer number-->
+                    <xs:element name="LICSId" type="xs:int" /> <!--IX4 Identifier-->
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DeliveryImport">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="State" type="xs:int" /> <!--State of import-->
+              <xs:element name="Message" type="xs:string" /> <!--Message-->
+              <xs:element name="CountOfSuccessful" type="xs:int" /> <!--Count of successful imported deliveries-->
+              <xs:element name="CountOfFailed" type="xs:int" /> <!--Count of not imported deliveries-->
+              <xs:element maxOccurs="unbounded" name="Delivery">  <!--Response to each single delivery-->
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="State" type="xs:int" /> <!--State of import-->
+                    <xs:element name="Message" type="xs:string" /> <!--Message-->
+                    <xs:element name="DeliveryNo" type="xs:string" /> <!--Delivery number-->
+                    <xs:element name="ClientNo"  type="xs:int" /> <!--Your ClientId-->
+                    <xs:element name="LICSId" type="xs:int" /> <!--IX4 Identifier-->
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="version" type="xs:string" default="1.0" use="optional" />
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

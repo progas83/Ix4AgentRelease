@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{ED777226-2DD6-4737-AEFF-1F9EBCB48FCC}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ix4ServiceConfigurator</RootNamespace>
+    <AssemblyName>Ix4ServiceConfigurator</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\..\..\..\ServiceProgram\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\..\..\..\ServiceProgram\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="AutomaticalServiceInstaller.cs" />
+    <Compile Include="Commands\InstallationCommand.cs" />
+    <Compile Include="Commands\MakeChangesCommad.cs" />
+    <Compile Include="Controls\CustomerInfoControl.xaml.cs">
+      <DependentUpon>CustomerInfoControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\MailSettingsControl.xaml.cs">
+      <DependentUpon>MailSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\RichTextBoxExtended.cs" />
+    <Compile Include="Controls\ScheduleControl.xaml.cs">
+      <DependentUpon>ScheduleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Converters\BoolToInstallStateConverter.cs" />
+    <Compile Include="Converters\ServiceStatusToIconConverter.cs" />
+    <Compile Include="EventArguments\ServiceControllerStatusEventArg.cs" />
+    <Compile Include="ServiceInfoWrapper.cs" />
+    <Compile Include="ViewModel\IPwd.cs" />
+    <Compile Include="ViewModel\MainWindowViewModel.cs" />
+    <Compile Include="ViewModel\CustomerInfoViewModel.cs" />
+    <Compile Include="View\CustomerInfoView.xaml.cs">
+      <DependentUpon>CustomerInfoView.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Controls\CustomerInfoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\MailSettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\ScheduleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Style\WindowsStyleDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\CustomerInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\app.manifest" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CompositionHelper\CompositionHelper.csproj">
+      <Project>{85be46e7-9202-4cb6-8bb6-bc10e6c844da}</Project>
+      <Name>CompositionHelper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ix4ConnectorService\Ix4ConnectorService.csproj">
+      <Project>{01c1c647-db26-4b8e-9589-67e7104bead1}</Project>
+      <Name>Ix4ConnectorService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Ix4Models\Ix4Models.csproj">
+      <Project>{FC7C4D19-401C-43B8-A054-1F4C1C6B8228}</Project>
+      <Name>Ix4Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Locale\Locale.csproj">
+      <Project>{1472928b-5220-4fe4-9f54-84f28052f4ae}</Project>
+      <Name>Locale</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SinplestLogger\SimplestLogger.csproj">
+      <Project>{18B499E8-956D-45C0-A9F7-6314CC00B777}</Project>
+      <Name>SimplestLogger</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EventHandlers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\Ix4Logo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\green-ball.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\red-ball.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\yellow-ball.gif" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

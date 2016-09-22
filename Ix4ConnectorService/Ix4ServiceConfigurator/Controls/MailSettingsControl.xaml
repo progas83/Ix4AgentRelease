@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Ix4ServiceConfigurator.Controls.MailSettingsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Ix4ServiceConfigurator.Controls"
+             xmlns:locale="clr-namespace:Locale;assembly=Locale"
+             mc:Ignorable="d" 
+             Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"
+             d:DesignHeight="300" d:DesignWidth="300">
+    <!--<UserControl.Resources>
+        <locale:CultureResources x:Key="La"
+    </UserControl.Resources>-->
+    <DockPanel>
+        <Label Height="50" HorizontalAlignment="Stretch" DockPanel.Dock="Top" Content="{Binding Source={StaticResource Localization}, Path=MailSettingsControl}"/>
+        <Grid DockPanel.Dock="Top" Margin="5,5,5,10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Label Content="{Binding Source={StaticResource Localization}, Path=MailHost}" Grid.Row="0"/>
+            <Label Content="{Binding Source={StaticResource Localization}, Path=Port}"  Grid.Row="1"/>
+            <Label Content="{Binding Source={StaticResource Localization}, Path=TimeOut}"  Grid.Row="2"/>
+            <Label Content="{Binding Source={StaticResource Localization}, Path=EnableSSL}"  Grid.Row="3"/>
+            <Label Content="{Binding Source={StaticResource Localization}, Path=IsBodyHtml}"  Grid.Row="4"/>
+            <Label Content="{Binding Source={StaticResource Localization}, Path=MailFrom}"  Grid.Row="5" />
+            <Label Content="{Binding Source={StaticResource Localization}, Path=MailPass}"  Grid.Row="6" />
+
+            <TextBox Text="{Binding Host}"  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <TextBox Text="{Binding Port}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" PreviewTextInput="PreviewDigitInput"/>
+            <TextBox Text="{Binding TimeOut}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" PreviewTextInput="PreviewDigitInput"/>
+            <CheckBox IsChecked="{Binding EnableSSL}" IsThreeState="False" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <CheckBox IsChecked="{Binding IsBodyHtml}"  IsThreeState="False" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <TextBox Text="{Binding ServiceEndpoint}" TextWrapping="Wrap" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <PasswordBox x:Name="UIPwdBox" Grid.Column="1" Grid.Row="6" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+        </Grid>
+    </DockPanel>
+    
+</UserControl>

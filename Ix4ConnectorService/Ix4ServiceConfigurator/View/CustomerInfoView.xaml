@@ -1,0 +1,50 @@
+﻿<Window x:Class="Ix4ServiceConfigurator.View.CustomerInfoView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Ix4ServiceConfigurator.View"
+        xmlns:controls="clr-namespace:Ix4ServiceConfigurator.Controls"
+        xmlns:core="clr-namespace:System;assembly=mscorlib"
+        xmlns:dataModels="clr-namespace:Ix4Models;assembly=Ix4Models"
+        mc:Ignorable="d" Style="{StaticResource MainWondowsStyle}"
+        Title="Ix4-Agent Settings" SizeToContent="WidthAndHeight">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="DataSourceType" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="dataModels:CustomDataSourceTypes"/>
+            </ObjectDataProvider.MethodParameters>
+            
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="Ix4InterfaceProperties" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="dataModels:Ix4RequestProps"/>
+            </ObjectDataProvider.MethodParameters>
+
+        </ObjectDataProvider>
+    </Window.Resources>
+    <StackPanel Margin="0,10,10,5" x:Name="UIMainDockPanel">
+        
+        <controls:CustomerInfoControl x:Name="UIUserInfo"  DockPanel.Dock="Top" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" DataContext="{Binding Customer}"/>
+        <controls:ScheduleControl DataContext="{Binding Customer.ScheduleSettings}"/>
+        <ComboBox Width="100" Margin="10,10,0,10" ItemsSource="{Binding Source={StaticResource DataSourceType}}" SelectedItem="{Binding Path=SelectedDataSource}" DockPanel.Dock="Top" HorizontalAlignment="Left"/>
+        <Button Height="50" Margin="10,0,5,0" IsDefault="True" HorizontalAlignment="Stretch" DockPanel.Dock="Top" Command="{Binding}"
+                CommandParameter="{Binding ElementName=UIUserInfo}" Content="Save Information"/>
+
+
+        
+
+        <WrapPanel  >
+
+            <ContentControl Margin="0,5,0,0" Height="200" MaxWidth="800"
+                            ScrollViewer.CanContentScroll="True" 
+                            ScrollViewer.PanningMode="VerticalFirst" 
+                            ScrollViewer.VerticalScrollBarVisibility="Visible"
+                            
+                            x:Name="UiPlaceHsolder" Content="{Binding PluginControl}" />
+
+        </WrapPanel>
+
+
+    </StackPanel>
+</Window>

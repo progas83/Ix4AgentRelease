@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="https://mackschuehle.logistic-cloud.com/system/webservices/wspickpublic.asmx?wsdl" docRef="https://mackschuehle.logistic-cloud.com/system/webservices/wspickpublic.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="https://mackschuehle.logistic-cloud.com/system/webservices/wspickpublic.asmx" xmlns:q1="http://logistikbroker.com/ServiceLayer" binding="q1:LBAuthenticated" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="https://mackschuehle.logistic-cloud.com/system/webservices/wspickpublic.asmx" xmlns:q2="http://logistikbroker.com/ServiceLayer" binding="q2:LBAuthenticated1" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

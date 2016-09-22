@@ -1,0 +1,143 @@
+﻿<UserControl x:Class="SqlDataExtractor.DatabaseSettings.View.MainDBSettindsView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SqlDataExtractor.DatabaseSettings.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <ScrollViewer>
+        <StackPanel Margin="5,10,5,5" VerticalAlignment="Top">
+            <CheckBox Content="Activated" 
+                  Name="UImsSqlActiveted" 
+                  IsChecked="{Binding IsActivated}" 
+                  VerticalAlignment="Top" 
+                  IsThreeState="False" 
+                  DockPanel.Dock="Top" 
+                  BorderThickness="3" 
+                  BorderBrush="Black" 
+                  Margin="0,5,0,5">
+
+            </CheckBox>
+            <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" IsEnabled="{Binding ElementName=UImsSqlActiveted,Path=IsChecked}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Server adress:" Grid.Row="0" VerticalContentAlignment="Center"/>
+                    <Label Content="Database name:" Grid.Row="1" VerticalContentAlignment="Center"/>
+                    <Label Content="Database user name:" Grid.Row="3" VerticalContentAlignment="Center"/>
+                    <Label Content="Database user password:" Grid.Row="4" VerticalContentAlignment="Center"/>
+
+                    <TextBox Text="{Binding ServerAdress}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="0"/>
+                    <TextBox Text="{Binding DbName}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="1"/>
+
+
+                    <CheckBox x:Name="UISqlAuth" Content="Use SQL Server Authentication" IsChecked="{Binding UseSqlServierAuth}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+                    <TextBox Text="{Binding DbUserName}" IsEnabled="{Binding ElementName=UISqlAuth,Path=IsChecked}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="3"/>
+                    <TextBox Text="{Binding DbPassword}" IsEnabled="{Binding ElementName=UISqlAuth,Path=IsChecked}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="4"/>
+                    <Button Content="{Binding DbConnectionStatus}" Command="{Binding TestConnectionCommand}" ToolTip="{Binding ConnectionStatusError}" Grid.Column="1" Grid.Row="5"/>
+                </Grid>
+
+
+            </DockPanel>
+            <DockPanel DockPanel.Dock="Top">
+
+
+                <DockPanel DockPanel.Dock="Top" VerticalAlignment="Top" IsEnabled="{Binding ElementName=UImsSqlActiveted,Path=IsChecked}">
+                    <DockPanel DockPanel.Dock="Top" Margin="0,5,0,5">
+                        <CheckBox IsThreeState="False" Content="Articles" IsChecked="{Binding CheckArticles}" Name="UIcheckArticles" DockPanel.Dock="Left" HorizontalAlignment="Left"/>
+                    </DockPanel>
+                    <DockPanel IsEnabled="{Binding ElementName=UIcheckArticles,Path=IsChecked}">
+                        <Label Content="SQL query for getting all articles" 
+                           HorizontalAlignment="Stretch" 
+                           HorizontalContentAlignment="Center" 
+                           VerticalContentAlignment="Center" 
+                           DockPanel.Dock="Top">
+                        </Label>
+                        <TextBox TextWrapping="Wrap" Text="{Binding ArticlesQuery}" MinHeight="50" DockPanel.Dock="Top">
+
+                        </TextBox>
+                    </DockPanel>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Top" Margin="0,5,0,5" VerticalAlignment="Top" IsEnabled="{Binding ElementName=UImsSqlActiveted,Path=IsChecked}">
+                    <DockPanel  DockPanel.Dock="Top" Margin="0,5,0,5">
+                        <CheckBox IsThreeState="False" Content="Deliveries" IsChecked="{Binding CheckDeliveries}" Name="UIcheckDeliveries" DockPanel.Dock="Left" HorizontalAlignment="Left"/>
+                    </DockPanel>
+                    <StackPanel Orientation="Vertical" IsEnabled="{Binding ElementName=UIcheckDeliveries,Path=IsChecked}">
+                        <Label Content="SQL query for getting all deliveries" 
+                           HorizontalAlignment="Stretch" 
+                           HorizontalContentAlignment="Center" 
+                           VerticalContentAlignment="Center" 
+                           DockPanel.Dock="Top" Margin="0,0,0,5">
+                        </Label>
+                        <TextBox TextWrapping="Wrap" Text="{Binding DeliveriesQuery}" MinHeight="50" DockPanel.Dock="Top" Margin="0,0,0,5">
+
+                        </TextBox>
+
+                        <Label Content="SQL query for getting positions for particular delivery" 
+                           HorizontalAlignment="Stretch" 
+                           HorizontalContentAlignment="Center" 
+                           VerticalContentAlignment="Center" 
+                           DockPanel.Dock="Top" Margin="0,0,0,5">
+                        </Label>
+                        <TextBox TextWrapping="Wrap" Text="{Binding DeliveryPositionsQuery}" MinHeight="50" DockPanel.Dock="Top" Margin="0,0,0,5">
+
+                        </TextBox>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel DockPanel.Dock="Top" Margin="0,5,0,5" VerticalAlignment="Top" IsEnabled="{Binding ElementName=UImsSqlActiveted,Path=IsChecked}">
+                    <DockPanel  DockPanel.Dock="Top" Margin="0,5,0,5">
+                        <CheckBox IsThreeState="False" Content="{Binding Source={StaticResource Localization},Path=Orders}"  IsChecked="{Binding CheckOrders}" Name="UIcheckOrders" DockPanel.Dock="Left" HorizontalAlignment="Left"/>
+                    </DockPanel>
+                    <StackPanel Orientation="Vertical" IsEnabled="{Binding ElementName=UIcheckOrders,Path=IsChecked}">
+                        <Label Content="{Binding Source={StaticResource Localization},Path=OrdersSettingsPanel}"  
+                           HorizontalAlignment="Stretch" 
+                           HorizontalContentAlignment="Center" 
+                           VerticalContentAlignment="Center" 
+                           DockPanel.Dock="Top" Margin="0,0,0,5">
+                        </Label>
+                        <TextBox TextWrapping="Wrap" Text="{Binding OrdersQuery}" MinHeight="50" DockPanel.Dock="Top" Margin="0,0,0,5">
+
+                        </TextBox>
+
+                        <Label Content="{Binding Source={StaticResource Localization},Path=OrderRecipientSettingsPanel}"
+                           HorizontalAlignment="Stretch" 
+                           HorizontalContentAlignment="Center" 
+                           VerticalContentAlignment="Center" 
+                           DockPanel.Dock="Top" Margin="0,0,0,5">
+                        </Label>
+                        <TextBox TextWrapping="Wrap" Text="{Binding OrderRecipientQuery}" MinHeight="50" DockPanel.Dock="Top" Margin="0,0,0,5">
+
+                        </TextBox>
+
+                        <Label Content="{Binding Source={StaticResource Localization},Path=OrderPositionsSettingsPanel}"
+                           HorizontalAlignment="Stretch" 
+                           HorizontalContentAlignment="Center" 
+                           VerticalContentAlignment="Center" 
+                           DockPanel.Dock="Top" Margin="0,0,0,5">
+                        </Label>
+                        <TextBox TextWrapping="Wrap" Text="{Binding OrderPositionsQuery}" MinHeight="50" DockPanel.Dock="Top" Margin="0,0,0,5">
+
+                        </TextBox>
+                    </StackPanel>
+                </DockPanel>
+
+
+            </DockPanel>
+
+        </StackPanel>
+    </ScrollViewer>
+        
+
+   
+</UserControl>
