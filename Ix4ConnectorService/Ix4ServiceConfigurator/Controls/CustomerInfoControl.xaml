@@ -20,19 +20,17 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Label Content="ServiceName" Grid.Row="0"/>
-            <Label Content="ClientID" Grid.Row="1"/>
-            <Label Content="UserName" Grid.Row="2"/>
-            <Label Content="Password" Grid.Row="3"/>
-            <Label Content="Endpoint" Grid.Row="4"/>
-            <Label Content="By default" Grid.Row="5" />
+            
+            <Label Content="ClientID" Grid.Row="0"/>
+            <Label Content="UserName" Grid.Row="1"/>
+            <Label Content="Password" Grid.Row="2"/>
+            <Label Content="Endpoint" Grid.Row="3"/>
 
-            <TextBox Text="{Binding ServiceName}" IsEnabled="False" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-            <TextBox Text="{Binding ClientID}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-            <TextBox Text="{Binding UserName}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-            <PasswordBox x:Name="UIPwdBox" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-            <TextBox Text="{Binding ServiceEndpoint}" TextWrapping="Wrap" Grid.Column="1" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
-            <CheckBox IsChecked="{Binding Default}" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <TextBox Text="{Binding ClientID}" Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <TextBox Text="{Binding UserName}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <PasswordBox x:Name="UIPwdBox" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            <TextBox Text="{Binding ServiceEndpoint}" TextWrapping="Wrap" Grid.Column="1" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            
 
 
         </Grid>

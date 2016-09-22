@@ -10,13 +10,10 @@ namespace Ix4ServiceConfigurator
     /// </summary>
     public partial class App : Application
     {
-        protected override void OnActivated(EventArgs e)
-        {
-            base.OnActivated(e);
-        }
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
+            InitResources();
             var processExists = System.Diagnostics.Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(System.Reflection.Assembly.GetEntryAssembly().Location)).Count() > 1;
             if (processExists)
             {
@@ -24,13 +21,12 @@ namespace Ix4ServiceConfigurator
                 MessageBox.Show(Locale.Properties.Resources.CurrentProcessExist);
                 base.Shutdown();
             }
-            InitResources();
         }
 
         private void InitResources()
         {
             ResourceDictionary resource = new ResourceDictionary();
-            Uri url = new Uri("pack://application:,,,/Style/WindowsStyleDictionary.xaml", UriKind.Absolute);
+            Uri url = new Uri("pack://application:,,,/Style/ResourceDictionary.xaml", UriKind.Absolute);
             resource.Source = url;
             Application.Current.Resources.MergedDictionaries.Add(resource);
         }

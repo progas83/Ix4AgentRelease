@@ -15,73 +15,73 @@
        SizeToContent="WidthAndHeight"
         Title="IX4-Agent Configurator" 
         Closed="Window_Closed"
-        Style="{StaticResource MainWondowsStyle}">
+        Style="{StaticResource MainWindowsStyle}">
     <Window.Resources>
         <converters:BoolToInstallStateConverter x:Key="ExistServiceConverter"/>
         <converters:ServiceStatusToIconConverter x:Key="StatusToImageConverter"/>
-       
-        
-        <locale:CultureResources x:Key="Languages"/>
-       
     </Window.Resources>
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Border Grid.RowSpan="2" Grid.Column="0" Grid.Row="0"  BorderThickness="5" BorderBrush="Green" 
-                HorizontalAlignment="Left" VerticalAlignment="Top">
-            <DockPanel>
-                <controls:CustomerInfoControl x:Name="UIMainCustomerInfo"  DataContext="{Binding Customer}" DockPanel.Dock="Top" IsEnabled="False"/>
-                
-                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                    <Label Content="{Binding Source={StaticResource Localization},Path=SelectLanguage}"/>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource Languages},Path=SupportedCultures}" DisplayMemberPath="DisplayName" SelectedItem="{Binding SelectedLanguage}"/>
-                </StackPanel>
-                <Button Height="50" HorizontalAlignment="Stretch" Content="{Binding Source={StaticResource Localization},Path=SettingsButton}" 
-                        Command="{Binding MakeChangesCmd}" DockPanel.Dock="Top"/>
-            </DockPanel>
-        </Border>
+    <DockPanel>
+        <Menu Height="25" DockPanel.Dock="Top" VerticalAlignment="Top">
+            <MenuItem Name="UILanguages" Header="{Binding Source={StaticResource Localization},Path=SelectLanguage}">
+            </MenuItem>
+        </Menu>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
 
-        <Border Grid.Column="1" BorderThickness="5" BorderBrush="Red" HorizontalAlignment="Left" VerticalAlignment="Top" DockPanel.Dock="Top">
-            <DockPanel HorizontalAlignment="Left">
-                <Grid DockPanel.Dock="Top">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Label Content="{Binding Source={StaticResource ResourceKey=Localization},Path=ServiceName}" HorizontalAlignment="Left"  />
-                    <Label Content="{Binding ServiceName}" HorizontalAlignment="Left" Grid.Column="1"/>
-                    <Label  Content="{Binding Source={StaticResource ResourceKey=Localization},Path=ServiceStatus}" HorizontalAlignment="Left" Grid.Row="1"/>
-                    <StackPanel VerticalAlignment="Top" Orientation="Horizontal" DockPanel.Dock="Top" Grid.Column="1" Grid.Row="1">
-                        <Image Source="{Binding ServiceStatus,Converter={StaticResource StatusToImageConverter}}" Width="19" Height="19" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-                        <Label HorizontalAlignment="Left" VerticalContentAlignment="Center" Content="{Binding ServiceStatus}"/>
-                    </StackPanel>
-                    <Button  Width="100" Height="50"  Margin="10" DockPanel.Dock="Top" Grid.Column="2" Grid.RowSpan="2"
+            <Border Grid.RowSpan="2" Grid.Column="0" Grid.Row="0"  BorderThickness="5" BorderBrush="Green" 
+                HorizontalAlignment="Left" VerticalAlignment="Top">
+                <DockPanel>
+                    <controls:CustomerInfoControl x:Name="UIMainCustomerInfo"  DataContext="{Binding Customer}" DockPanel.Dock="Top" IsEnabled="False"/>
+
+                    <Button Height="50" HorizontalAlignment="Stretch" Content="{Binding Source={StaticResource Localization},Path=SettingsButton}" 
+                        Command="{Binding MakeChangesCmd}" DockPanel.Dock="Top"/>
+                </DockPanel>
+            </Border>
+
+            <Border Grid.Column="1" BorderThickness="5" BorderBrush="Red" HorizontalAlignment="Left" VerticalAlignment="Top" DockPanel.Dock="Top">
+                <DockPanel HorizontalAlignment="Left">
+                    <Grid DockPanel.Dock="Top">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Content="{Binding Source={StaticResource ResourceKey=Localization},Path=ServiceName}" HorizontalAlignment="Left"  />
+                        <Label Content="{Binding ServiceName}" HorizontalAlignment="Left" Grid.Column="1"/>
+                        <Label  Content="{Binding Source={StaticResource ResourceKey=Localization},Path=ServiceStatus}" HorizontalAlignment="Left" Grid.Row="1"/>
+                        <StackPanel VerticalAlignment="Top" Orientation="Horizontal" DockPanel.Dock="Top" Grid.Column="1" Grid.Row="1">
+                            <Image Source="{Binding ServiceStatus,Converter={StaticResource StatusToImageConverter}}" Width="19" Height="19" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                            <Label HorizontalAlignment="Left" VerticalContentAlignment="Center" Content="{Binding ServiceStatus}"/>
+                        </StackPanel>
+                        <Button  Width="100" Height="50"  Margin="10" DockPanel.Dock="Top" Grid.Column="2" Grid.RowSpan="2"
                  Command="{Binding InstallServiceCommand}" CommandParameter="{Binding ServiceExist}" 
                  Content="{Binding ServiceExist, Converter={StaticResource ExistServiceConverter}}"
                      HorizontalAlignment="Left" VerticalAlignment="Top">
 
-                    </Button>
-                </Grid>
+                        </Button>
+                    </Grid>
 
 
 
-            </DockPanel>
-        </Border>
+                </DockPanel>
+            </Border>
 
-        <Border Grid.Column="1" Grid.Row="1" BorderThickness="5" BorderBrush="Red" >
-            <controls:RichTextBoxExtended VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" RichText="{Binding TextStatusContainer,UpdateSourceTrigger=PropertyChanged}"
+            <Border Grid.Column="1" Grid.Row="1" BorderThickness="5" BorderBrush="Red" >
+                <controls:RichTextBoxExtended VerticalAlignment="Stretch" HorizontalAlignment="Stretch" IsReadOnly="True" RichText="{Binding TextStatusContainer,UpdateSourceTrigger=PropertyChanged}"
                                     ScrollViewer.VerticalScrollBarVisibility="Visible"  />
-        </Border>
-    </Grid>
+            </Border>
+        </Grid>
+    </DockPanel>
+   
 </Window>

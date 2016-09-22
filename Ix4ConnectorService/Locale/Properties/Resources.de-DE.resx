@@ -120,4 +120,7 @@
   <data name="SelectLanguage" xml:space="preserve">
     <value>Wählen Sie die Sprache</value>
   </data>
+  <data name="SettingsButton" xml:space="preserve">
+    <value>Einstellungen für die Datenquelle</value>
+  </data>
 </root>

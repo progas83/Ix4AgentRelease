@@ -1,8 +1,9 @@
 ﻿using Ix4ServiceConfigurator.ViewModel;
 using System;
-
+using System.Globalization;
 using System.Windows;
-
+using System.Windows.Controls;
+using System.Windows.Data;
 
 namespace Ix4ServiceConfigurator
 {
@@ -20,8 +21,48 @@ namespace Ix4ServiceConfigurator
 
             UIMainCustomerInfo.PasswordSet(_viewModel.Customer.Password);
             this.DataContext = _viewModel;
+            InitLanguages();
+        }
 
-            
+        private void InitLanguages()
+        {
+            MenuItem langMenuItem = null;
+            foreach(CultureInfo cultureInfo in  Locale.CultureResources.SupportedCultures)
+            {
+                langMenuItem = new MenuItem();
+                langMenuItem.Header = cultureInfo.DisplayName;
+                langMenuItem.Click += LangMenuItem_Click;
+                langMenuItem.Tag = cultureInfo;
+                langMenuItem.IsChecked = IsLanguageSelected(cultureInfo);
+                langMenuItem.Template = (ControlTemplate)TryFindResource("MenuItemRadioButtonTemplate");
+                this.UILanguages.Items.Add(langMenuItem);
+            }
+        }
+
+        private bool IsLanguageSelected(CultureInfo culture)
+        {
+            bool result = false;
+            if(Properties.Settings.Default.Language.Equals(culture.Name))
+            {
+                result = true;
+                SetCulture(culture);
+            }
+            return result;
+        }
+
+        private void LangMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            CultureInfo culture = menuItem.Tag as CultureInfo;
+            SetCulture(culture);
+            Properties.Settings.Default.Language = culture.Name;
+            Properties.Settings.Default.Save();
+        }
+
+        private void SetCulture(CultureInfo culture)
+        {
+            Locale.CultureResources.ChangeCulture(culture);
+            ((ObjectDataProvider)App.Current.FindResource("Localization")).Refresh();
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -30,6 +71,7 @@ namespace Ix4ServiceConfigurator
             {
                 _viewModel.Dispose();
             }
+            Properties.Settings.Default.Save();
         }
     }
 }

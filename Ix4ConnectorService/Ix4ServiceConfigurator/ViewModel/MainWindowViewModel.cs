@@ -21,7 +21,6 @@ namespace Ix4ServiceConfigurator.ViewModel
             InstallationCommand.ServiceInfoNeedToUpdate += OnServiceInfoNeedToUpdate;
             InstallServiceCommand = InstallationCommand;
             UpdateCustomerInfo();
-            UpdateLocalization();
             MakeChangesCommad MakeChangesCommand = new MakeChangesCommad();
             MakeChangesCommand.CustomInformationSaved += OnCustomerInfoNeedToUpdate;
             MakeChangesCmd = MakeChangesCommand;
@@ -120,34 +119,6 @@ namespace Ix4ServiceConfigurator.ViewModel
             }
         }
 
-        private void SaveLocalizationConfiguration()
-        {
-            XmlConfigurationManager.Instance.SaveLocalization(SelectedLanguage.Name);//.UpdateCustomerInformation(Customer);
-        }
-        public CultureInfo SelectedLanguage
-        {
-            get {return CultureInfo.GetCultureInfo(Customer.LanguageCulture); }
-            set
-            {
-                if(value.Name!= Customer.LanguageCulture)
-                {
-                    Customer.LanguageCulture = value.Name;
-                    OnPropertyChanged("SelectedLanguage");
-                    UpdateLocalization();
-                    SaveLocalizationConfiguration();
-                }
-            }
-        }
-
-        private void UpdateLocalization()
-        {
-            if(Customer!=null)
-            {
-                Locale.CultureResources.ChangeCulture(new System.Globalization.CultureInfo(Customer.LanguageCulture));
-                ((ObjectDataProvider)App.Current.FindResource("Localization")).Refresh();
-            }
-           
-        }
         public ServiceControllerStatus ServiceStatus
         {
             get
