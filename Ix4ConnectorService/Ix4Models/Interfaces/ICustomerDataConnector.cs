@@ -8,7 +8,7 @@ namespace Ix4Models.Interfaces
     {
         void SaveSettings(PluginsSettings settings);
 
-        UserControl GetControlForSettings(PluginsSettings settings);
+        UserControl GetControlForSettings(BaseLicsRequestSettings settings);
 
         LICSRequestOrder[] GetRequestOrders(IPluginSettings pluginSettings);
         LICSRequestArticle[] GetRequestArticles(IPluginSettings pluginSettings);

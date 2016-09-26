@@ -24,9 +24,9 @@ namespace XmlDataExtractor
         XamlFolderSettingsControl _xamlUserControl;
         XamlFolderSettingsViewModel _viewModel;
        
-        public UserControl GetControlForSettings(PluginsSettings settings)
+        public UserControl GetControlForSettings(BaseLicsRequestSettings settings)
         {
-            XmlPluginSettings _xmlSettings = settings.XmlSettings;
+            BaseLicsRequestSettings _xmlSettings = settings;
             if(_xamlUserControl == null)
             {
                 _xamlUserControl = new XamlFolderSettingsControl();
@@ -59,9 +59,9 @@ namespace XmlDataExtractor
             {
                 return;
             }
-            if(_viewModel.CurrentPluginSettings.IsActivated)
+           // if(_viewModel.CurrentPluginSettings.IsActivated)
             {
-                settings.XmlSettings = _viewModel.CurrentPluginSettings;
+           //     settings.XmlSettings = _viewModel.CurrentPluginSettings;
             }
         }
 

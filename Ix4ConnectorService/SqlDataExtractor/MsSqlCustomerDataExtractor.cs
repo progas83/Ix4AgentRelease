@@ -138,5 +138,10 @@ namespace SqlDataExtractor
             _exportDataToSql = new ExportDataToSQL(_pluginSettings);
             return this;
         }
+
+        public UserControl GetControlForSettings(BaseLicsRequestSettings settings)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

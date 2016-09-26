@@ -12,12 +12,12 @@ namespace XmlDataExtractor.Settings.ViewModel
 {
     public class XamlFolderSettingsViewModel : INotifyPropertyChanged, ICommand
     {
-        private XmlPluginSettings _xmlPluginSettings;
-        public XamlFolderSettingsViewModel(XmlPluginSettings xmlPluginSettings)
+        private BaseLicsRequestSettings _xmlPluginSettings;
+        public XamlFolderSettingsViewModel(BaseLicsRequestSettings xmlPluginSettings)
         {
             CurrentPluginSettings = xmlPluginSettings;
         }
-        public XmlPluginSettings CurrentPluginSettings
+        public BaseLicsRequestSettings CurrentPluginSettings
         {
             get { return _xmlPluginSettings; }
             private set { _xmlPluginSettings = value; }
@@ -27,8 +27,16 @@ namespace XmlDataExtractor.Settings.ViewModel
 
         public XmlResultHandleActions ActionOnSuccess
         {
-            get { return _actionOnSuccess; }
-            set { _actionOnSuccess = value; OnPropertyChanged("ActionOnSuccess"); }
+            get
+            {
+                Enum.TryParse<XmlResultHandleActions>(CurrentPluginSettings.ActionOnSuccess,out _actionOnSuccess);
+                return _actionOnSuccess;
+            }
+            set
+            {
+                _actionOnSuccess = value;
+                CurrentPluginSettings.ActionOnSuccess = _actionOnSuccess.ToString();
+                OnPropertyChanged("ActionOnSuccess"); }
         }
 
         private XmlResultHandleActions _actionOnFailure;

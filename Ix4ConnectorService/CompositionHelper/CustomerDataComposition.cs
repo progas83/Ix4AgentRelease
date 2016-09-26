@@ -27,6 +27,12 @@ namespace CompositionHelper
             this._pluginSettings = pluginSettings;
         }
 
+        BaseLicsRequestSettings _settings;
+        public CustomerDataComposition(BaseLicsRequestSettings settings):this()
+        {
+            _settings = settings;
+        }
+
         [ImportMany]
         public System.Lazy<ICustomerDataConnector, IDictionary<string, object>>[] CustomerDataPlugins { get; set; }
         //       Logger _logger = Logger.GetLogger();
@@ -81,7 +87,7 @@ namespace CompositionHelper
                 {
                     if (((string)plugin.Metadata[CurrentServiceInformation.NameForPluginMetadata]).Equals(Enum.GetName(typeof(CustomDataSourceTypes), dataSourceType)))
                     {
-                        uc = plugin.Value.GetControlForSettings(_pluginSettings);
+                        uc = plugin.Value.GetControlForSettings(_settings);
                         break;
                     }
                 }
