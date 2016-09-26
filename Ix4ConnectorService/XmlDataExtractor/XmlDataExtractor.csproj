@@ -52,6 +52,8 @@
       <DependentUpon>XamlFolderSettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="XmlDataExtractor.cs" />
+    <Compile Include="XmlFolderTypes.cs" />
+    <Compile Include="XmlResultHandleActions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ix4Models\Ix4Models.csproj">

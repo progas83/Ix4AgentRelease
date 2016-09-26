@@ -61,6 +61,33 @@ namespace Locale.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Activate action on failure result.
+        /// </summary>
+        public static string ActionOnFailureResult {
+            get {
+                return ResourceManager.GetString("ActionOnFailureResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activate action on success result.
+        /// </summary>
+        public static string ActionOnSuccessResult {
+            get {
+                return ResourceManager.GetString("ActionOnSuccessResult", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Activate.
+        /// </summary>
+        public static string Activate {
+            get {
+                return ResourceManager.GetString("Activate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current app already running.Please close the Ix4-Agent Configurator window and try again..
         /// </summary>
         public static string CurrentProcessExist {
@@ -192,6 +219,15 @@ namespace Locale.Properties {
         public static string ScheduleOrders {
             get {
                 return ResourceManager.GetString("ScheduleOrders", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select action.
+        /// </summary>
+        public static string SelectAction {
+            get {
+                return ResourceManager.GetString("SelectAction", resourceCulture);
             }
         }
         

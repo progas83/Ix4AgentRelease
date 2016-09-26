@@ -17,8 +17,10 @@
     </UserControl.Resources>
    
         <Expander Header="{Binding Ix4PartItemName}" DockPanel.Dock="Top">
-            <DockPanel >
-                <Label Content="{Binding Source={StaticResource Localization}, Path=SelectDataSource}" DockPanel.Dock="Left"/>
+       
+        <DockPanel >
+            <CheckBox IsThreeState="False" IsChecked="{Binding IsActivated}" Content="{Binding Source={StaticResource Localization},Path=Activate}" DockPanel.Dock="Top"/>
+            <Label Content="{Binding Source={StaticResource Localization}, Path=SelectDataSource}" DockPanel.Dock="Left"/>
             <ComboBox ItemsSource="{Binding Source={StaticResource DataSourceNames}}" SelectedItem="{Binding Path=SelectedDataSource}" DockPanel.Dock="Top" HorizontalAlignment="Left" Width="100" Margin="10,10,0,10"/>
             
             <WrapPanel  >

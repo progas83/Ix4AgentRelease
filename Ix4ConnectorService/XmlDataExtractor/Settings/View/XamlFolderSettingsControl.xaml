@@ -3,15 +3,61 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:XmlDataExtractor.Settings.View"
+             xmlns:local="clr-namespace:XmlDataExtractor"
              xmlns:ix4Model ="clr-namespace:Ix4Models;assembly=Ix4Models"
+             xmlns:core="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Orientation="Horizontal" Margin="5,10,5,10">
-        <Label Content="{Binding Source={StaticResource Localization}, Path=SelectSourceFolder}" />
-        <TextBox VerticalAlignment="Top"  VerticalContentAlignment="Center"  HorizontalContentAlignment="Stretch" Height="30" Width="150" Text="{Binding XmlItemSourceFolder}" ToolTip="{Binding XmlItemSourceFolder}" />
-        <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static ix4Model:Ix4RequestProps.Articles}" />
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="ResultActions" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:XmlResultHandleActions"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
 
-    </StackPanel>
+        <ObjectDataProvider x:Key="XmlFolders" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:XmlFolderTypes"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Label Content="{Binding Source={StaticResource Localization}, Path=SelectSourceFolder}" Grid.Column="1" Grid.Row="0" />
+        <DockPanel Grid.Row="0" Grid.Column="2">
+            <TextBox VerticalAlignment="Top"  VerticalContentAlignment="Center"  HorizontalContentAlignment="Stretch" Height="30" Width="150" Text="{Binding XmlItemSourceFolder}" ToolTip="{Binding XmlItemSourceFolder}" DockPanel.Dock="Left" />
+            <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static local:XmlFolderTypes.XmlSourceFolder}" DockPanel.Dock="Left" />
+        </DockPanel>
+        <CheckBox IsThreeState="False" Content="{Binding Source={StaticResource Localization},Path=ActionOnSuccessResult}" IsChecked="{Binding ActivateActionOnSuccess}" Grid.Column="0" Grid.Row="1"/>
+        <DockPanel Grid.Column="1" Grid.Row="1">
+            <Label Content="{Binding Source={StaticResource Localization},Path=SelectAction}" DockPanel.Dock="Left"/>
+            <ComboBox SelectedItem="{Binding ActionOnSuccess}" ItemsSource="{Binding Source={StaticResource ResultActions}}" DockPanel.Dock="Left"/>
+        </DockPanel>
+        <DockPanel Grid.Row="1" Grid.Column="2">
+            <TextBox VerticalAlignment="Top"  VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Height="30" Width="150" Text="{Binding SuccessResultFolder}" ToolTip="{Binding SuccessResultFolder}" DockPanel.Dock="Left" />
+            <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static local:XmlFolderTypes.XmlSuccessFolder}" DockPanel.Dock="Left" />
+        </DockPanel>
+
+        <CheckBox IsThreeState="False" Content="{Binding Source={StaticResource Localization},Path=ActionOnFailureResult}" IsChecked="{Binding ActivateActionOnFailure}" Grid.Column="0" Grid.Row="2"/>
+        <DockPanel Grid.Column="1" Grid.Row="2">
+            <Label Content="{Binding Source={StaticResource Localization},Path=SelectAction}" DockPanel.Dock="Left"/>
+            <ComboBox SelectedItem="{Binding ActionOnSuccess}" ItemsSource="{Binding Source={StaticResource ResultActions}}" DockPanel.Dock="Left"/>
+        </DockPanel>
+        <DockPanel Grid.Row="2" Grid.Column="2">
+            <TextBox VerticalAlignment="Top"  VerticalContentAlignment="Center"  HorizontalContentAlignment="Stretch" Height="30" Width="150" Text="{Binding FailureResultFolder}" ToolTip="{Binding  FailureResultFolder}" DockPanel.Dock="Left" />
+            <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static local:XmlFolderTypes.XmlFailureFolder}" DockPanel.Dock="Left" />
+        </DockPanel>
+    </Grid>
+    
  
 </UserControl>

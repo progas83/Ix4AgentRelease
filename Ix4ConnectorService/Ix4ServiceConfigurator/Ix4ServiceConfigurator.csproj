@@ -192,9 +192,7 @@
       <Name>SimplestLogger</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EventHandlers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Icons\Ix4Logo.jpg" />
   </ItemGroup>
