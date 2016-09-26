@@ -18,6 +18,7 @@ namespace Ix4ServiceConfigurator.ViewModel
         {
             _itemName = itemName;
             _compositor = new CustomerDataComposition(XmlConfigurationManager.Instance.GetCustomerInformation().PluginSettings);
+            Scheduler = new SchedulerSettings();
         }
 
         private SchedulerSettings _scheduler;

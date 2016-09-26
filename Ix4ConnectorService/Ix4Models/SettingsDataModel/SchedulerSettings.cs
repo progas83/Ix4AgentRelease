@@ -14,25 +14,18 @@ namespace Ix4Models.SettingsDataModel
         {
       
         }
-        // [XmlIgnore]
-      //    public Dictionary<Ix4RequestProps, int> Schedule { get; set; }
-        //private ScheduledItem[] _scheduledIssues;
-        //   public ScheduledItem[] ScheduledIssues
-        //{
-        //    get { return _scheduledIssues; }
-        //    set { _scheduledIssues = value; }
-        //}
-        private string _startTime;
+       
+        private DateTime _startTime;
 
-        public string StartTime
+        public DateTime StartTime
         {
             get { return _startTime; }
             set { _startTime = value; }
         }
 
-        private string _endTime;
+        private DateTime _endTime;
 
-        public string EndTime
+        public DateTime EndTime
         {
             get { return _endTime; }
             set { _endTime = value; }
