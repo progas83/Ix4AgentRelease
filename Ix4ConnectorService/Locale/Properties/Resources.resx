@@ -126,11 +126,17 @@
   <data name="Activate" xml:space="preserve">
     <value>Activate</value>
   </data>
+  <data name="CheckDataEvery" xml:space="preserve">
+    <value>Check data every</value>
+  </data>
   <data name="CurrentProcessExist" xml:space="preserve">
     <value>Current app already running.Please close the Ix4-Agent Configurator window and try again.</value>
   </data>
   <data name="EnableSSL" xml:space="preserve">
     <value>EnableSSL</value>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>From</value>
   </data>
   <data name="IsBodyHtml" xml:space="preserve">
     <value>Is mail HTML</value>
@@ -194,5 +200,17 @@
   </data>
   <data name="TimeOut" xml:space="preserve">
     <value>TimeOut</value>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>To</value>
+  </data>
+  <data name="UseSat" xml:space="preserve">
+    <value>Include Saturday</value>
+  </data>
+  <data name="UseSun" xml:space="preserve">
+    <value>IncludeSunday</value>
+  </data>
+  <data name="WorkingHours" xml:space="preserve">
+    <value>Working hours</value>
   </data>
 </root>

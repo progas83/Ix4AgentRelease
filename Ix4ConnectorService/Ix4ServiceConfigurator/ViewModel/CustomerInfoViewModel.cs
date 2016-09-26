@@ -14,6 +14,7 @@ using Ix4Models.SettingsManager;
 using System.Collections.ObjectModel;
 using System.Security;
 using System.Runtime.InteropServices;
+using Ix4ServiceConfigurator.Controls;
 
 namespace Ix4ServiceConfigurator.ViewModel
 {
@@ -34,19 +35,19 @@ namespace Ix4ServiceConfigurator.ViewModel
           
             DockPanel dp = new DockPanel();
             LicsRequestItemViewModel requestItemArtikel = new LicsRequestItemViewModel("Artikles");
-            LicsRequestItemView requestItemView = new LicsRequestItemView();
+            LicsRequestItemControl requestItemView = new LicsRequestItemControl();
             requestItemView.DataContext = requestItemArtikel;
             DockPanel.SetDock(requestItemView, Dock.Top);
             dp.Children.Add(requestItemView);
 
             requestItemArtikel = new LicsRequestItemViewModel("Orders");
-            requestItemView = new LicsRequestItemView();
+            requestItemView = new LicsRequestItemControl();
             requestItemView.DataContext = requestItemArtikel;
             DockPanel.SetDock(requestItemView, Dock.Top);
             dp.Children.Add(requestItemView);
 
             requestItemArtikel = new LicsRequestItemViewModel("Deliveries");
-            requestItemView = new LicsRequestItemView();
+            requestItemView = new LicsRequestItemControl();
             requestItemView.DataContext = requestItemArtikel;
             DockPanel.SetDock(requestItemView, Dock.Top);
             dp.Children.Add(requestItemView);

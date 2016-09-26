@@ -9,7 +9,6 @@ namespace Ix4Models.SettingsDataModel
     [Serializable]
     public enum TimeSign
     {
-        sec = 1,
         min = 60,
         hour = 3600,
         day = 86400

@@ -88,6 +88,15 @@ namespace Locale.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Check data every.
+        /// </summary>
+        public static string CheckDataEvery {
+            get {
+                return ResourceManager.GetString("CheckDataEvery", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Current app already running.Please close the Ix4-Agent Configurator window and try again..
         /// </summary>
         public static string CurrentProcessExist {
@@ -102,6 +111,15 @@ namespace Locale.Properties {
         public static string EnableSSL {
             get {
                 return ResourceManager.GetString("EnableSSL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to From.
+        /// </summary>
+        public static string From {
+            get {
+                return ResourceManager.GetString("From", resourceCulture);
             }
         }
         
@@ -291,6 +309,42 @@ namespace Locale.Properties {
         public static string TimeOut {
             get {
                 return ResourceManager.GetString("TimeOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to To.
+        /// </summary>
+        public static string To {
+            get {
+                return ResourceManager.GetString("To", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Include Saturday.
+        /// </summary>
+        public static string UseSat {
+            get {
+                return ResourceManager.GetString("UseSat", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IncludeSunday.
+        /// </summary>
+        public static string UseSun {
+            get {
+                return ResourceManager.GetString("UseSun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Working hours.
+        /// </summary>
+        public static string WorkingHours {
+            get {
+                return ResourceManager.GetString("WorkingHours", resourceCulture);
             }
         }
     }

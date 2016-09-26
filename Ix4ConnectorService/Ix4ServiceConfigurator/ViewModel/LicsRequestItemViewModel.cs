@@ -1,5 +1,6 @@
 ﻿using CompositionHelper;
 using Ix4Models;
+using Ix4Models.SettingsDataModel;
 using Ix4Models.SettingsManager;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,15 @@ namespace Ix4ServiceConfigurator.ViewModel
             _itemName = itemName;
             _compositor = new CustomerDataComposition(XmlConfigurationManager.Instance.GetCustomerInformation().PluginSettings);
         }
+
+        private SchedulerSettings _scheduler;
+
+        public SchedulerSettings Scheduler
+        {
+            get { return _scheduler; }
+            set { _scheduler = value; OnPropertyChanged("Scheduler"); }
+        }
+
 
         private string _itemName;
 
