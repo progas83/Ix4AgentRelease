@@ -35,8 +35,8 @@
 
         <TabControl  >
           
-            <TabItem Header="Send data to Ix4Interface"  >
-                <DockPanel Height="400" Width="400">
+            <TabItem Header="Send data to Ix4Interface" Content="{Binding SendLicsRequestSettins}"  >
+                <!--<DockPanel Height="400" Width="400">
                     <Expander Header="Articles" DockPanel.Dock="Top">
                         
                     </Expander>
@@ -46,7 +46,7 @@
                     <Expander Header="Deliveries" DockPanel.Dock="Top">
 
                     </Expander>
-                </DockPanel>
+                </DockPanel>-->
             </TabItem>
             <TabItem Header="Recieve data from Ix4Interface">
                 <DockPanel Height="400" Width="400">

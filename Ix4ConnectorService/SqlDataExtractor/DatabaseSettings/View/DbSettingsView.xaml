@@ -9,7 +9,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility"/>
     </UserControl.Resources>
-    <Grid  Visibility="{Binding IsServerSelect,Converter={StaticResource BoolToVis}}" DockPanel.Dock="Top">
+    <Grid  DockPanel.Dock="Top">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="300"/>
@@ -49,6 +49,6 @@
             <ComboBox ItemsSource="{Binding AvailableTables}" SelectedItem="{Binding SelectedTable}" IsEditable="False" MinWidth="200" Height="20" DockPanel.Dock="Left" />
             <Button Width="20" Height="20">Check connection</Button>
         </DockPanel>
-        <ListBox ItemsSource="{Binding SelectedTableColumnsName}" PreviewMouseLeftButtonDown="XmlListBox_PreviewMouseLeftButtonDown" Grid.Column="1" Grid.Row="6"/>
+        <!--<ListBox ItemsSource="{Binding SelectedTableColumnsName}" PreviewMouseLeftButtonDown="XmlListBox_PreviewMouseLeftButtonDown" Grid.Column="1" Grid.Row="6"/>-->
     </Grid>
 </UserControl>

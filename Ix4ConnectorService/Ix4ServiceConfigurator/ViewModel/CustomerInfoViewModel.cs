@@ -20,55 +20,57 @@ namespace Ix4ServiceConfigurator.ViewModel
 
     internal class CustomerInfoViewModel : BaseViewModel, ICommand, IDisposable
     {
-        CustomerDataComposition _compositor;
+      //  CustomerDataComposition _compositor;
         private CustomerInfoView _view;
         public CustomerInfoViewModel()
         {
             _view = new CustomerInfoView();
             _view.DataContext = this;
-            _view.Closing += OnCustomerViewClosing;
+         //   _view.Closing += OnCustomerViewClosing;
 
             Customer = XmlConfigurationManager.Instance.GetCustomerInformation();
             _view.UIUserInfo.UIPwdBox.Password = Customer.Password;
 
-            _compositor = new CustomerDataComposition(Customer.PluginSettings);
+          //  _compositor = new CustomerDataComposition(Customer.PluginSettings);
         }
 
-        private CustomDataSourceTypes _selectedDataSource;
-        public CustomDataSourceTypes SelectedDataSource
-        {
-            get { return _selectedDataSource; }
-            set
-            {
-                _selectedDataSource = value;
-                OnPropertyChanged("PluginControl");
-            }
-        }
+        //private CustomDataSourceTypes _selectedDataSource;
+        //public CustomDataSourceTypes SelectedDataSource
+        //{
+        //    get { return _selectedDataSource; }
+        //    set
+        //    {
+        //        _selectedDataSource = value;
+        //        OnPropertyChanged("PluginControl");
+        //    }
+        //}
 
 
-        private Ix4RequestProps _TabSelectedItem;
+        //private Ix4RequestProps _TabSelectedItem;
 
-        public Ix4RequestProps TabSelectedItem
-        {
-            get { return _TabSelectedItem; }
-            set { _TabSelectedItem = value; OnPropertyChanged("TabSelectedItem"); }
-        }
+        //public Ix4RequestProps TabSelectedItem
+        //{
+        //    get { return _TabSelectedItem; }
+        //    set { _TabSelectedItem = value; OnPropertyChanged("TabSelectedItem"); }
+        //}
 
-        private int _TabSelectedIndex;
+        //private int _TabSelectedIndex;
 
-        public int TabSelectedIndex
-        {
-            get { return _TabSelectedIndex; }
-            set { _TabSelectedIndex = value; OnPropertyChanged("TabSelectedIndex"); }
-        }
+        //public int TabSelectedIndex
+        //{
+        //    get { return _TabSelectedIndex; }
+        //    set { _TabSelectedIndex = value; OnPropertyChanged("TabSelectedIndex"); }
+        //}
 
-        public UserControl PluginControl
-        {
-            get
-            {
-                return _compositor.GetDataSettingsControl(SelectedDataSource);
-            }
-        }
+        public UserControl SendLicsRequestSettings { get; set; }
+
+        //public UserControl PluginControl
+        //{
+        //    get
+        //    {
+        //        return _compositor.GetDataSettingsControl(SelectedDataSource);
+        //    }
+        //}
         public bool? ShowCustomerInfoWindow()
         {
             bool? result = false;
@@ -79,10 +81,10 @@ namespace Ix4ServiceConfigurator.ViewModel
             }
             return result;
         }
-        private void OnCustomerViewClosing(object sender, CancelEventArgs e)
-        {
+        //private void OnCustomerViewClosing(object sender, CancelEventArgs e)
+        //{
 
-        }
+        //}
 
         public bool CanExecute(object parameter)
         {
@@ -99,13 +101,13 @@ namespace Ix4ServiceConfigurator.ViewModel
                 Customer.Password = ConvertToUnsecureString(secureString);
             }
 
-            Customer.PluginSettings = _compositor.SavePluginsSettings();
-            if(Customer.ScheduleSettings.ScheduledIssues==null)
-            {
-                Customer.ScheduleSettings.ScheduledIssues = new ScheduledItem[] {   new ScheduledItem(Ix4RequestProps.Articles, 0),
-                                                                                    new ScheduledItem(Ix4RequestProps.Orders, 0),
-                                                                                    new ScheduledItem(Ix4RequestProps.Deliveries, 0)};
-            }
+            //Customer.PluginSettings = _compositor.SavePluginsSettings();
+            //if(Customer.ScheduleSettings.ScheduledIssues==null)
+            //{
+            //    Customer.ScheduleSettings.ScheduledIssues = new ScheduledItem[] {   new ScheduledItem(Ix4RequestProps.Articles, 0),
+            //                                                                        new ScheduledItem(Ix4RequestProps.Orders, 0),
+            //                                                                        new ScheduledItem(Ix4RequestProps.Deliveries, 0)};
+            //}
             XmlConfigurationManager.Instance.UpdateCustomerInformation(Customer);
 
             _view.DialogResult = true;
