@@ -20,7 +20,7 @@ namespace Ix4ServiceConfigurator.ViewModel
 
     internal class CustomerInfoViewModel : BaseViewModel, ICommand, IDisposable
     {
-      //  CustomerDataComposition _compositor;
+      //  
         private CustomerInfoView _view;
         public CustomerInfoViewModel()
         {
@@ -31,20 +31,32 @@ namespace Ix4ServiceConfigurator.ViewModel
             Customer = XmlConfigurationManager.Instance.GetCustomerInformation();
             _view.UIUserInfo.UIPwdBox.Password = Customer.Password;
 
-          //  _compositor = new CustomerDataComposition(Customer.PluginSettings);
+          
+            DockPanel dp = new DockPanel();
+            LicsRequestItemViewModel requestItemArtikel = new LicsRequestItemViewModel("Artikles");
+            LicsRequestItemView requestItemView = new LicsRequestItemView();
+            requestItemView.DataContext = requestItemArtikel;
+            DockPanel.SetDock(requestItemView, Dock.Top);
+            dp.Children.Add(requestItemView);
+
+            requestItemArtikel = new LicsRequestItemViewModel("Orders");
+            requestItemView = new LicsRequestItemView();
+            requestItemView.DataContext = requestItemArtikel;
+            DockPanel.SetDock(requestItemView, Dock.Top);
+            dp.Children.Add(requestItemView);
+
+            requestItemArtikel = new LicsRequestItemViewModel("Deliveries");
+            requestItemView = new LicsRequestItemView();
+            requestItemView.DataContext = requestItemArtikel;
+            DockPanel.SetDock(requestItemView, Dock.Top);
+            dp.Children.Add(requestItemView);
+
+            SendLicsRequestSettings = new ContentPresenter();
+            SendLicsRequestSettings.Content =  dp;
+            //  
         }
 
-        //private CustomDataSourceTypes _selectedDataSource;
-        //public CustomDataSourceTypes SelectedDataSource
-        //{
-        //    get { return _selectedDataSource; }
-        //    set
-        //    {
-        //        _selectedDataSource = value;
-        //        OnPropertyChanged("PluginControl");
-        //    }
-        //}
-
+       
 
         //private Ix4RequestProps _TabSelectedItem;
 
@@ -62,15 +74,9 @@ namespace Ix4ServiceConfigurator.ViewModel
         //    set { _TabSelectedIndex = value; OnPropertyChanged("TabSelectedIndex"); }
         //}
 
-        public UserControl SendLicsRequestSettings { get; set; }
+        public ContentPresenter SendLicsRequestSettings { get; set; }
 
-        //public UserControl PluginControl
-        //{
-        //    get
-        //    {
-        //        return _compositor.GetDataSettingsControl(SelectedDataSource);
-        //    }
-        //}
+      
         public bool? ShowCustomerInfoWindow()
         {
             bool? result = false;

@@ -196,11 +196,29 @@ namespace Locale.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select data source.
+        /// </summary>
+        public static string SelectDataSource {
+            get {
+                return ResourceManager.GetString("SelectDataSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select language.
         /// </summary>
         public static string SelectLanguage {
             get {
                 return ResourceManager.GetString("SelectLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select source forlder.
+        /// </summary>
+        public static string SelectSourceFolder {
+            get {
+                return ResourceManager.GetString("SelectSourceFolder", resourceCulture);
             }
         }
         

@@ -162,8 +162,14 @@
   <data name="ScheduleOrders" xml:space="preserve">
     <value>Check {0} Orders every</value>
   </data>
+  <data name="SelectDataSource" xml:space="preserve">
+    <value>Select data source</value>
+  </data>
   <data name="SelectLanguage" xml:space="preserve">
     <value>Select language</value>
+  </data>
+  <data name="SelectSourceFolder" xml:space="preserve">
+    <value>Select source forlder</value>
   </data>
   <data name="ServiceName" xml:space="preserve">
     <value>Service name:</value>

@@ -87,10 +87,17 @@
     <Compile Include="ServiceInfoWrapper.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="ViewModel\IPwd.cs" />
+    <Compile Include="ViewModel\LicsRequestItemViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\CustomerInfoViewModel.cs" />
     <Compile Include="View\CustomerInfoView.xaml.cs">
       <DependentUpon>CustomerInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LicsRequestItemView.xaml.cs">
+      <DependentUpon>LicsRequestItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ToIx4SettingsView.xaml.cs">
+      <DependentUpon>ToIx4SettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\CustomerInfoControl.xaml">
       <SubType>Designer</SubType>
@@ -121,6 +128,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\CustomerInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LicsRequestItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ToIx4SettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

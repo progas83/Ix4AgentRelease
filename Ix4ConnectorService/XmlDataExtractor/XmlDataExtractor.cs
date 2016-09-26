@@ -219,7 +219,6 @@ namespace XmlDataExtractor
             LICSRequest licsRequest = new LICSRequest();
             using (FileStream fs = new FileStream(fileName, FileMode.Open))
             {
-
                 OutputPayLoad customerInfo = (OutputPayLoad)xS.Deserialize(fs);
                 licsRequest = customerInfo.ConvertToLICSRequest();
             }

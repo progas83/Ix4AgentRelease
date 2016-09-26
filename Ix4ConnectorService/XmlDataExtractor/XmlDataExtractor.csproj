@@ -48,7 +48,6 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings\ViewModel\XamlFolderSettingsViewModel.cs" />
-    <Compile Include="Settings\ViewModel\XmlFolderTypes.cs" />
     <Compile Include="Settings\View\XamlFolderSettingsControl.xaml.cs">
       <DependentUpon>XamlFolderSettingsControl.xaml</DependentUpon>
     </Compile>

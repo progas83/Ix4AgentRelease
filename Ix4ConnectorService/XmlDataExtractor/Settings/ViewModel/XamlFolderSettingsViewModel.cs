@@ -22,62 +22,15 @@ namespace XmlDataExtractor.Settings.ViewModel
             get { return _xmlPluginSettings; }
             private set { _xmlPluginSettings = value; }
         }
-        public bool IsActivated
-        {
-            get { return _xmlPluginSettings.IsActivated; }
-            set
-            {
-                _xmlPluginSettings.IsActivated = value;
-                OnPropertyChanged("IsActivated");
-            }
-        }
 
-        public bool CheckArticles
-        {
-            get { return _xmlPluginSettings.CheckArticles; }
-            set
-            {
-                _xmlPluginSettings.CheckArticles = value;
-                OnPropertyChanged("CheckArticles");
-            }
-        }
 
-        public bool CheckOrders
+        private string _itemSourceFolder;
+        public string XmlItemSourceFolder
         {
-            get { return _xmlPluginSettings.CheckOrders; }
+            get { return _itemSourceFolder; }
             set
             {
-                _xmlPluginSettings.CheckOrders = value;
-                OnPropertyChanged("CheckOrders");
-            }
-        }
-
-        public bool CheckDeliveries
-        {
-            get { return _xmlPluginSettings.CheckDeliveries; }
-            set
-            {
-                _xmlPluginSettings.CheckDeliveries = value;
-                OnPropertyChanged("CheckDeliveries");
-            }
-        }
-
-        public string XmlArticleSourceFolder
-        {
-            get { return _xmlPluginSettings.XmlArticleSourceFolder; }
-            set
-            {
-                _xmlPluginSettings.XmlArticleSourceFolder = value;
-                OnPropertyChanged("XmlArticleSourceFolder");
-            }
-        }
-
-        public string XmlOrdersSourceFolder
-        {
-            get { return _xmlPluginSettings.XmlOrdersSourceFolder; }
-            set
-            {
-                _xmlPluginSettings.XmlOrdersSourceFolder = value;
+                _itemSourceFolder = value;
                 OnPropertyChanged("XmlOrdersSourceFolder");
             }
         }
@@ -90,35 +43,11 @@ namespace XmlDataExtractor.Settings.ViewModel
             return true;
         }
 
-        public string XmlDeliveriesSourceFolder
-        {
-            get { return _xmlPluginSettings.XmlDeliveriesSourceFolder; }
-            set { _xmlPluginSettings.XmlDeliveriesSourceFolder = value;
-                OnPropertyChanged("XmlDeliveriesSourceFolder");
-            }
-        }
-
         public void Execute(object parameter)
         {
-            Ix4RequestProps folderName = (Ix4RequestProps)parameter;
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
             System.Windows.Forms.DialogResult result = dialog.ShowDialog();
-            switch (folderName)
-            {
-                case Ix4RequestProps.Articles:
-                    XmlArticleSourceFolder = dialog.SelectedPath;
-                    break;
-                case Ix4RequestProps.Orders:
-                    XmlOrdersSourceFolder = dialog.SelectedPath;
-                    break;
-                case Ix4RequestProps.Deliveries:
-                    XmlDeliveriesSourceFolder = dialog.SelectedPath;
-                    break;
-
-
-                default:
-                    break;
-            }
+            XmlItemSourceFolder = dialog.SelectedPath;
         }
 
         public void OnPropertyChanged(string propertyName)
