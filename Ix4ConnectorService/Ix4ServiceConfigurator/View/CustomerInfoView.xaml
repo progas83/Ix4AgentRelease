@@ -14,7 +14,7 @@
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="dataModels:CustomDataSourceTypes"/>
             </ObjectDataProvider.MethodParameters>
-            
+
         </ObjectDataProvider>
         <ObjectDataProvider x:Key="Ix4InterfaceProperties" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -22,19 +22,40 @@
             </ObjectDataProvider.MethodParameters>
 
         </ObjectDataProvider>
+    
+
     </Window.Resources>
     <StackPanel Margin="0,10,10,5" x:Name="UIMainDockPanel">
-        
+
         <controls:CustomerInfoControl x:Name="UIUserInfo"  DockPanel.Dock="Top" HorizontalAlignment="Left" HorizontalContentAlignment="Stretch" DataContext="{Binding Customer}"/>
         <controls:ScheduleControl DataContext="{Binding Customer.ScheduleSettings}"/>
         <ComboBox Width="100" Margin="10,10,0,10" ItemsSource="{Binding Source={StaticResource DataSourceType}}" SelectedItem="{Binding Path=SelectedDataSource}" DockPanel.Dock="Top" HorizontalAlignment="Left"/>
         <Button Height="50" Margin="10,0,5,0" IsDefault="True" HorizontalAlignment="Stretch" DockPanel.Dock="Top" Command="{Binding}"
                 CommandParameter="{Binding ElementName=UIUserInfo}" Content="Save Information"/>
 
+        <TabControl  >
+          
+            <TabItem Header="Send data to Ix4Interface"  >
+                <DockPanel Height="400" Width="400">
+                    <Expander Header="Articles" DockPanel.Dock="Top">
+                        
+                    </Expander>
+                    <Expander Header="Orders" DockPanel.Dock="Top">
 
-        
+                    </Expander>
+                    <Expander Header="Deliveries" DockPanel.Dock="Top">
 
-        <WrapPanel  >
+                    </Expander>
+                </DockPanel>
+            </TabItem>
+            <TabItem Header="Recieve data from Ix4Interface">
+                <DockPanel Height="400" Width="400">
+                    <Label VerticalAlignment="Center" HorizontalAlignment="Center">Recieve data from Ix4Interface</Label>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+
+        <!--<WrapPanel  >
 
             <ContentControl Margin="0,5,0,0" Height="200" MaxWidth="800"
                             ScrollViewer.CanContentScroll="True" 
@@ -43,7 +64,7 @@
                             
                             x:Name="UiPlaceHsolder" Content="{Binding PluginControl}" />
 
-        </WrapPanel>
+        </WrapPanel>-->
 
 
     </StackPanel>
