@@ -48,6 +48,9 @@
   <ItemGroup>
     <Compile Include="Commands\DbConnectionCommand.cs" />
     <Compile Include="DatabaseSettings\ViewModel\MainDBSettingsViewModel.cs" />
+    <Compile Include="DatabaseSettings\View\DbSettingsView.xaml.cs">
+      <DependentUpon>DbSettingsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DatabaseSettings\View\MainDBSettindsView.xaml.cs">
       <DependentUpon>MainDBSettindsView.xaml</DependentUpon>
     </Compile>
@@ -79,6 +82,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Page Include="DatabaseSettings\View\DbSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="DatabaseSettings\View\MainDBSettindsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
