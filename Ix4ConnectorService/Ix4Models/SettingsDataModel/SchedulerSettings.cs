@@ -17,7 +17,7 @@ namespace Ix4Models.SettingsDataModel
        
         private DateTime _startTime;
 
-        public DateTime StartTime
+        public DateTime gg StartTime
         {
             get { return _startTime; }
             set { _startTime = value; }
