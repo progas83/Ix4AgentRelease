@@ -11,18 +11,19 @@ namespace Ix4Models.SettingsDataModel
     {
         public CustomerInfo()
         {
-            ServiceName = CurrentServiceInformation.ServiceName;
+           // ServiceName = CurrentServiceInformation.ServiceName;
             PluginSettings = new PluginsSettings();
-            ScheduleSettings = new SchedulerSettings();
+            ImportDataSettings = new ImportDataSettings();
+           // ScheduleSettings = new SchedulerSettings();
 
-            MailNotificationSettings = new MailNotificationSettings();
+           // MailNotificationSettings = new MailNotificationSettings();
             //{
             //    CsvSettings = new CsvPluginSettings(),
             //    MsSqlSettings = new MsSqlPluginSettings(),
             //    XmlSettings = new XmlPluginSettings()
             //};
         }
-
+        public ImportDataSettings ImportDataSettings { get; set; }
         public string LanguageCulture { get; set; }
 
         public string ServiceName { get; set; }
@@ -45,7 +46,7 @@ namespace Ix4Models.SettingsDataModel
             using (var cryptor = new Cryptor())
             {
                 _password = cryptor.Decrypt(_password);
-                PluginSettings.MsSqlSettings.DbSettings.Decrypt();
+             //   PluginSettings.MsSqlSettings.DbSettings.Decrypt();
             }
         }
 
@@ -54,7 +55,7 @@ namespace Ix4Models.SettingsDataModel
             using (var cryptor = new Cryptor())
             {
                 _password = cryptor.Encrypt(_password);
-                PluginSettings.MsSqlSettings.DbSettings.Encrypt();
+               // PluginSettings.MsSqlSettings.DbSettings.Encrypt();
             }
             
         }
@@ -64,9 +65,9 @@ namespace Ix4Models.SettingsDataModel
         #endregion
 
  
-        public SchedulerSettings ScheduleSettings { get; set; }
+      ////  public SchedulerSettings ScheduleSettings { get; set; }
 
-        public MailNotificationSettings MailNotificationSettings { get; set; }
+      //  public MailNotificationSettings MailNotificationSettings { get; set; }
 
         //public override string ToString()
         //{

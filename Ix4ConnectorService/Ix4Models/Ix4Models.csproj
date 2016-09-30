@@ -65,6 +65,7 @@
     <Compile Include="Schema\WV\Wv_ExportData.cs" />
     <Compile Include="SettingsDataModel\CsvPluginSettings.cs" />
     <Compile Include="SettingsDataModel\CustomerInfo.cs" />
+    <Compile Include="SettingsDataModel\ImportDataSettings.cs" />
     <Compile Include="SettingsDataModel\MailNotificationSettings.cs" />
     <Compile Include="SettingsDataModel\MsSqlPluginSettings.cs" />
     <Compile Include="SettingsDataModel\MsSqlSettings.cs" />

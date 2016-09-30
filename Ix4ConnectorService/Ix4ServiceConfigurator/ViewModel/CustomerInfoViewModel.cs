@@ -34,19 +34,21 @@ namespace Ix4ServiceConfigurator.ViewModel
 
           
             DockPanel dp = new DockPanel();
-            LicsRequestItemViewModel requestItemArtikel = new LicsRequestItemViewModel("Artikles");
+            LicsRequestItemViewModel requestItemArtikel = new LicsRequestItemViewModel(Customer.ImportDataSettings.ArticleSettings);
+          //  Customer.ImportDataSettings.ArticleSettings = requestItemArtikel.BaseSettings;
             LicsRequestItemControl requestItemView = new LicsRequestItemControl();
             requestItemView.DataContext = requestItemArtikel;
             DockPanel.SetDock(requestItemView, Dock.Top);
             dp.Children.Add(requestItemView);
 
-            requestItemArtikel = new LicsRequestItemViewModel("Orders");
+            requestItemArtikel = new LicsRequestItemViewModel(Customer.ImportDataSettings.OrderSettings);
+
             requestItemView = new LicsRequestItemControl();
             requestItemView.DataContext = requestItemArtikel;
             DockPanel.SetDock(requestItemView, Dock.Top);
             dp.Children.Add(requestItemView);
 
-            requestItemArtikel = new LicsRequestItemViewModel("Deliveries");
+            requestItemArtikel = new LicsRequestItemViewModel(Customer.ImportDataSettings.DeliverySettings);
             requestItemView = new LicsRequestItemControl();
             requestItemView.DataContext = requestItemArtikel;
             DockPanel.SetDock(requestItemView, Dock.Top);

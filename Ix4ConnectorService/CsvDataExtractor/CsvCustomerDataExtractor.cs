@@ -69,5 +69,10 @@ namespace CsvDataExtractor
         {
             throw new NotImplementedException();
         }
+
+        public UserControl GetControlForSettings(BaseLicsRequestSettings settings)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

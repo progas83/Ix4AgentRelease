@@ -73,7 +73,7 @@ namespace ConnectorWorkflowManager
                 _loger.Log("Service has been started at");
 
                 _customerInfo = XmlConfigurationManager.Instance.GetCustomerInformation();
-                _dataCompositor = new CustomerDataComposition(_customerInfo.PluginSettings);
+               // _dataCompositor = new CustomerDataComposition(_customerInfo.PluginSettings);
                 _ix4ServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(_customerInfo.ClientID, _customerInfo.UserName, _customerInfo.Password, _customerInfo.ServiceEndpoint);
                 _ensureData = new DataEnsure(_customerInfo.UserName);
                 _timer.Enabled = true;
@@ -94,19 +94,19 @@ namespace ConnectorWorkflowManager
                 try
                 {
                     WrightLog("Start checking");
-                    if (_customerInfo.PluginSettings.MsSqlSettings.CheckDeliveries)
+                   // if (_customerInfo.PluginSettings.MsSqlSettings.CheckDeliveries)
                     {
                         ExportData();
                     }
 
-                    if (_customerInfo.PluginSettings.MsSqlSettings.CheckArticles)
+                   // if (_customerInfo.PluginSettings.MsSqlSettings.CheckArticles)
                     {
 
                         if (!_isArticlesBusy)
                             Task.Run(() => CheckArticles());
                     }
 
-                    if (_customerInfo.PluginSettings.MsSqlSettings.CheckOrders)
+                  //  if (_customerInfo.PluginSettings.MsSqlSettings.CheckOrders)
                     {
 
                         CheckPreparedRequest(CustomDataSourceTypes.MsSql, Ix4RequestProps.Orders);
@@ -372,12 +372,13 @@ namespace ConnectorWorkflowManager
         {
             get
             {
-                return _customerInfo.PluginSettings.MsSqlSettings.DbSettings.UseSqlServerAuth ? string.Format(CurrentServiceInformation.MsSqlDatabaseConnectionStringWithServerAuth, _customerInfo.PluginSettings.MsSqlSettings.DbSettings.ServerAdress,
-                                                                                                         _customerInfo.PluginSettings.MsSqlSettings.DbSettings.DataBaseName,
-                                                                                                         _customerInfo.PluginSettings.MsSqlSettings.DbSettings.DbUserName,
-                                                                                                         _customerInfo.PluginSettings.MsSqlSettings.DbSettings.Password) :
-                                                                    string.Format(CurrentServiceInformation.MsSqlDatabaseConnectionStringWindowsAuth, _customerInfo.PluginSettings.MsSqlSettings.DbSettings.ServerAdress,
-                                                                                                         _customerInfo.PluginSettings.MsSqlSettings.DbSettings.DataBaseName);
+              return  string.Empty;
+                //return _customerInfo.PluginSettings.MsSqlSettings.DbSettings.UseSqlServerAuth ? string.Format(CurrentServiceInformation.MsSqlDatabaseConnectionStringWithServerAuth, _customerInfo.PluginSettings.MsSqlSettings.DbSettings.ServerAdress,
+                //                                                                                         _customerInfo.PluginSettings.MsSqlSettings.DbSettings.DataBaseName,
+                //                                                                                         _customerInfo.PluginSettings.MsSqlSettings.DbSettings.DbUserName,
+                //                                                                                         _customerInfo.PluginSettings.MsSqlSettings.DbSettings.Password) :
+                //                                                    string.Format(CurrentServiceInformation.MsSqlDatabaseConnectionStringWindowsAuth, _customerInfo.PluginSettings.MsSqlSettings.DbSettings.ServerAdress,
+                //                                                                                         _customerInfo.PluginSettings.MsSqlSettings.DbSettings.DataBaseName);
 
                 //return   string.Format(CurrentServiceInformation.MsSqlDatabaseConnectionStringWindowsAuth, _pluginSettings.DbSettings.ServerAdress,
                 //                                                                                    _pluginSettings.DbSettings.DataBaseName);
