@@ -33,7 +33,7 @@ namespace XmlDataExtractor
             }
             if(_viewModel==null)
             {
-                _viewModel = new XamlFolderSettingsViewModel(_xmlSettings);
+                _viewModel = new XamlFolderSettingsViewModel   (_xmlSettings);
             }
             _xamlUserControl.DataContext = _viewModel; ;
             return _xamlUserControl;
