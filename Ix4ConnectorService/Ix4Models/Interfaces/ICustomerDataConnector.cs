@@ -18,6 +18,9 @@ namespace Ix4Models.Interfaces
 
         T ExportDataToCustomerSource<T>(XmlNode exportData) where T : MSG;
 
+
+
+
         ICustomerDataConnector GetPrepearedDataConnector(IPluginSettings pluginSettings);
 
     }
