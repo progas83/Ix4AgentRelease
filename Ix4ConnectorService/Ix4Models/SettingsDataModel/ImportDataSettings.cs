@@ -31,6 +31,9 @@ namespace Ix4Models.SettingsDataModel
             Scheduler = new SchedulerSettings();
         }
 
+       public virtual Ix4RequestProps SettingsName { get; }
+
+        
 
         private string _xmlSuccessFolder;
 
@@ -98,6 +101,13 @@ namespace Ix4Models.SettingsDataModel
     [Serializable]
     public class ArticleSettings : BaseLicsRequestSettings
     {
+        public override Ix4RequestProps SettingsName
+        {
+            get
+            {
+                return Ix4RequestProps.Articles;
+            }
+        }
         public ArticleSettings() : base()
         {
            
@@ -108,6 +118,13 @@ namespace Ix4Models.SettingsDataModel
     [Serializable]
     public class DeliverySettings : BaseLicsRequestSettings
     {
+        public override Ix4RequestProps SettingsName
+        {
+            get
+            {
+                return Ix4RequestProps.Deliveries;
+            }
+        }
         public DeliverySettings() : base()
         {
 
@@ -118,6 +135,13 @@ namespace Ix4Models.SettingsDataModel
     [Serializable]
     public class OrderSettings : BaseLicsRequestSettings
     {
+        public override Ix4RequestProps SettingsName
+        {
+            get
+            {
+                return Ix4RequestProps.Orders;
+            }
+        }
         public OrderSettings() :base()
         {
 

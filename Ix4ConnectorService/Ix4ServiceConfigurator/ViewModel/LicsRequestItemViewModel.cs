@@ -58,12 +58,12 @@ namespace Ix4ServiceConfigurator.ViewModel
         }
 
 
-        private Ix4RequestProps _itemName;
+      //  private Ix4RequestProps _itemName;
 
         public Ix4RequestProps Ix4PartItemName
         {
-            get { return _itemName; }
-            set { _itemName = value; OnPropertyChanged("Ix4PartItemName"); }
+            get { return BaseSettings.SettingsName; }
+            //set { _itemName = value; OnPropertyChanged("Ix4PartItemName"); }
         }
 
 
