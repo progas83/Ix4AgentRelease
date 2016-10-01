@@ -14,11 +14,11 @@ namespace Ix4ServiceConfigurator.ViewModel
    public class ImportDataItemViewModel : BaseViewModel
     {
         
-        private CustomerDataComposition _compositor;
+        //private CustomerDataComposition _compositor;
         public ImportDataItemViewModel(BaseLicsRequestSettings itemSettings)
         {
             BaseSettings = itemSettings;
-            _compositor = new CustomerDataComposition(XmlConfigurationManager.Instance.GetCustomerInformation().ImportDataSettings.ArticleSettings);
+          //  _compositor = new CustomerDataComposition(XmlConfigurationManager.Instance.GetCustomerInformation().ImportDataSettings.ArticleSettings);
         }
 
         private void InitSettings(Ix4RequestProps itemName)
@@ -71,10 +71,8 @@ namespace Ix4ServiceConfigurator.ViewModel
         {
             get
             {
-                return _compositor.GetDataSettingsControl(SelectedDataSource);
+                return CustomerDataComposition.Instance.GetDataSettingsControl(BaseSettings);
             }
         }
-
-
     }
 }

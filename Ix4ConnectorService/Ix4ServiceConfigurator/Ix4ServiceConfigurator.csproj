@@ -96,7 +96,6 @@
     <Compile Include="ViewModel\ImportDataItemViewModel.cs" />
     <Compile Include="ViewModel\ImportDataSettingsViewModel.cs" />
     <Compile Include="ViewModel\IPwd.cs" />
-    <Compile Include="ViewModel\LicsRequestItemViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\CustomerInfoViewModel.cs" />
     <Compile Include="View\CustomerInfoView.xaml.cs">

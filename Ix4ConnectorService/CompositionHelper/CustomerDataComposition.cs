@@ -10,32 +10,47 @@ using Ix4Models;
 using Ix4Models.SettingsDataModel;
 using Ix4Models.Interfaces;
 using System.Xml;
+using Ix4Models.SettingsManager;
+using SimplestLogger;
 
 namespace CompositionHelper
 {
     public class CustomerDataComposition
     {
-        private PluginsSettings _pluginSettings;
-
-        private CustomerDataComposition()
-        {
-            AssembleCustomerDataComponents();
-        }
-
-        public CustomerDataComposition(PluginsSettings pluginSettings) : this()
-        {
-            this._pluginSettings = pluginSettings;
-        }
-
-        BaseLicsRequestSettings _settings;
-        public CustomerDataComposition(BaseLicsRequestSettings settings):this()
-        {
-            _settings = settings;
-        }
 
         [ImportMany]
         public System.Lazy<ICustomerDataConnector, IDictionary<string, object>>[] CustomerDataPlugins { get; set; }
-        //       Logger _logger = Logger.GetLogger();
+
+        private static CustomerDataComposition _dataCompositor = null;
+        private static object _padlock = new object();
+        private Logger _logger = Logger.GetLogger();
+
+        public static CustomerDataComposition Instance
+        {
+            get
+            {
+                if (_dataCompositor == null)
+                {
+                    lock (_padlock)
+                    {
+                        if (_dataCompositor == null)
+                        {
+                            _dataCompositor = new CustomerDataComposition();
+                        }
+                    }
+
+                }
+                return _dataCompositor;
+            }
+        }
+
+        private CustomerInfo _customerSettings;
+        private CustomerDataComposition()
+        {
+            AssembleCustomerDataComponents();
+            _customerSettings = XmlConfigurationManager.Instance.GetCustomerInformation();
+        }
+
         private void AssembleCustomerDataComponents()
         {
             try
@@ -54,9 +69,46 @@ namespace CompositionHelper
             }
             catch (Exception ex)
             {
-                //         _logger.Log(ex);
+                _logger.Log(ex);
             }
         }
+
+        public UserControl GetDataSettingsControl(BaseLicsRequestSettings settings)
+        {
+            UserControl uc = null;
+
+            try
+            {
+                foreach (var plugin in CustomerDataPlugins)
+                {
+                    if (((string)plugin.Metadata[CurrentServiceInformation.NameForPluginMetadata]).Equals(Enum.GetName(typeof(CustomDataSourceTypes),settings.SourceDataType)))
+                    {
+                        uc = plugin.Value.GetControlForSettings(settings);
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+               _logger.Log(ex);
+            }
+            return uc;
+        }
+
+
+
+
+        private PluginsSettings _pluginSettings;
+
+        //BaseLicsRequestSettings _settings;
+        //public CustomerDataComposition(BaseLicsRequestSettings settings) : this()
+        //{
+        //    _settings = settings;
+        //}
+
+      
+      
+     
 
         public PluginsSettings SavePluginsSettings()
         {
@@ -77,57 +129,7 @@ namespace CompositionHelper
             return _pluginSettings;
         }
 
-        public UserControl GetDataSettingsControl(CustomDataSourceTypes dataSourceType)
-        {
-            UserControl uc = null;// resultData = string.Empty;
-
-            try
-            {
-                foreach (var plugin in CustomerDataPlugins)
-                {
-                    if (((string)plugin.Metadata[CurrentServiceInformation.NameForPluginMetadata]).Equals(Enum.GetName(typeof(CustomDataSourceTypes), dataSourceType)))
-                    {
-                        uc = plugin.Value.GetControlForSettings(_settings);
-                        break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                //       _logger.Log(ex);
-            }
-            return uc;
-        }
-
-        //public LICSRequestArticle GetArticleByNumber(string articleNumber)
-        //{
-        //    LICSRequestArticle article = new LICSRequestArticle();
-        //    try
-        //    {
-        //        IPluginSettings plugingSettings = _pluginSettings.AllAvailablePluginSettings().FirstOrDefault(pl => pl.CheckArticles);
-
-        //        if (plugingSettings == null)
-        //        {
-        //            //_logger.Log("There was not adjusted any article setting");
-        //            return null;// articles;
-        //        }
-        //        foreach (var plugin in CustomerDataPlugins)
-        //        {
-        //            if (((string)plugin.Metadata[CurrentServiceInformation.NameForPluginMetadata]).Equals(Enum.GetName(typeof(CustomDataSourceTypes),
-        //                plugingSettings.PluginType)))
-        //            {
-        //                article = plugin.Value.GetRequestArticles(plugingSettings);
-        //                break;
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        //         _logger.Log(ex);
-        //    }
-        //    return article;
-
-        //}
+     
 
         public LICSRequestArticle[] GetRequestArticles()
         {
@@ -195,7 +197,7 @@ namespace CompositionHelper
             try
             {
                 IPluginSettings plugingSettings = _pluginSettings.AllAvailablePluginSettings().FirstOrDefault(pl => pl.CheckOrders);
-                if(plugingSettings==null)
+                if (plugingSettings == null)
                 {
                     //_logger.Log("There was not adjusted any orders setting");
                     return requestOrders;
@@ -220,7 +222,7 @@ namespace CompositionHelper
         {
             LICSRequest[] requests = new LICSRequest[] { };
             var plugingSettings = _pluginSettings.AllAvailablePluginSettings().FirstOrDefault(pl => pl.PluginType == dataSourceType);
-            if(plugingSettings==null)
+            if (plugingSettings == null)
             {
                 return requests;
             }
@@ -273,5 +275,37 @@ namespace CompositionHelper
             //    }
             //}
         }
+
+        //public LICSRequestArticle GetArticleByNumber(string articleNumber)
+        //{
+        //    LICSRequestArticle article = new LICSRequestArticle();
+        //    try
+        //    {
+        //        IPluginSettings plugingSettings = _pluginSettings.AllAvailablePluginSettings().FirstOrDefault(pl => pl.CheckArticles);
+
+        //        if (plugingSettings == null)
+        //        {
+        //            //_logger.Log("There was not adjusted any article setting");
+        //            return null;// articles;
+        //        }
+        //        foreach (var plugin in CustomerDataPlugins)
+        //        {
+        //            if (((string)plugin.Metadata[CurrentServiceInformation.NameForPluginMetadata]).Equals(Enum.GetName(typeof(CustomDataSourceTypes),
+        //                plugingSettings.PluginType)))
+        //            {
+        //                article = plugin.Value.GetRequestArticles(plugingSettings);
+        //                break;
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        //         _logger.Log(ex);
+        //    }
+        //    return article;
+
+        //}
+
+
     }
 }
