@@ -37,9 +37,9 @@
 
             <TabItem Header="Send data to Ix4Interface" DataContext="{Binding ImportDataViewModel}" MaxWidth="800" >
                 <DockPanel>
-                    <controls:ImportDataItemControl  Header="A1" DataContext="{Binding ArticlesSettings}" DockPanel.Dock="Top"/>
-                    <controls:ImportDataItemControl  Header="O1" DataContext="{Binding OrdersSettings}" DockPanel.Dock="Top" />
-                    <controls:ImportDataItemControl  Header="D1" DataContext="{Binding DeliveriesSettings}" DockPanel.Dock="Top" />
+                    <controls:ImportDataItemControl  DataContext="{Binding ArticlesSettings}" DockPanel.Dock="Top"/>
+                    <controls:ImportDataItemControl  DataContext="{Binding OrdersSettings}" DockPanel.Dock="Top" />
+                    <controls:ImportDataItemControl  DataContext="{Binding DeliveriesSettings}" DockPanel.Dock="Top" />
                 </DockPanel>
             </TabItem>
             <TabItem Header="Recieve data from Ix4Interface" MaxWidth="800">

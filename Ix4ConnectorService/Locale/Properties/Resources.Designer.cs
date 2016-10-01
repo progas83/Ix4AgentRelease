@@ -241,6 +241,15 @@ namespace Locale.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Schedule settings.
+        /// </summary>
+        public static string ScheduleSettings {
+            get {
+                return ResourceManager.GetString("ScheduleSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Select action.
         /// </summary>
         public static string SelectAction {
@@ -331,7 +340,7 @@ namespace Locale.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to IncludeSunday.
+        ///   Looks up a localized string similar to Include Sunday.
         /// </summary>
         public static string UseSun {
             get {

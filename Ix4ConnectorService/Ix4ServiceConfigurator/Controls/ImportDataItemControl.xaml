@@ -6,8 +6,9 @@
              xmlns:local="clr-namespace:Ix4ServiceConfigurator.Controls"
              xmlns:core="clr-namespace:System;assembly=mscorlib"
              xmlns:dataModels="clr-namespace:Ix4Models;assembly=Ix4Models"
+             Header="{Binding Ix4PartItemName}"
              mc:Ignorable="d"   Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="600">
     <Expander.Resources>
         <ObjectDataProvider x:Key="DataSourceNames" MethodName="GetValues" ObjectType="{x:Type core:Enum}" >
             <ObjectDataProvider.MethodParameters>
@@ -17,20 +18,32 @@
     </Expander.Resources>
     <DockPanel Margin="5">
 
-
-        <DockPanel DockPanel.Dock="Top" Margin="10">
-            <CheckBox IsThreeState="False" IsChecked="{Binding IsActivated}" VerticalAlignment="Center"
-                      Content="{Binding Source={StaticResource Localization},Path=Activate}" VerticalContentAlignment="Center" DockPanel.Dock="Left"/>
-            <Label HorizontalAlignment="Left" VerticalContentAlignment="Center" Content="{Binding Source={StaticResource Localization}, Path=SelectDataSource}" 
-                   DockPanel.Dock="Left"/>
-            <ComboBox HorizontalAlignment="Left" ItemsSource="{Binding Source={StaticResource DataSourceNames}}" 
-                      SelectedItem="{Binding Path=SelectedDataSource}" DockPanel.Dock="Top"
-                      Width="100" Margin="10,10,0,10"/>
-        </DockPanel>
-
-
-
-        <local:ScheduleControl Margin="10" DataContext="{Binding Scheduler}" DockPanel.Dock="Top" HorizontalAlignment="Left"/>
+        <CheckBox IsThreeState="False" IsChecked="{Binding IsActivated}" VerticalAlignment="Center" HorizontalAlignment="Center"
+                      Content="{Binding Source={StaticResource Localization},Path=Activate}" VerticalContentAlignment="Center" DockPanel.Dock="Top"/>
+        <Grid DockPanel.Dock="Top">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+           
+                <Label Grid.Column="0" Grid.Row="0" 
+                       HorizontalAlignment="Center" 
+                       VerticalContentAlignment="Top" 
+                       Content="{Binding Source={StaticResource Localization}, Path=SelectDataSource}" />
+                <ComboBox Grid.Column="0" Grid.Row="1" Margin="5" HorizontalAlignment="Center" ItemsSource="{Binding Source={StaticResource DataSourceNames}}" 
+                      SelectedItem="{Binding Path=SelectedDataSource}" VerticalAlignment="Top"
+                      Width="100" />
+               
+                <Label Grid.Column="1" Grid.Row="0" 
+                       HorizontalAlignment="Center" 
+                       VerticalContentAlignment="Top" 
+                       Content="{Binding Source={StaticResource Localization}, Path=ScheduleSettings}" />
+            <local:ScheduleControl Grid.Column="1" Grid.Row="1" Margin="5" DataContext="{Binding Scheduler}" HorizontalAlignment="Left"/>
+        </Grid>
         <ContentControl Margin="0,5,0,0"  DockPanel.Dock="Top" HorizontalAlignment="Left" MaxHeight="400"
                             ScrollViewer.CanContentScroll="True" 
                             ScrollViewer.PanningMode="VerticalFirst" 

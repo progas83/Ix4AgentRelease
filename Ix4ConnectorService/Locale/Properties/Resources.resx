@@ -177,6 +177,9 @@
   <data name="ScheduleOrders" xml:space="preserve">
     <value>Check {0} Orders every</value>
   </data>
+  <data name="ScheduleSettings" xml:space="preserve">
+    <value>Schedule settings</value>
+  </data>
   <data name="SelectAction" xml:space="preserve">
     <value>Select action</value>
   </data>
@@ -208,7 +211,7 @@
     <value>Include Saturday</value>
   </data>
   <data name="UseSun" xml:space="preserve">
-    <value>IncludeSunday</value>
+    <value>Include Sunday</value>
   </data>
   <data name="WorkingHours" xml:space="preserve">
     <value>Working hours</value>
