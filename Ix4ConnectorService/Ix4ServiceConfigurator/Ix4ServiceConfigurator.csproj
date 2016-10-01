@@ -78,8 +78,8 @@
     <Compile Include="Controls\CustomerInfoControl.xaml.cs">
       <DependentUpon>CustomerInfoControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\LicsRequestItemControl.xaml.cs">
-      <DependentUpon>LicsRequestItemControl.xaml</DependentUpon>
+    <Compile Include="Controls\ImportDataItemControl.xaml.cs">
+      <DependentUpon>ImportDataItemControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MailSettingsControl.xaml.cs">
       <DependentUpon>MailSettingsControl.xaml</DependentUpon>
@@ -93,6 +93,8 @@
     <Compile Include="EventArguments\ServiceControllerStatusEventArg.cs" />
     <Compile Include="ServiceInfoWrapper.cs" />
     <Compile Include="Settings.cs" />
+    <Compile Include="ViewModel\ImportDataItemViewModel.cs" />
+    <Compile Include="ViewModel\ImportDataSettingsViewModel.cs" />
     <Compile Include="ViewModel\IPwd.cs" />
     <Compile Include="ViewModel\LicsRequestItemViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
@@ -104,7 +106,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\LicsRequestItemControl.xaml">
+    <Page Include="Controls\ImportDataItemControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -32,34 +32,12 @@ namespace Ix4ServiceConfigurator.ViewModel
             Customer = XmlConfigurationManager.Instance.GetCustomerInformation();
             _view.UIUserInfo.UIPwdBox.Password = Customer.Password;
 
-          
-            DockPanel dp = new DockPanel();
-            LicsRequestItemViewModel requestItemArtikel = new LicsRequestItemViewModel(Customer.ImportDataSettings.ArticleSettings);
-          //  Customer.ImportDataSettings.ArticleSettings = requestItemArtikel.BaseSettings;
-            LicsRequestItemControl requestItemView = new LicsRequestItemControl();
-            requestItemView.DataContext = requestItemArtikel;
-            DockPanel.SetDock(requestItemView, Dock.Top);
-            dp.Children.Add(requestItemView);
+            ImportDataViewModel = new ImportDataSettingsViewModel(Customer.ImportDataSettings);
 
-            requestItemArtikel = new LicsRequestItemViewModel(Customer.ImportDataSettings.OrderSettings);
 
-            requestItemView = new LicsRequestItemControl();
-            requestItemView.DataContext = requestItemArtikel;
-            DockPanel.SetDock(requestItemView, Dock.Top);
-            dp.Children.Add(requestItemView);
-
-            requestItemArtikel = new LicsRequestItemViewModel(Customer.ImportDataSettings.DeliverySettings);
-            requestItemView = new LicsRequestItemControl();
-            requestItemView.DataContext = requestItemArtikel;
-            DockPanel.SetDock(requestItemView, Dock.Top);
-            dp.Children.Add(requestItemView);
-
-            SendLicsRequestSettings = new ContentPresenter();
-            SendLicsRequestSettings.Content =  dp;
-            //  
         }
 
-       
+       public ImportDataSettingsViewModel ImportDataViewModel { get; set; }
 
         //private Ix4RequestProps _TabSelectedItem;
 
@@ -77,7 +55,7 @@ namespace Ix4ServiceConfigurator.ViewModel
         //    set { _TabSelectedIndex = value; OnPropertyChanged("TabSelectedIndex"); }
         //}
 
-        public ContentPresenter SendLicsRequestSettings { get; set; }
+       // public ContentPresenter SendLicsRequestSettings { get; set; }
 
       
         public bool? ShowCustomerInfoWindow()
