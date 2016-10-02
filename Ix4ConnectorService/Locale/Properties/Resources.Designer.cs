@@ -124,6 +124,15 @@ namespace Locale.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Include Articles to Request.
+        /// </summary>
+        public static string IncludeArticlesToRequest {
+            get {
+                return ResourceManager.GetString("IncludeArticlesToRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Is mail HTML.
         /// </summary>
         public static string IsBodyHtml {

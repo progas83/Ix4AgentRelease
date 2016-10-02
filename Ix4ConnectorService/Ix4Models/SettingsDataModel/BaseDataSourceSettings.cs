@@ -7,7 +7,7 @@ using System.Xml.Serialization;
 
 namespace Ix4Models.SettingsDataModel
 {
-    [XmlInclude(typeof(XmlFolderSettingsModel))]
+    [XmlInclude(typeof(XmlFolderSettingsModel)),XmlInclude(typeof(MsSqlSettings)), XmlInclude(typeof(MsSqlArticlesSettings))]
     [Serializable]
     public class BaseDataSourceSettings
     {

@@ -2,7 +2,6 @@
 using Ix4Models.Interfaces;
 using Ix4Models.SettingsDataModel;
 using SimplestLogger;
-using SqlDataExtractor.DatabaseSettings.View;
 using SqlDataExtractor.DatabaseSettings.ViewModel;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -11,6 +10,8 @@ using System;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
+using SqlDataExtractor.Settings.ViewModel;
+using SqlDataExtractor.Settings.View;
 
 namespace SqlDataExtractor
 {
@@ -21,26 +22,26 @@ namespace SqlDataExtractor
     {
         MsSqlPluginSettings _pluginSettings;
         MainDBSettingsViewModel _msSqlPluginSettingsViewModel;
-        MainDBSettindsView _msSqlPluginSettingsView;
+      //  MainDBSettindsView _msSqlPluginSettingsView;
 
         private static Logger _loger = Logger.GetLogger();
 
-        public UserControl GetControlForSettings(PluginsSettings settings)
-        {
-            //ManualMaping.View.ManualMappingView view = new ManualMaping.View.ManualMappingView();
-            //view.DataContext = new ManualMaping.ViewModel.ManualMapperViewModel();
-            if(_msSqlPluginSettingsView==null)
-            {
-                _msSqlPluginSettingsView = new MainDBSettindsView();
-            }
-            if(_msSqlPluginSettingsViewModel==null)
-            {
-                _msSqlPluginSettingsViewModel = new MainDBSettingsViewModel(settings.MsSqlSettings);
-            }
+        //public UserControl GetControlForSettings(PluginsSettings settings)
+        //{
+        //    //ManualMaping.View.ManualMappingView view = new ManualMaping.View.ManualMappingView();
+        //    //view.DataContext = new ManualMaping.ViewModel.ManualMapperViewModel();
+        //    if(_msSqlPluginSettingsView==null)
+        //    {
+        //        _msSqlPluginSettingsView = new MainDBSettindsView();
+        //    }
+        //    if(_msSqlPluginSettingsViewModel==null)
+        //    {
+        //        _msSqlPluginSettingsViewModel = new MainDBSettingsViewModel(settings.MsSqlSettings);
+        //    }
            
-            _msSqlPluginSettingsView.DataContext = _msSqlPluginSettingsViewModel;
-            return _msSqlPluginSettingsView;
-        }
+        //    _msSqlPluginSettingsView.DataContext = _msSqlPluginSettingsViewModel;
+        //    return _msSqlPluginSettingsView;
+        //}
 
         public void SaveSettings(PluginsSettings settings)
         {
@@ -141,7 +142,13 @@ namespace SqlDataExtractor
 
         public UserControl GetControlForSettings(BaseLicsRequestSettings settings)
         {
-            throw new NotImplementedException();
+            BaseLicsRequestSettings _sqlSettings = settings;
+            
+
+            DBSettingsViewModel dbVM = new DBSettingsViewModel(settings);
+            DBSettingsView dbView = new DBSettingsView();
+            dbView.DataContext = dbVM;
+            return dbView;
         }
     }
 }

@@ -12,8 +12,9 @@ namespace Ix4Models.SettingsDataModel
         public CustomerInfo()
         {
             ImportDataSettings = new ImportDataSettings();
+            ExportDataSettings = new ExportDataSettings();
         }
-        
+        public ExportDataSettings ExportDataSettings { get; set; }
         public ImportDataSettings ImportDataSettings { get; set; }
         public string LanguageCulture { get; set; }
 

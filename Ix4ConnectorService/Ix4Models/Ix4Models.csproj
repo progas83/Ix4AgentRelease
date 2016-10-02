@@ -47,12 +47,15 @@
     <Compile Include="CurrentServiceInformation.cs" />
     <Compile Include="CustomDataSourceTypes.cs" />
     <Compile Include="DataSourceInfo.cs" />
+    <Compile Include="DbConnectionStringBuilder.cs" />
     <Compile Include="Enums\MailLogLevel.cs" />
     <Compile Include="Enums\XmlFolderTypes.cs" />
     <Compile Include="Enums\XmlResultHandleActions.cs" />
+    <Compile Include="ExportDataLastUpdate.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Interfaces\ICryptor.cs" />
     <Compile Include="Interfaces\ICustomerDataConnector.cs" />
+    <Compile Include="Interfaces\IDataProcessor.cs" />
     <Compile Include="Interfaces\IPluginSettings.cs" />
     <Compile Include="Ix4ComplexModel.cs" />
     <Compile Include="Ix4RequestProps.cs" />
@@ -68,8 +71,11 @@
     <Compile Include="SettingsDataModel\BaseDataSourceSettings.cs" />
     <Compile Include="SettingsDataModel\CsvPluginSettings.cs" />
     <Compile Include="SettingsDataModel\CustomerInfo.cs" />
+    <Compile Include="SettingsDataModel\ExportDataItemSettings.cs" />
+    <Compile Include="SettingsDataModel\ExportDataSettings.cs" />
     <Compile Include="SettingsDataModel\ImportDataSettings.cs" />
     <Compile Include="SettingsDataModel\MailNotificationSettings.cs" />
+    <Compile Include="SettingsDataModel\MsSqlImportDataSettings.cs" />
     <Compile Include="SettingsDataModel\MsSqlPluginSettings.cs" />
     <Compile Include="SettingsDataModel\MsSqlSettings.cs" />
     <Compile Include="SettingsDataModel\PluginsSettings.cs" />

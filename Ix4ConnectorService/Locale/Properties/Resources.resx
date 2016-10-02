@@ -138,6 +138,9 @@
   <data name="From" xml:space="preserve">
     <value>From</value>
   </data>
+  <data name="IncludeArticlesToRequest" xml:space="preserve">
+    <value>Include Articles to Request</value>
+  </data>
   <data name="IsBodyHtml" xml:space="preserve">
     <value>Is mail HTML</value>
   </data>

@@ -33,6 +33,8 @@ namespace Ix4Models.SettingsDataModel
 
         public virtual Ix4RequestProps SettingsName { get; }
         public bool IsActivate { get; set; }
+
+        public bool IncludeArticlesToRequest { get; set; }
        
         public CustomDataSourceTypes SourceDataType { get; set; }
         

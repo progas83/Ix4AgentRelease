@@ -18,8 +18,11 @@
     </Expander.Resources>
     <DockPanel Margin="5">
 
-        <CheckBox IsThreeState="False" IsChecked="{Binding IsActivated}" VerticalAlignment="Center" HorizontalAlignment="Center"
+        <CheckBox IsThreeState="False" IsChecked="{Binding IsActivated}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"
                       Content="{Binding Source={StaticResource Localization},Path=Activate}" VerticalContentAlignment="Center" DockPanel.Dock="Top"/>
+        <CheckBox IsThreeState="False" IsChecked="{Binding IncludeArticlesToRequest}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"
+                      Content="{Binding Source={StaticResource Localization},Path=IncludeArticlesToRequest}" VerticalContentAlignment="Center" DockPanel.Dock="Top"/>
+       
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="150"/>

@@ -6,7 +6,7 @@ using System.Text;
 namespace Ix4Models.SettingsDataModel
 {
     [Serializable]
-    public class MsSqlSettings : ICryptor
+    public class MsSqlSettings : BaseDataSourceSettings, ICryptor
     {
 
         private string _dbPassword;
