@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XmlDataExtractor
+namespace Ix4Models.Enums
 {
-    public enum XmlFolderTypes
+   public enum XmlFolderTypes
     {
         XmlSourceFolder,
         XmlSuccessFolder,

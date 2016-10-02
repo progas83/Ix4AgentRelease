@@ -12,7 +12,7 @@ namespace Ix4Models.SettingsDataModel
     {
         public ImportDataSettings()
         {
-            ArticleSettings = new ArticleSettings();
+            ArticleSettings = new ArticleSettings() {TesttESTArticles = "SUSUSUSU" };
             OrderSettings = new OrderSettings();
             DeliverySettings = new DeliverySettings();
         }
@@ -21,8 +21,8 @@ namespace Ix4Models.SettingsDataModel
         public BaseLicsRequestSettings DeliverySettings { get; set; }
 
     }
-    [XmlInclude(typeof(ArticleSettings)),XmlInclude(typeof(OrderSettings)),XmlInclude(typeof(DeliverySettings))]
-  
+
+    [XmlInclude(typeof(ArticleSettings)), XmlInclude(typeof(OrderSettings)), XmlInclude(typeof(DeliverySettings))]
     [Serializable]
     public class BaseLicsRequestSettings
     {
@@ -31,72 +31,14 @@ namespace Ix4Models.SettingsDataModel
             Scheduler = new SchedulerSettings();
         }
 
-       public virtual Ix4RequestProps SettingsName { get; }
-
-        
-
-        private string _xmlSuccessFolder;
-
-        public string SuccessFolder
-        {
-            get { return _xmlSuccessFolder; }
-            set { _xmlSuccessFolder = value; }
-        }
-
-        private string _xmlFailureFolder;
-
-        public string FailureFolder
-        {
-            get { return _xmlFailureFolder; }
-            set { _xmlFailureFolder = value; }
-        }
-
-        private string _xmlItemSourceFolder;
-
-        public string XmlItemSourceFolder
-        {
-            get { return _xmlItemSourceFolder; }
-            set { _xmlItemSourceFolder = value; }
-        }
-
-
-        private string _activateActionOnFailure;
-
-        public string ActivateActionOnFailure
-        {
-            get { return _activateActionOnFailure; }
-            set { _activateActionOnFailure = value; }
-        }
-
-        private bool _activateActionOnSuccess;
-
-        public bool ActivateActionOnSuccess
-        {
-            get { return _activateActionOnSuccess; }
-            set { _activateActionOnSuccess = value; }
-        }
-
-
-        private string _actionOnFailure;
-
-        public string ActionOnFailure
-        {
-            get { return _actionOnFailure; }
-            set { _actionOnFailure = value; }
-        }
-
-        private string _actionOnSuccess;
-
-        public string ActionOnSuccess
-        {
-            get { return _actionOnSuccess; }
-            set { _actionOnSuccess = value; }
-        }
-
+        public virtual Ix4RequestProps SettingsName { get; }
         public bool IsActivate { get; set; }
+       
         public CustomDataSourceTypes SourceDataType { get; set; }
+        
         public SchedulerSettings Scheduler { get; set; }
-        public Object DataSourceSettings { get; set; }
+     
+        public BaseDataSourceSettings DataSourceSettings { get; set; }
     }
     [Serializable]
     public class ArticleSettings : BaseLicsRequestSettings
@@ -110,8 +52,17 @@ namespace Ix4Models.SettingsDataModel
         }
         public ArticleSettings() : base()
         {
-           
+
         }
+
+        private String _test;
+
+        public String TesttESTArticles
+        {
+            get { return _test; }
+            set { _test = value; }
+        }
+
 
     }
 
@@ -129,7 +80,7 @@ namespace Ix4Models.SettingsDataModel
         {
 
         }
-      
+
     }
 
     [Serializable]
@@ -142,10 +93,10 @@ namespace Ix4Models.SettingsDataModel
                 return Ix4RequestProps.Orders;
             }
         }
-        public OrderSettings() :base()
+        public OrderSettings() : base()
         {
 
         }
-       
+
     }
 }

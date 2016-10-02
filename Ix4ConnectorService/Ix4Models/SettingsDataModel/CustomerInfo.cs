@@ -11,18 +11,9 @@ namespace Ix4Models.SettingsDataModel
     {
         public CustomerInfo()
         {
-           // ServiceName = CurrentServiceInformation.ServiceName;
-            PluginSettings = new PluginsSettings();
             ImportDataSettings = new ImportDataSettings();
-           // ScheduleSettings = new SchedulerSettings();
-
-           // MailNotificationSettings = new MailNotificationSettings();
-            //{
-            //    CsvSettings = new CsvPluginSettings(),
-            //    MsSqlSettings = new MsSqlPluginSettings(),
-            //    XmlSettings = new XmlPluginSettings()
-            //};
         }
+        
         public ImportDataSettings ImportDataSettings { get; set; }
         public string LanguageCulture { get; set; }
 
@@ -61,7 +52,7 @@ namespace Ix4Models.SettingsDataModel
         }
 
         #region PluginsSettings
-        public PluginsSettings PluginSettings { get; set; }
+      //  public PluginsSettings PluginSettings { get; set; }
         #endregion
 
  

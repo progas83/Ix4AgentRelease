@@ -48,6 +48,8 @@
     <Compile Include="CustomDataSourceTypes.cs" />
     <Compile Include="DataSourceInfo.cs" />
     <Compile Include="Enums\MailLogLevel.cs" />
+    <Compile Include="Enums\XmlFolderTypes.cs" />
+    <Compile Include="Enums\XmlResultHandleActions.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Interfaces\ICryptor.cs" />
     <Compile Include="Interfaces\ICustomerDataConnector.cs" />
@@ -63,6 +65,7 @@
     <Compile Include="Schema\WV\MSGPosAttribute.cs" />
     <Compile Include="Schema\WV\MSGSystemAttribute.cs" />
     <Compile Include="Schema\WV\Wv_ExportData.cs" />
+    <Compile Include="SettingsDataModel\BaseDataSourceSettings.cs" />
     <Compile Include="SettingsDataModel\CsvPluginSettings.cs" />
     <Compile Include="SettingsDataModel\CustomerInfo.cs" />
     <Compile Include="SettingsDataModel\ImportDataSettings.cs" />
@@ -72,6 +75,7 @@
     <Compile Include="SettingsDataModel\PluginsSettings.cs" />
     <Compile Include="SettingsDataModel\SchedulerSettings.cs" />
     <Compile Include="SettingsDataModel\TimeSign.cs" />
+    <Compile Include="SettingsDataModel\XmlFolderSettingsModel.cs" />
     <Compile Include="SettingsDataModel\XmlPluginSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schema\LICSResponse.cs">

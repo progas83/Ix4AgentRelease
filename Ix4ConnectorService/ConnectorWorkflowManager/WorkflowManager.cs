@@ -21,7 +21,7 @@ namespace ConnectorWorkflowManager
         private static WorkflowManager _manager;
         private CustomerInfo _customerInfo;
         private CustomerDataComposition _dataCompositor;
-        private IProxyIx4WebService _ix4ServiceConnector;
+        private IProxyIx4WebService _ix4WebServiceConnector;
         private DataEnsure _ensureData;
         protected Timer _timer;
         private static object _padlock = new object();
@@ -74,7 +74,7 @@ namespace ConnectorWorkflowManager
 
                 _customerInfo = XmlConfigurationManager.Instance.GetCustomerInformation();
                // _dataCompositor = new CustomerDataComposition(_customerInfo.PluginSettings);
-                _ix4ServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(_customerInfo.ClientID, _customerInfo.UserName, _customerInfo.Password, _customerInfo.ServiceEndpoint);
+                _ix4WebServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(_customerInfo.ClientID, _customerInfo.UserName, _customerInfo.Password, _customerInfo.ServiceEndpoint);
                 _ensureData = new DataEnsure(_customerInfo.UserName);
                 _timer.Enabled = true;
             }
@@ -82,7 +82,7 @@ namespace ConnectorWorkflowManager
             {
                 _loger.Log(ex);
                 _loger.Log(_customerInfo, "_customerInfo");
-                _loger.Log(_ix4ServiceConnector, "_ix4ServiceConnector");
+                _loger.Log(_ix4WebServiceConnector, "_ix4WebServiceConnector");
             }
         }
 
@@ -129,7 +129,7 @@ namespace ConnectorWorkflowManager
 
         private void ExportData()
         {
-            if (_ix4ServiceConnector != null && _ensureData != null && _dataCompositor != null)
+            if (_ix4WebServiceConnector != null && _ensureData != null && _dataCompositor != null)
             {
                 // if (UpdateTimeWatcher.TimeToCheck("GP"))
                 {
@@ -146,7 +146,7 @@ namespace ConnectorWorkflowManager
 
                             //}
                             _loger.Log("Starting export data " + mark);
-                            XmlNode nodeResult = _ix4ServiceConnector.ExportData(mark, null);
+                            XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
 
                             XmlDocument xmlDoc = new XmlDocument();
                             xmlDoc.InnerXml = nodeResult.OuterXml;
@@ -241,7 +241,7 @@ namespace ConnectorWorkflowManager
             {
                 try
                 {
-                    if (_ix4ServiceConnector != null)
+                    if (_ix4WebServiceConnector != null)
                     {
                         bool requestSuccess = true;
                         XmlSerializer serializator = new XmlSerializer(typeof(LICSRequest));
@@ -250,7 +250,7 @@ namespace ConnectorWorkflowManager
                             _loger.Log("Check customerID = ClientId" + request.ClientId);
                             serializator.Serialize(st, request);
                             byte[] bytesRequest = ReadToEnd(st);
-                            string resp = _ix4ServiceConnector.ImportXmlRequest(bytesRequest, fileName);
+                            string resp = _ix4WebServiceConnector.ImportXmlRequest(bytesRequest, fileName);
                             requestSuccess = CheckStateRequest(resp);
                             SimplestParcerLicsRequest(resp);
                             _loger.Log(resp);

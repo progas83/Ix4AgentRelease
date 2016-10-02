@@ -56,7 +56,7 @@ namespace Ix4Models.SettingsDataModel
         }
 
         private TimeSign _gapSign;
-
+     
         public TimeSign GapSign
         {
             get { return _gapSign; }

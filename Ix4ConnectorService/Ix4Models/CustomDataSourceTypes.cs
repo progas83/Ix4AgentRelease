@@ -1,11 +1,12 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace Ix4Models
 {
-
     public enum CustomDataSourceTypes
     {
-        Unavailable = 0,
+        [XmlEnum(Name ="Unassigned")]
+        Unassigned=0,
         [XmlEnum(Name = "Csv")]
         Csv = 1,
         [XmlEnum(Name = "MsSql")]

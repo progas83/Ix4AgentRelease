@@ -4,20 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:XmlDataExtractor"
-             xmlns:ix4Model ="clr-namespace:Ix4Models;assembly=Ix4Models"
+             xmlns:ix4Model ="clr-namespace:Ix4Models.Enums;assembly=Ix4Models"
              xmlns:core="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <ObjectDataProvider x:Key="ResultActions" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="local:XmlResultHandleActions"/>
+                <x:Type TypeName="ix4Model:XmlResultHandleActions"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
 
         <ObjectDataProvider x:Key="XmlFolders" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="local:XmlFolderTypes"/>
+                <x:Type TypeName="ix4Model:XmlFolderTypes"/>
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
     </UserControl.Resources>
@@ -36,7 +36,7 @@
         <Label Content="{Binding Source={StaticResource Localization}, Path=SelectSourceFolder}" Grid.Column="1" Grid.Row="0" />
         <DockPanel Grid.Row="0" Grid.Column="2">
             <TextBox VerticalAlignment="Top"  VerticalContentAlignment="Center"  HorizontalContentAlignment="Stretch" Height="30" Width="150" Text="{Binding XmlItemSourceFolder}" ToolTip="{Binding XmlItemSourceFolder}" DockPanel.Dock="Left" />
-            <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static local:XmlFolderTypes.XmlSourceFolder}" DockPanel.Dock="Left" />
+            <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static ix4Model:XmlFolderTypes.XmlSourceFolder}" DockPanel.Dock="Left" />
         </DockPanel>
         <CheckBox IsThreeState="False" Content="{Binding Source={StaticResource Localization},Path=ActionOnSuccessResult}" IsChecked="{Binding ActivateActionOnSuccess}" Grid.Column="0" Grid.Row="1"/>
         <DockPanel Grid.Column="1" Grid.Row="1">
@@ -45,7 +45,7 @@
         </DockPanel>
         <DockPanel Grid.Row="1" Grid.Column="2">
             <TextBox VerticalAlignment="Top"  VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Height="30" Width="150" Text="{Binding SuccessResultFolder}" ToolTip="{Binding SuccessResultFolder}" DockPanel.Dock="Left" />
-            <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static local:XmlFolderTypes.XmlSuccessFolder}" DockPanel.Dock="Left" />
+            <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static ix4Model:XmlFolderTypes.XmlSuccessFolder}" DockPanel.Dock="Left" />
         </DockPanel>
 
         <CheckBox IsThreeState="False" Content="{Binding Source={StaticResource Localization},Path=ActionOnFailureResult}" IsChecked="{Binding ActivateActionOnFailure}" Grid.Column="0" Grid.Row="2"/>
@@ -55,7 +55,7 @@
         </DockPanel>
         <DockPanel Grid.Row="2" Grid.Column="2">
             <TextBox VerticalAlignment="Top"  VerticalContentAlignment="Center"  HorizontalContentAlignment="Stretch" Height="30" Width="150" Text="{Binding FailureResultFolder}" ToolTip="{Binding  FailureResultFolder}" DockPanel.Dock="Left" />
-            <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static local:XmlFolderTypes.XmlFailureFolder}" DockPanel.Dock="Left" />
+            <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static ix4Model:XmlFolderTypes.XmlFailureFolder}" DockPanel.Dock="Left" />
         </DockPanel>
     </Grid>
     
