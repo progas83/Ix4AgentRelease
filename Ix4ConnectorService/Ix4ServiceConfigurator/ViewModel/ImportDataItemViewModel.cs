@@ -45,6 +45,12 @@ namespace Ix4ServiceConfigurator.ViewModel
             set { BaseSettings.IsActivate = value; }
         }
 
+        public bool IncludeArticlesToRequest
+        {
+            get { return BaseSettings.IncludeArticlesToRequest; }
+            set { BaseSettings.IncludeArticlesToRequest = value; }
+        }
+
         public SchedulerSettings Scheduler
         {
             get { return BaseSettings.Scheduler; }

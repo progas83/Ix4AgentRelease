@@ -21,7 +21,7 @@ namespace SqlDataExtractor.Settings.ViewModel
         private readonly string _testConnectionButton = "Test connection";
         public DBSettingsViewModel(BaseLicsRequestSettings sqlSourceSettings)
         {
-            if (sqlSourceSettings.DataSourceSettings is MsSqlSettings)
+            if (sqlSourceSettings.DataSourceSettings!=null && sqlSourceSettings.DataSourceSettings is MsSqlSettings)
             {
                 switch (sqlSourceSettings.SettingsName)
                 {
@@ -65,7 +65,11 @@ namespace SqlDataExtractor.Settings.ViewModel
             _msSqlSettings = sqlSourceSettings.DataSourceSettings as MsSqlSettings;
             _testConnectionCommand = new DbConnectionCommand(this);
             DbNames = new ObservableCollection<string>();
-            CheckMsSqlConnection();
+            if(!string.IsNullOrEmpty(_msSqlSettings.ServerAdress))
+            {
+                CheckMsSqlConnection();
+            }
+            
             DbConnectionStatus = _testConnectionButton;
         }
         DbConnectionCommand _testConnectionCommand;

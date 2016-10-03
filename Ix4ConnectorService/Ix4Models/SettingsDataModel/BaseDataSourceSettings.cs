@@ -7,7 +7,11 @@ using System.Xml.Serialization;
 
 namespace Ix4Models.SettingsDataModel
 {
-    [XmlInclude(typeof(XmlFolderSettingsModel)),XmlInclude(typeof(MsSqlSettings)), XmlInclude(typeof(MsSqlArticlesSettings))]
+    [XmlInclude(typeof(XmlFolderSettingsModel)),
+        XmlInclude(typeof(MsSqlSettings)), 
+        XmlInclude(typeof(MsSqlArticlesSettings)), 
+        XmlInclude(typeof(MsSqlOrdersSettings)),
+        XmlInclude(typeof(MsSqlDeliveriesSettings))]
     [Serializable]
     public class BaseDataSourceSettings
     {
