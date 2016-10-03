@@ -38,7 +38,8 @@
             <TextBox VerticalAlignment="Top"  VerticalContentAlignment="Center"  HorizontalContentAlignment="Stretch" Height="30" Width="150" Text="{Binding XmlItemSourceFolder}" ToolTip="{Binding XmlItemSourceFolder}" DockPanel.Dock="Left" />
             <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static ix4Model:XmlFolderTypes.XmlSourceFolder}" DockPanel.Dock="Left" />
         </DockPanel>
-        <CheckBox IsThreeState="False" Content="{Binding Source={StaticResource Localization},Path=ActionOnSuccessResult}" IsChecked="{Binding ActivateActionOnSuccess}" Grid.Column="0" Grid.Row="1"/>
+       
+        <!--<CheckBox IsThreeState="False" Content="{Binding Source={StaticResource Localization},Path=ActionOnSuccessResult}" IsChecked="{Binding ActivateActionOnSuccess}" Grid.Column="0" Grid.Row="1"/>
         <DockPanel Grid.Column="1" Grid.Row="1">
             <Label Content="{Binding Source={StaticResource Localization},Path=SelectAction}" DockPanel.Dock="Left"/>
             <ComboBox SelectedItem="{Binding ActionOnSuccess}" ItemsSource="{Binding Source={StaticResource ResultActions}}" DockPanel.Dock="Left"/>
@@ -56,7 +57,7 @@
         <DockPanel Grid.Row="2" Grid.Column="2">
             <TextBox VerticalAlignment="Top"  VerticalContentAlignment="Center"  HorizontalContentAlignment="Stretch" Height="30" Width="150" Text="{Binding FailureResultFolder}" ToolTip="{Binding  FailureResultFolder}" DockPanel.Dock="Left" />
             <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static ix4Model:XmlFolderTypes.XmlFailureFolder}" DockPanel.Dock="Left" />
-        </DockPanel>
+        </DockPanel>-->
     </Grid>
     
  

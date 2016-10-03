@@ -4,13 +4,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SqlDataExtractor.Settings.View"
-             mc:Ignorable="d" Background="White"
+             mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"
              d:DesignHeight="300" d:DesignWidth="300">
     <ScrollViewer>
            
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition/>
+                        <RowDefinition />
                         <RowDefinition/>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -19,23 +19,36 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
+                        <ColumnDefinition />
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Label Content="Server adress:" Grid.Row="0" VerticalContentAlignment="Center"/>
-                    <Label Content="Database name:" Grid.Row="1" VerticalContentAlignment="Center"/>
-                    <Label Content="Database user name:" Grid.Row="3" VerticalContentAlignment="Center"/>
-                    <Label Content="Database user password:" Grid.Row="4" VerticalContentAlignment="Center"/>
+                    <CheckBox Margin="5" x:Name="UISqlAuth" Content="Use SQL Server Authentication" 
+                              IsChecked="{Binding UseSqlServierAuth}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+            
+                    <Label Content="Database user name:" Grid.Row="2" VerticalContentAlignment="Center"/>
+                    <Label Content="Database user password:" Grid.Row="3" VerticalContentAlignment="Center"/>
+           
+                    <Label Content="Database name:" Grid.Row="5" VerticalContentAlignment="Center"/>
+            <TextBox Margin="0,5,5,5" Text="{Binding ServerAdress}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="0"/>
+            
 
-                    <TextBox Text="{Binding ServerAdress}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="0"/>
-                    <TextBox Text="{Binding DbName}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="1"/>
 
+                  
+            <TextBox Margin="0,5,5,5" Text="{Binding DbUserName}" IsEnabled="{Binding ElementName=UISqlAuth,Path=IsChecked}" HorizontalAlignment="Stretch" 
+                     VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="2"/>
+            
+            <TextBox Margin="0,5,5,5"  Text="{Binding DbPassword}" IsEnabled="{Binding ElementName=UISqlAuth,Path=IsChecked}" HorizontalAlignment="Stretch"
+                     VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="3"/>
+                    
+                    
+           
+            <Button Margin="0,5,5,5"  Content="{Binding DbConnectionStatus}" Height="30" Command="{Binding TestConnectionCommand}" ToolTip="{Binding ConnectionStatusError}"
+                    Grid.Column="1" Grid.Row="4"/>
+            <ComboBox Margin="0,5,5,5" SelectedItem="{Binding SelectedDbName}" ItemsSource="{Binding DbNames}" 
+                      HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="5"/>
 
-                    <CheckBox x:Name="UISqlAuth" Content="Use SQL Server Authentication" IsChecked="{Binding UseSqlServierAuth}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
-                    <TextBox Text="{Binding DbUserName}" IsEnabled="{Binding ElementName=UISqlAuth,Path=IsChecked}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="3"/>
-                    <TextBox Text="{Binding DbPassword}" IsEnabled="{Binding ElementName=UISqlAuth,Path=IsChecked}" HorizontalAlignment="Stretch" VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="4"/>
-                    <Button Content="{Binding DbConnectionStatus}" Height="30" Command="{Binding TestConnectionCommand}" ToolTip="{Binding ConnectionStatusError}" Grid.Column="1" Grid.Row="5"/>
-                    <ContentPresenter Grid.Row="6" MaxHeight="400" Content="{Binding DBImportDataSettings}" Grid.Column="0" Grid.ColumnSpan="2"/>
+            <ContentPresenter Margin="0,5,5,5"  Grid.Row="6" MaxHeight="400" Content="{Binding DBImportDataSettings}" Grid.Column="0" Grid.ColumnSpan="2"/>
             </Grid>
           
     </ScrollViewer>

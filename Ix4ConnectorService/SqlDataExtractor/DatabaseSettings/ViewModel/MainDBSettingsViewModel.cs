@@ -13,13 +13,13 @@ namespace SqlDataExtractor.DatabaseSettings.ViewModel
    public class MainDBSettingsViewModel : BaseViewModel
     {
         MsSqlPluginSettings _msSqlPluginSettings;
-        DbConnectionCommand _testConnectionCommand;
+      //  DbConnectionCommand _testConnectionCommand;
         private readonly string _testConnectionButton = "Test connection";
         public MainDBSettingsViewModel(MsSqlPluginSettings msSqlPluginSettings)
         {
             CurrentPluginSettings = msSqlPluginSettings;
-            _testConnectionCommand = new DbConnectionCommand(this);
-            DbConnectionStatus = _testConnectionButton;
+       //     _testConnectionCommand = new DbConnectionCommand(this);
+        //    DbConnectionStatus = _testConnectionButton;
         }
 
         public MsSqlPluginSettings CurrentPluginSettings
@@ -28,7 +28,7 @@ namespace SqlDataExtractor.DatabaseSettings.ViewModel
             private set { _msSqlPluginSettings = value; }
         }
 
-        public ICommand TestConnectionCommand { get { return _testConnectionCommand; } }
+      //  public ICommand TestConnectionCommand { get { return _testConnectionCommand; } }
         public bool IsActivated
         {
             get
@@ -42,65 +42,65 @@ namespace SqlDataExtractor.DatabaseSettings.ViewModel
             }
         }
 
-        private void CheckTestConnectionAvailable()
-        {
-            if (_testConnectionCommand != null)
-            {
-                _testConnectionCommand.CheckTestAvailable();
-            }
-            DbConnectionStatus = _testConnectionButton;
-        }
+        //private void CheckTestConnectionAvailable()
+        //{
+        //    if (_testConnectionCommand != null)
+        //    {
+        //        _testConnectionCommand.CheckTestAvailable();
+        //    }
+        //    DbConnectionStatus = _testConnectionButton;
+        //}
 
-        private string _dbConnectionStatus;
+        //private string _dbConnectionStatus;
 
-        public string DbConnectionStatus
-        {
-            get { return _dbConnectionStatus; }
-            set { _dbConnectionStatus = value; OnPropertyChanged("DbConnectionStatus"); }
-        }
+        //public string DbConnectionStatus
+        //{
+        //    get { return _dbConnectionStatus; }
+        //    set { _dbConnectionStatus = value; OnPropertyChanged("DbConnectionStatus"); }
+        //}
 
-        private string _connectionStatusError;
+        //private string _connectionStatusError;
 
-        public string ConnectionStatusError
-        {
-            get { return _connectionStatusError; }
-            set { _connectionStatusError = value; OnPropertyChanged("ConnectionStatusError"); }
-        }
+        //public string ConnectionStatusError
+        //{
+        //    get { return _connectionStatusError; }
+        //    set { _connectionStatusError = value; OnPropertyChanged("ConnectionStatusError"); }
+        //}
 
 
-        public string ServerAdress
-        {
-            get { return _msSqlPluginSettings.DbSettings.ServerAdress; }
-            set
-            {
-                _msSqlPluginSettings.DbSettings.ServerAdress = value;
-                OnPropertyChanged("ServerAdress");
-                CheckTestConnectionAvailable();
-            }
-        }
+        //public string ServerAdress
+        //{
+        //    get { return _msSqlPluginSettings.DbSettings.ServerAdress; }
+        //    set
+        //    {
+        //        _msSqlPluginSettings.DbSettings.ServerAdress = value;
+        //        OnPropertyChanged("ServerAdress");
+        //        CheckTestConnectionAvailable();
+        //    }
+        //}
 
-        public string DbName
-        {
-            get { return _msSqlPluginSettings.DbSettings.DataBaseName; }
-            set { _msSqlPluginSettings.DbSettings.DataBaseName = value; OnPropertyChanged("DbName"); CheckTestConnectionAvailable(); }
-        }
-        public bool UseSqlServierAuth
-        {
-            get { return _msSqlPluginSettings.DbSettings.UseSqlServerAuth; }
-            set { _msSqlPluginSettings.DbSettings.UseSqlServerAuth = value; OnPropertyChanged("UseSqlServierAuth"); CheckTestConnectionAvailable(); }
-        }
+        //public string DbName
+        //{
+        //    get { return _msSqlPluginSettings.DbSettings.DataBaseName; }
+        //    set { _msSqlPluginSettings.DbSettings.DataBaseName = value; OnPropertyChanged("DbName"); CheckTestConnectionAvailable(); }
+        //}
+        //public bool UseSqlServierAuth
+        //{
+        //    get { return _msSqlPluginSettings.DbSettings.UseSqlServerAuth; }
+        //    set { _msSqlPluginSettings.DbSettings.UseSqlServerAuth = value; OnPropertyChanged("UseSqlServierAuth"); CheckTestConnectionAvailable(); }
+        //}
 
-        public string DbUserName
-        {
-            get { return _msSqlPluginSettings.DbSettings.DbUserName; }
-            set { _msSqlPluginSettings.DbSettings.DbUserName = value; OnPropertyChanged("DbUserName"); CheckTestConnectionAvailable(); }
-        }
+        //public string DbUserName
+        //{
+        //    get { return _msSqlPluginSettings.DbSettings.DbUserName; }
+        //    set { _msSqlPluginSettings.DbSettings.DbUserName = value; OnPropertyChanged("DbUserName"); CheckTestConnectionAvailable(); }
+        //}
 
-        public string DbPassword
-        {
-            get { return _msSqlPluginSettings.DbSettings.Password; }
-            set { _msSqlPluginSettings.DbSettings.Password = value; OnPropertyChanged("DbPassword"); CheckTestConnectionAvailable(); }
-        }
+        //public string DbPassword
+        //{
+        //    get { return _msSqlPluginSettings.DbSettings.Password; }
+        //    set { _msSqlPluginSettings.DbSettings.Password = value; OnPropertyChanged("DbPassword"); CheckTestConnectionAvailable(); }
+        //}
 
         public bool CheckArticles
         {

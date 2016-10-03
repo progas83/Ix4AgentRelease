@@ -178,6 +178,15 @@ namespace Locale.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Notification settings.
+        /// </summary>
+        public static string NotificationSettings {
+            get {
+                return ResourceManager.GetString("NotificationSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SQL query for getting positions of particular Order.
         /// </summary>
         public static string OrderPositionsSettingsPanel {

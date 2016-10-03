@@ -156,6 +156,9 @@
   <data name="MailSettingsControl" xml:space="preserve">
     <value>Set up mail notification</value>
   </data>
+  <data name="NotificationSettings" xml:space="preserve">
+    <value>Notification settings</value>
+  </data>
   <data name="OrderPositionsSettingsPanel" xml:space="preserve">
     <value>SQL query for getting positions of particular Order</value>
   </data>

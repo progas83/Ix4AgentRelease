@@ -31,6 +31,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
            
                 <Label Grid.Column="0" Grid.Row="0" 
@@ -46,12 +47,15 @@
                        VerticalContentAlignment="Top" 
                        Content="{Binding Source={StaticResource Localization}, Path=ScheduleSettings}" />
             <local:ScheduleControl Grid.Column="1" Grid.Row="1" Margin="5" DataContext="{Binding Scheduler}" HorizontalAlignment="Left"/>
-        </Grid>
-        <ContentControl Margin="0,5,0,0"  DockPanel.Dock="Top" HorizontalAlignment="Left" MaxHeight="400"
+            <ContentControl Margin="5" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" DockPanel.Dock="Top"
+                            HorizontalAlignment="Stretch" Width="Auto" MaxHeight="400"
                             ScrollViewer.CanContentScroll="True" 
                             ScrollViewer.PanningMode="VerticalFirst" 
                             ScrollViewer.VerticalScrollBarVisibility="Visible"
                             
                             x:Name="UiPlaceHsolder" Content="{Binding PluginControl}" />
+
+        </Grid>
+       
     </DockPanel>
 </Expander>

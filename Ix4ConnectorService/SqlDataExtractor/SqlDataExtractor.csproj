@@ -93,6 +93,10 @@
       <Private>False</Private>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
+    <ProjectReference Include="..\Locale\Locale.csproj">
+      <Project>{1472928b-5220-4fe4-9f54-84f28052f4ae}</Project>
+      <Name>Locale</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SinplestLogger\SimplestLogger.csproj">
       <Project>{18B499E8-956D-45C0-A9F7-6314CC00B777}</Project>
       <Name>SimplestLogger</Name>

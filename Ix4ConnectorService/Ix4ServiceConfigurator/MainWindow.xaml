@@ -22,8 +22,8 @@
     </Window.Resources>
     <DockPanel>
         <Menu Height="25" DockPanel.Dock="Top" VerticalAlignment="Top">
-            <MenuItem Name="UILanguages" Header="{Binding Source={StaticResource Localization},Path=SelectLanguage}">
-            </MenuItem>
+            <MenuItem Name="UILanguages" Header="{Binding Source={StaticResource Localization},Path=SelectLanguage}"/>
+            <MenuItem Header="{Binding Source={StaticResource Localization},Path=NotificationSettings}"/>
         </Menu>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>
