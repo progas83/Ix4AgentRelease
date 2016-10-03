@@ -88,6 +88,24 @@ namespace Locale.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Additional parameters.
+        /// </summary>
+        public static string AdditionalParameters {
+            get {
+                return ResourceManager.GetString("AdditionalParameters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Add new export type.
+        /// </summary>
+        public static string AddNewExportType {
+            get {
+                return ResourceManager.GetString("AddNewExportType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Check data every.
         /// </summary>
         public static string CheckDataEvery {
@@ -111,6 +129,15 @@ namespace Locale.Properties {
         public static string EnableSSL {
             get {
                 return ResourceManager.GetString("EnableSSL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Exported type name.
+        /// </summary>
+        public static string ExportedTypeName {
+            get {
+                return ResourceManager.GetString("ExportedTypeName", resourceCulture);
             }
         }
         

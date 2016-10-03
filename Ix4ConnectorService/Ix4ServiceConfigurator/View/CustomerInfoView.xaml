@@ -8,6 +8,7 @@
         xmlns:core="clr-namespace:System;assembly=mscorlib"
         xmlns:dataModels="clr-namespace:Ix4Models;assembly=Ix4Models"
         mc:Ignorable="d" Style="{StaticResource MainWindowsStyle}"
+        
         Title="Ix4-Agent Settings" SizeToContent="WidthAndHeight">
     <Window.Resources>
         <ObjectDataProvider x:Key="DataSourceType" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
@@ -42,9 +43,34 @@
                     <controls:ImportDataItemControl  DataContext="{Binding DeliveriesSettings}" DockPanel.Dock="Top" />
                 </DockPanel>
             </TabItem>
-            <TabItem Header="Recieve data from Ix4Interface" MaxWidth="800">
-                <DockPanel Height="400" Width="400">
-                    <Label VerticalAlignment="Center" HorizontalAlignment="Center">Recieve data from Ix4Interface</Label>
+            <TabItem Header="Recieve data from Ix4Interface" MaxWidth="800" DataContext="{Binding ExportDataViewModel}">
+                <DockPanel Height="400" Width="Auto">
+                    <Button Content="{Binding Source={StaticResource Localization},Path=AddNewExportType}" Command="{Binding}" Height="30" DockPanel.Dock="Top" HorizontalAlignment="Left" MinWidth="50" Margin="10"/>
+                    <ListBox ItemsSource="{Binding ExportDataItems}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderThickness="2" Padding="5" BorderBrush="Gray">
+                                    <Grid >
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <DockPanel Grid.Column="0" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}">
+                                            <CheckBox IsThreeState="False" IsChecked="{Binding IsActive}" Content="{Binding Source={StaticResource Localization},Path=Activate}"
+                                                      DockPanel.Dock="Top" Margin="2,10,10,10"/>
+                                            <Label  Content="{Binding Source={StaticResource Localization},Path=ExportedTypeName}" DockPanel.Dock="Top" Margin="2"/>
+                                            <TextBox Text="{Binding ExportDataTypeName}" MinWidth="50" DockPanel.Dock="Top" Margin="2"/>
+                                            <Label  Content="{Binding Source={StaticResource Localization},Path=AdditionalParameters}" DockPanel.Dock="Top" Margin="2"/>
+                                            <TextBox Text="{Binding AdditionalParameters}" MinWidth="50" DockPanel.Dock="Top" Margin="2"/>
+                                        </DockPanel>
+                                        <controls:ScheduleControl Grid.Column="1" DataContext="{Binding Scheduler}"/>
+                                    </Grid>
+                                </Border>
+                               
+                               
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </DockPanel>
             </TabItem>
         </TabControl>

@@ -12,7 +12,7 @@ namespace Ix4Models.SettingsDataModel
     {
         public ExportDataItemSettings()
         {
-
+            Scheduler = new SchedulerSettings();
         }
         private bool _isActive;
 

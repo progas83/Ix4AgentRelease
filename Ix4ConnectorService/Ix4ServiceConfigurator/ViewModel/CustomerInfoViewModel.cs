@@ -34,10 +34,14 @@ namespace Ix4ServiceConfigurator.ViewModel
 
             ImportDataViewModel = new ImportDataSettingsViewModel(Customer.ImportDataSettings);
 
+            ExportDataViewModel = new ExportDataSettingsViewModel(Customer.ExportDataSettings);
+
 
         }
 
        public ImportDataSettingsViewModel ImportDataViewModel { get; set; }
+
+        public ExportDataSettingsViewModel ExportDataViewModel { get; set; }
 
         //private Ix4RequestProps _TabSelectedItem;
 
@@ -55,9 +59,9 @@ namespace Ix4ServiceConfigurator.ViewModel
         //    set { _TabSelectedIndex = value; OnPropertyChanged("TabSelectedIndex"); }
         //}
 
-       // public ContentPresenter SendLicsRequestSettings { get; set; }
+        // public ContentPresenter SendLicsRequestSettings { get; set; }
 
-      
+
         public bool? ShowCustomerInfoWindow()
         {
             bool? result = false;

@@ -126,6 +126,12 @@
   <data name="Activate" xml:space="preserve">
     <value>Activate</value>
   </data>
+  <data name="AdditionalParameters" xml:space="preserve">
+    <value>Additional parameters</value>
+  </data>
+  <data name="AddNewExportType" xml:space="preserve">
+    <value>Add new export type</value>
+  </data>
   <data name="CheckDataEvery" xml:space="preserve">
     <value>Check data every</value>
   </data>
@@ -134,6 +140,9 @@
   </data>
   <data name="EnableSSL" xml:space="preserve">
     <value>EnableSSL</value>
+  </data>
+  <data name="ExportedTypeName" xml:space="preserve">
+    <value>Exported type name</value>
   </data>
   <data name="From" xml:space="preserve">
     <value>From</value>

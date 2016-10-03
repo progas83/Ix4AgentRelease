@@ -11,7 +11,7 @@ namespace Ix4Models.SettingsDataModel
     {
         public ExportDataSettings()
         {
-            ExportDataItemSettings = new ExportDataItemSettings[10];
+            ExportDataItemSettings = new ExportDataItemSettings[0];
         }
 
        public ExportDataItemSettings[] ExportDataItemSettings { get; set; }
