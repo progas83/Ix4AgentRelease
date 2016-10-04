@@ -49,22 +49,18 @@
                     <ListBox ItemsSource="{Binding ExportDataItems}">
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderThickness="2" Padding="5" BorderBrush="Gray">
-                                    <Grid >
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition/>
-                                            <ColumnDefinition/>
-                                        </Grid.ColumnDefinitions>
-                                        <DockPanel Grid.Column="0" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}">
+                                <Border BorderThickness="2" BorderBrush="Gray">
+                                    <DockPanel HorizontalAlignment="Stretch">
+                                        <DockPanel DockPanel.Dock="Top"  Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}">
                                             <CheckBox IsThreeState="False" IsChecked="{Binding IsActive}" Content="{Binding Source={StaticResource Localization},Path=Activate}"
-                                                      DockPanel.Dock="Top" Margin="2,10,10,10"/>
-                                            <Label  Content="{Binding Source={StaticResource Localization},Path=ExportedTypeName}" DockPanel.Dock="Top" Margin="2"/>
-                                            <TextBox Text="{Binding ExportDataTypeName}" MinWidth="50" DockPanel.Dock="Top" Margin="2"/>
-                                            <Label  Content="{Binding Source={StaticResource Localization},Path=AdditionalParameters}" DockPanel.Dock="Top" Margin="2"/>
-                                            <TextBox Text="{Binding AdditionalParameters}" MinWidth="50" DockPanel.Dock="Top" Margin="2"/>
+                                                      DockPanel.Dock="Left" Margin="5,5,0,0"/>
+                                            <Label  Content="{Binding Source={StaticResource Localization},Path=ExportedTypeName}" DockPanel.Dock="Left" Margin="5,5,0,0"/>
+                                            <TextBox Text="{Binding ExportDataTypeName}" MinWidth="50" DockPanel.Dock="Left" Margin="5,5,0,0"/>
+                                            <Label  Content="{Binding Source={StaticResource Localization},Path=AdditionalParameters}" DockPanel.Dock="Left" Margin="5,5,0,0"/>
+                                            <TextBox Text="{Binding AdditionalParameters}" MinWidth="50" DockPanel.Dock="Left" Margin="5,5,10,0"/>
                                         </DockPanel>
-                                        <controls:ScheduleControl Grid.Column="1" DataContext="{Binding Scheduler}"/>
-                                    </Grid>
+                                        <controls:ScheduleControl DockPanel.Dock="Top" DataContext="{Binding Scheduler}"/>
+                                    </DockPanel>
                                 </Border>
                                
                                

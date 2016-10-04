@@ -23,42 +23,17 @@
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30"/>
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <Label Content="{Binding Source={StaticResource Localization}, Path=SelectSourceFolder}" Grid.Column="1" Grid.Row="0" />
-        <DockPanel Grid.Row="0" Grid.Column="2">
-            <TextBox VerticalAlignment="Top"  VerticalContentAlignment="Center"  HorizontalContentAlignment="Stretch" Height="30" Width="150" Text="{Binding XmlItemSourceFolder}" ToolTip="{Binding XmlItemSourceFolder}" DockPanel.Dock="Left" />
-            <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static ix4Model:XmlFolderTypes.XmlSourceFolder}" DockPanel.Dock="Left" />
-        </DockPanel>
-       
-        <!--<CheckBox IsThreeState="False" Content="{Binding Source={StaticResource Localization},Path=ActionOnSuccessResult}" IsChecked="{Binding ActivateActionOnSuccess}" Grid.Column="0" Grid.Row="1"/>
-        <DockPanel Grid.Column="1" Grid.Row="1">
-            <Label Content="{Binding Source={StaticResource Localization},Path=SelectAction}" DockPanel.Dock="Left"/>
-            <ComboBox SelectedItem="{Binding ActionOnSuccess}" ItemsSource="{Binding Source={StaticResource ResultActions}}" DockPanel.Dock="Left"/>
-        </DockPanel>
-        <DockPanel Grid.Row="1" Grid.Column="2">
-            <TextBox VerticalAlignment="Top"  VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch" Height="30" Width="150" Text="{Binding SuccessResultFolder}" ToolTip="{Binding SuccessResultFolder}" DockPanel.Dock="Left" />
-            <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static ix4Model:XmlFolderTypes.XmlSuccessFolder}" DockPanel.Dock="Left" />
-        </DockPanel>
-
-        <CheckBox IsThreeState="False" Content="{Binding Source={StaticResource Localization},Path=ActionOnFailureResult}" IsChecked="{Binding ActivateActionOnFailure}" Grid.Column="0" Grid.Row="2"/>
-        <DockPanel Grid.Column="1" Grid.Row="2">
-            <Label Content="{Binding Source={StaticResource Localization},Path=SelectAction}" DockPanel.Dock="Left"/>
-            <ComboBox SelectedItem="{Binding ActionOnSuccess}" ItemsSource="{Binding Source={StaticResource ResultActions}}" DockPanel.Dock="Left"/>
-        </DockPanel>
-        <DockPanel Grid.Row="2" Grid.Column="2">
-            <TextBox VerticalAlignment="Top"  VerticalContentAlignment="Center"  HorizontalContentAlignment="Stretch" Height="30" Width="150" Text="{Binding FailureResultFolder}" ToolTip="{Binding  FailureResultFolder}" DockPanel.Dock="Left" />
-            <Button VerticalAlignment="Top" Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static ix4Model:XmlFolderTypes.XmlFailureFolder}" DockPanel.Dock="Left" />
-        </DockPanel>-->
+        <Label Grid.Column="0" Content="{Binding Source={StaticResource Localization}, Path=SelectSourceFolder}" />
+        <TextBox Grid.Column="1" Height="30"  HorizontalAlignment="Stretch" Text="{Binding XmlItemSourceFolder}" ToolTip="{Binding XmlItemSourceFolder}"  />
+        <Button  Grid.Column="2" Height="30" Content=" ... "  Command="{Binding}" CommandParameter="{x:Static ix4Model:XmlFolderTypes.XmlSourceFolder}"  />
     </Grid>
-    
- 
+    <!--<DockPanel Height="30" >
+        <Label Content="{Binding Source={StaticResource Localization}, Path=SelectSourceFolder}" DockPanel.Dock="Left" Margin="5"/>
+        <TextBox Height="30" Width="150" HorizontalAlignment="Stretch" Text="{Binding XmlItemSourceFolder}" ToolTip="{Binding XmlItemSourceFolder}" DockPanel.Dock="Top"  Margin="0,5,5,5" />
+        <Button  Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static ix4Model:XmlFolderTypes.XmlSourceFolder}" DockPanel.Dock="Right" />
+    </DockPanel>-->
 </UserControl>

@@ -11,7 +11,7 @@ namespace Ix4Models.SettingsDataModel
     public enum TimeSign
     {
         [XmlEnum(Name ="Unassigned")]
-        Unussigned = 0,
+        Unassigned = 0,
         [XmlEnum(Name= "Min")]
         Min = 60,
         [XmlEnum(Name = "Hour")]

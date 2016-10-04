@@ -18,9 +18,9 @@
     </Expander.Resources>
     <DockPanel Margin="5">
 
-        <CheckBox IsThreeState="False" IsChecked="{Binding IsActivated}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"
+        <CheckBox IsThreeState="False" IsChecked="{Binding IsActivated}" VerticalAlignment="Center" HorizontalAlignment="Left"
                       Content="{Binding Source={StaticResource Localization},Path=Activate}" VerticalContentAlignment="Center" DockPanel.Dock="Top"/>
-        <CheckBox IsThreeState="False" IsChecked="{Binding IncludeArticlesToRequest}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5"
+        <CheckBox IsThreeState="False" IsChecked="{Binding IncludeArticlesToRequest}" VerticalAlignment="Center" HorizontalAlignment="Left" 
                       Content="{Binding Source={StaticResource Localization},Path=IncludeArticlesToRequest}" VerticalContentAlignment="Center" DockPanel.Dock="Top"/>
        
         <Grid DockPanel.Dock="Top">
@@ -33,20 +33,24 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-           
-                <Label Grid.Column="0" Grid.Row="0" 
+
+            <DockPanel Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
+                <Label 
                        HorizontalAlignment="Center" 
-                       VerticalContentAlignment="Top" 
+                       DockPanel.Dock="Top"
                        Content="{Binding Source={StaticResource Localization}, Path=SelectDataSource}" />
-                <ComboBox Grid.Column="0" Grid.Row="1" Margin="5" HorizontalAlignment="Center" ItemsSource="{Binding Source={StaticResource DataSourceNames}}" 
-                      SelectedItem="{Binding Path=SelectedDataSource}" VerticalAlignment="Top"
+                <ComboBox Grid.Column="0" Grid.Row="1" Margin="5" HorizontalAlignment="Center" 
+                          DockPanel.Dock="Top" VerticalAlignment="Top" ItemsSource="{Binding Source={StaticResource DataSourceNames}}" 
+                      SelectedItem="{Binding Path=SelectedDataSource}" 
                       Width="100" />
+            </DockPanel>
+                
                
-                <Label Grid.Column="1" Grid.Row="0" 
+                <!--<Label Grid.Column="1" Grid.Row="0" 
                        HorizontalAlignment="Center" 
                        VerticalContentAlignment="Top" 
-                       Content="{Binding Source={StaticResource Localization}, Path=ScheduleSettings}" />
-            <local:ScheduleControl Grid.Column="1" Grid.Row="1" Margin="5" DataContext="{Binding Scheduler}" HorizontalAlignment="Left"/>
+                       Content="{Binding Source={StaticResource Localization}, Path=ScheduleSettings}" />-->
+            <local:ScheduleControl Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5" DataContext="{Binding Scheduler}" HorizontalAlignment="Left"/>
             <ContentControl Margin="5" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" DockPanel.Dock="Top"
                             HorizontalAlignment="Stretch" Width="Auto" MaxHeight="400"
                             ScrollViewer.CanContentScroll="True" 

@@ -16,7 +16,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\ServiceProgram\Debug\Clients\</OutputPath>
+    <OutputPath>..\..\..\ServiceProgram\Ix4AgentRelease\Clients\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -54,14 +55,17 @@
     <ProjectReference Include="..\Ix4Connector\Ix4Connector.csproj">
       <Project>{4D524A01-B026-4EDE-9BC9-28A83C160A34}</Project>
       <Name>Ix4Connector</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\Ix4Models\Ix4Models.csproj">
       <Project>{FC7C4D19-401C-43B8-A054-1F4C1C6B8228}</Project>
       <Name>Ix4Models</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\SinplestLogger\SimplestLogger.csproj">
       <Project>{18B499E8-956D-45C0-A9F7-6314CC00B777}</Project>
       <Name>SimplestLogger</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

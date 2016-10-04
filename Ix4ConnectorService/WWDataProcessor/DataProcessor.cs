@@ -6,6 +6,7 @@ using Ix4Models.SettingsManager;
 using SimplestLogger;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace WWDataProcessor
 {
+    [Export(typeof(IDataProcessor))]
     public class DataProcessor : IDataProcessor
     {
         /*   private CustomerInfo _customerInfo;

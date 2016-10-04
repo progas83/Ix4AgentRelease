@@ -65,10 +65,10 @@ namespace SqlDataExtractor.Settings.ViewModel
             _msSqlSettings = sqlSourceSettings.DataSourceSettings as MsSqlSettings;
             _testConnectionCommand = new DbConnectionCommand(this);
             DbNames = new ObservableCollection<string>();
-            if(!string.IsNullOrEmpty(_msSqlSettings.ServerAdress))
-            {
-                CheckMsSqlConnection();
-            }
+            //if(!string.IsNullOrEmpty(_msSqlSettings.ServerAdress))
+            //{
+            //    CheckMsSqlConnection();
+            //}
             
             DbConnectionStatus = _testConnectionButton;
         }
@@ -100,7 +100,7 @@ namespace SqlDataExtractor.Settings.ViewModel
             {
                 _msSqlSettings.ServerAdress = value;
                 OnPropertyChanged("ServerAdress");
-                CheckMsSqlConnection();
+              //  CheckMsSqlConnection();
             }
         }
 

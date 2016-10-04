@@ -25,18 +25,18 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Label Content="{Binding Source={StaticResource Localization},Path=WorkingHours}" Margin="5" HorizontalAlignment="Center"  Grid.ColumnSpan="2" VerticalAlignment="Top"/>
-        <DockPanel DockPanel.Dock="Top" Grid.Column="0" Grid.Row="1" Margin="5">
+        <Label Content="{Binding Source={StaticResource Localization},Path=WorkingHours}" HorizontalAlignment="Center"  Grid.ColumnSpan="2" VerticalAlignment="Top"/>
+        <DockPanel DockPanel.Dock="Top" Grid.Column="0" Grid.Row="1" Margin="5,5,0,0">
 
             <Label Content="{Binding Source={StaticResource Localization},Path=From}" DockPanel.Dock="Left" VerticalAlignment="Top"/>
             <xceed:TimePicker Kind="Local" TimeInterval="1" Value="{Binding StartTime}" Width="100" Height="20" DockPanel.Dock="Left" VerticalAlignment="Top" />
         </DockPanel>
-        <DockPanel DockPanel.Dock="Top" Grid.Column="1" Grid.Row="1" Margin="5">
+        <DockPanel DockPanel.Dock="Top" Grid.Column="1" Grid.Row="1" Margin="5,5,0,0">
             <Label Content="{Binding Source={StaticResource Localization},Path=To}" DockPanel.Dock="Left" VerticalAlignment="Top"/>
             <xceed:TimePicker Kind="Local" TimeInterval="1" Value="{Binding EndTime}" Width="100" Height="20" HorizontalAlignment="Left" DockPanel.Dock="Left" VerticalAlignment="Top" />
         </DockPanel>
