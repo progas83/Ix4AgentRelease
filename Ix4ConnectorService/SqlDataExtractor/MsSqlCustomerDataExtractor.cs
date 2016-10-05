@@ -8,10 +8,6 @@ using System.ComponentModel.Composition;
 using System.Windows.Controls;
 using System;
 using System.Xml;
-using System.Xml.Serialization;
-using System.IO;
-using SqlDataExtractor.Settings.ViewModel;
-using SqlDataExtractor.Settings.View;
 
 namespace SqlDataExtractor
 {
@@ -142,13 +138,14 @@ namespace SqlDataExtractor
 
         public UserControl GetControlForSettings(BaseLicsRequestSettings settings)
         {
-            BaseLicsRequestSettings _sqlSettings = settings;
+            throw new Exception();
+            //BaseLicsRequestSettings _sqlSettings = settings;
             
 
-            DBSettingsViewModel dbVM = new DBSettingsViewModel(settings);
-            DBSettingsView dbView = new DBSettingsView();
-            dbView.DataContext = dbVM;
-            return dbView;
+            //DBSettingsViewModel dbVM = new DBSettingsViewModel(settings);
+            //DBSettingsView dbView = new DBSettingsView();
+            //dbView.DataContext = dbVM;
+            //return dbView;
         }
     }
 }

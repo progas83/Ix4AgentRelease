@@ -1,17 +1,11 @@
-﻿using CompositionHelper;
-using Ix4Connector;
-using Ix4Models;
+﻿using Ix4Models;
 using Ix4Models.SettingsDataModel;
 using Ix4Models.SettingsManager;
 using SimplestLogger;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Xml.Serialization;
 using System.Linq;
-using System.Xml;
-using System.Data.SqlClient;
-using System.Threading.Tasks;
 using System.Timers;
 using System.ComponentModel.Composition;
 using Ix4Models.Interfaces;
@@ -24,7 +18,7 @@ namespace ConnectorWorkflowManager
     {
         private static WorkflowManager _manager;
         private CustomerInfo _customerSettings;
-        private CustomerDataComposition _dataCompositor;
+       // private CustomerDataComposition _dataCompositor;
     //    private IProxyIx4WebService _ix4WebServiceConnector;
         private DataEnsure _ensureData;
         protected Timer _timer;

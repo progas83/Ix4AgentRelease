@@ -1,7 +1,8 @@
-﻿using System;
+﻿using Ix4ServiceConfigurator.ViewModel.MsSql;
+using System;
 using System.Windows.Input;
 
-namespace SqlDataExtractor.Commands
+namespace Ix4ServiceConfigurator.Commands
 {
     public class DbConnectionCommand : ICommand
     {

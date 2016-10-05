@@ -73,6 +73,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AutomaticalServiceInstaller.cs" />
+    <Compile Include="Commands\DbConnectionCommand.cs" />
     <Compile Include="Commands\InstallationCommand.cs" />
     <Compile Include="Commands\MakeChangesCommad.cs" />
     <Compile Include="Controls\CustomerInfoControl.xaml.cs">
@@ -88,6 +89,9 @@
     <Compile Include="Controls\ScheduleControl.xaml.cs">
       <DependentUpon>ScheduleControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\XamlFolderSettingsControl.xaml.cs">
+      <DependentUpon>XamlFolderSettingsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Converters\BoolToInstallStateConverter.cs" />
     <Compile Include="Converters\ServiceStatusToIconConverter.cs" />
     <Compile Include="EventArguments\ServiceControllerStatusEventArg.cs" />
@@ -99,8 +103,25 @@
     <Compile Include="ViewModel\IPwd.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\CustomerInfoViewModel.cs" />
+    <Compile Include="ViewModel\MsSql\DBSettingsViewModel.cs" />
+    <Compile Include="ViewModel\MsSql\MsSqlArticleViewModel.cs" />
+    <Compile Include="ViewModel\MsSql\MsSqlDeliveryViewModel.cs" />
+    <Compile Include="ViewModel\MsSql\MsSqlOrdersViewModel.cs" />
+    <Compile Include="ViewModel\XamlFolderSettingsViewModel.cs" />
     <Compile Include="View\CustomerInfoView.xaml.cs">
       <DependentUpon>CustomerInfoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MsSql\DBSettingsView.xaml.cs">
+      <DependentUpon>DBSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MsSql\MsSqlArticleSettingsView.xaml.cs">
+      <DependentUpon>MsSqlArticleSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MsSql\MsSqlDeliveriesSettingsView.xaml.cs">
+      <DependentUpon>MsSqlDeliveriesSettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MsSql\MsSqlOrdersSettingsView.xaml.cs">
+      <DependentUpon>MsSqlOrdersSettingsView.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\CustomerInfoControl.xaml">
       <SubType>Designer</SubType>
@@ -115,6 +136,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\ScheduleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\XamlFolderSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -135,6 +160,22 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\CustomerInfoView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MsSql\DBSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MsSql\MsSqlArticleSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MsSql\MsSqlDeliveriesSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MsSql\MsSqlOrdersSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -171,10 +212,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CompositionHelper\CompositionHelper.csproj">
-      <Project>{85be46e7-9202-4cb6-8bb6-bc10e6c844da}</Project>
-      <Name>CompositionHelper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Ix4ConnectorService\Ix4ConnectorService.csproj">
       <Project>{01c1c647-db26-4b8e-9589-67e7104bead1}</Project>
       <Name>Ix4ConnectorService</Name>

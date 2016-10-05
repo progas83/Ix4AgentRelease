@@ -1,41 +1,20 @@
-﻿using CompositionHelper;
-using Ix4Models;
+﻿using Ix4Models;
 using Ix4Models.SettingsDataModel;
-using Ix4Models.SettingsManager;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Ix4ServiceConfigurator.Controls;
+using Ix4ServiceConfigurator.View.MsSql;
+using Ix4ServiceConfigurator.ViewModel.MsSql;
 using System.Windows.Controls;
 
 namespace Ix4ServiceConfigurator.ViewModel
 {
-   public class ImportDataItemViewModel : BaseViewModel
+    public class ImportDataItemViewModel : BaseViewModel
     {
         
-        //private CustomerDataComposition _compositor;
         public ImportDataItemViewModel(BaseLicsRequestSettings itemSettings)
         {
             BaseSettings = itemSettings;
-          //  _compositor = new CustomerDataComposition(XmlConfigurationManager.Instance.GetCustomerInformation().ImportDataSettings.ArticleSettings);
+            SelectControlForSourceType(BaseSettings.SourceDataType);
         }
-
-        //private void InitSettings(Ix4RequestProps itemName)
-        //{
-        //    switch (itemName)
-        //    {
-        //        case Ix4RequestProps.Articles:
-        //            BaseSettings = XmlConfigurationManager.Instance.GetCustomerInformation().ImportDataSettings.ArticleSettings;
-        //            break;
-        //        case Ix4RequestProps.Orders:
-        //            BaseSettings = XmlConfigurationManager.Instance.GetCustomerInformation().ImportDataSettings.OrderSettings;
-        //            break;
-        //        case Ix4RequestProps.Deliveries:
-        //            BaseSettings = XmlConfigurationManager.Instance.GetCustomerInformation().ImportDataSettings.DeliverySettings;
-        //            break;
-        //    }
-        //}
 
         public BaseLicsRequestSettings BaseSettings { get; set; }
 
@@ -69,16 +48,57 @@ namespace Ix4ServiceConfigurator.ViewModel
             set
             {
                 BaseSettings.SourceDataType = value;
+                SelectControlForSourceType(value);
                 OnPropertyChanged("PluginControl");
             }
         }
 
+        private UserControl _dataSourceControl;
         public UserControl PluginControl
         {
             get
             {
-                return CustomerDataComposition.Instance.GetDataSettingsControl(BaseSettings);
+                return _dataSourceControl;// CustomerDataComposition.Instance.GetDataSettingsControl(BaseSettings);
             }
+        }
+
+        private void SelectControlForSourceType(CustomDataSourceTypes t)
+        {
+            switch(t)
+            {
+                case CustomDataSourceTypes.MsSql:
+                    _dataSourceControl = GetMsSqlControlForSettings();
+                    break;
+                case CustomDataSourceTypes.Xml:
+                    _dataSourceControl = GetXmlControlForSettings();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private UserControl GetMsSqlControlForSettings()
+        {
+            DBSettingsViewModel dbVM = new DBSettingsViewModel(BaseSettings);
+            DBSettingsView dbView = new DBSettingsView();
+            dbView.DataContext = dbVM;
+            return dbView;
+        }
+
+        private XamlFolderSettingsControl _xmlUserControl;
+        private XamlFolderSettingsViewModel _xmlUserControlViewModel;
+        private UserControl GetXmlControlForSettings()//BaseLicsRequestSettings settings)
+        {
+            if (_xmlUserControl == null)
+            {
+                _xmlUserControl = new XamlFolderSettingsControl();
+            }
+            if (_xmlUserControlViewModel == null)
+            {
+                _xmlUserControlViewModel = new XamlFolderSettingsViewModel(BaseSettings);
+            }
+            _xmlUserControl.DataContext = _xmlUserControlViewModel; ;
+            return _xmlUserControl;
         }
     }
 }

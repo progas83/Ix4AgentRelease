@@ -48,7 +48,6 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\DbConnectionCommand.cs" />
     <Compile Include="DatabaseSettings\ViewModel\MainDBSettingsViewModel.cs" />
     <Compile Include="DatabaseSettings\View\DbSettingsView.xaml.cs">
       <DependentUpon>DbSettingsView.xaml</DependentUpon>
@@ -63,22 +62,6 @@
     </Compile>
     <Compile Include="MsSqlCustomerDataExtractor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Settings\ViewModel\DBSettingsViewModel.cs" />
-    <Compile Include="Settings\ViewModel\MsSqlArticleViewModel.cs" />
-    <Compile Include="Settings\ViewModel\MsSqlDeliveryViewModel.cs" />
-    <Compile Include="Settings\ViewModel\MsSqlOrdersViewModel.cs" />
-    <Compile Include="Settings\View\DBSettingsView.xaml.cs">
-      <DependentUpon>DBSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\View\MsSqlArticleSettingsView.xaml.cs">
-      <DependentUpon>MsSqlArticleSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\View\MsSqlDeliveriesSettingsView.xaml.cs">
-      <DependentUpon>MsSqlDeliveriesSettingsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Settings\View\MsSqlOrdersSettingsView.xaml.cs">
-      <DependentUpon>MsSqlOrdersSettingsView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="SqlTableArticleExplorer.cs" />
     <Compile Include="SqlTableDeliveryExplorer.cs" />
     <Compile Include="SqlTableExplorer.cs" />
@@ -113,22 +96,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ManualMaping\View\ManualMappingView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\View\DBSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\View\MsSqlArticleSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\View\MsSqlDeliveriesSettingsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Settings\View\MsSqlOrdersSettingsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

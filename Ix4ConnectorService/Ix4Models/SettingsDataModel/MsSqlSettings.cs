@@ -1,7 +1,6 @@
-﻿using CryptoModule;
+﻿using Ix4Models.CryptoModule;
 using Ix4Models.Interfaces;
 using System;
-using System.Text;
 
 namespace Ix4Models.SettingsDataModel
 {
@@ -72,19 +71,5 @@ namespace Ix4Models.SettingsDataModel
             }
 
         }
-
-        //public override string ToString()
-        //{
-
-        //    StringBuilder sb = new StringBuilder();
-        //    sb.Append(string.Format("Password = {0}", Password));
-        //    sb.Append(string.Format("UseSqlServerAuth = {0}", UseSqlServerAuth));
-        //    sb.Append(string.Format("DbUserName = {0}", DbUserName));
-        //    sb.Append(string.Format(" DataBaseName= {0}", DataBaseName));
-        //    sb.Append(string.Format(" ServerAdress= {0}", ServerAdress));
-
-
-        //    return sb.ToString();// base.ToString();
-        //}
     }
 }

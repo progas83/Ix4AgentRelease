@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="Ix4ServiceConfigurator.Controls.XamlFolderSettingsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ix4Model ="clr-namespace:Ix4Models.Enums;assembly=Ix4Models"
+             xmlns:core="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="ResultActions" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="ix4Model:XmlResultHandleActions"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+
+        <ObjectDataProvider x:Key="XmlFolders" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="ix4Model:XmlFolderTypes"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="30"/>
+        </Grid.ColumnDefinitions>
+        <Label Grid.Column="0" Content="{Binding Source={StaticResource Localization}, Path=SelectSourceFolder}" />
+        <TextBox Grid.Column="1" Height="30"  HorizontalAlignment="Stretch" Text="{Binding XmlItemSourceFolder}" ToolTip="{Binding XmlItemSourceFolder}"  />
+        <Button  Grid.Column="2" Height="30" Content=" ... "  Command="{Binding}" CommandParameter="{x:Static ix4Model:XmlFolderTypes.XmlSourceFolder}"  />
+    </Grid>
+    <!--<DockPanel Height="30" >
+        <Label Content="{Binding Source={StaticResource Localization}, Path=SelectSourceFolder}" DockPanel.Dock="Left" Margin="5"/>
+        <TextBox Height="30" Width="150" HorizontalAlignment="Stretch" Text="{Binding XmlItemSourceFolder}" ToolTip="{Binding XmlItemSourceFolder}" DockPanel.Dock="Top"  Margin="0,5,5,5" />
+        <Button  Height="30" Content=" ... " Width="30" Command="{Binding}" CommandParameter="{x:Static ix4Model:XmlFolderTypes.XmlSourceFolder}" DockPanel.Dock="Right" />
+    </DockPanel>-->
+</UserControl>

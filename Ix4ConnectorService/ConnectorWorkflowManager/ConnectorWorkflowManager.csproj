@@ -46,10 +46,6 @@
     <Compile Include="WorkflowManager.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CompositionHelper\CompositionHelper.csproj">
-      <Project>{85be46e7-9202-4cb6-8bb6-bc10e6c844da}</Project>
-      <Name>CompositionHelper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Ix4Connector\Ix4Connector.csproj">
       <Project>{4d524a01-b026-4ede-9bc9-28a83c160a34}</Project>
       <Name>Ix4Connector</Name>

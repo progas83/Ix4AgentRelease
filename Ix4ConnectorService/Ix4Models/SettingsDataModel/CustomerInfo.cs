@@ -1,8 +1,6 @@
-﻿using CryptoModule;
+﻿using Ix4Models.CryptoModule;
 using Ix4Models.Interfaces;
 using System;
-using System.Text;
-using System.Xml.Serialization;
 
 namespace Ix4Models.SettingsDataModel
 {

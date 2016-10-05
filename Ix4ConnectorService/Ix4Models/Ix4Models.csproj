@@ -45,6 +45,7 @@
     <Compile Include="Attributes\ExportDataProcessorAttribute.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="CryptoModule\Cryptor.cs" />
     <Compile Include="CurrentServiceInformation.cs" />
     <Compile Include="CustomDataSourceTypes.cs" />
     <Compile Include="DataProviders\MsSqlDataProvider\MsSqlDataProvider.cs" />
@@ -103,10 +104,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CryptoModule\CryptoModule.csproj">
-      <Project>{20BC0FD4-CEC0-4DF9-B96A-AFD6026DC84E}</Project>
-      <Name>CryptoModule</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SinplestLogger\SimplestLogger.csproj">
       <Project>{18B499E8-956D-45C0-A9F7-6314CC00B777}</Project>
       <Name>SimplestLogger</Name>

@@ -1,8 +1,8 @@
-﻿using System.Windows.Controls;
-using Ix4Models.SettingsDataModel;
-using SqlDataExtractor.Settings.ViewModel;
+﻿using Ix4Models.SettingsDataModel;
+using Ix4ServiceConfigurator.ViewModel.MsSql;
+using System.Windows.Controls;
 
-namespace SqlDataExtractor.Settings.View
+namespace Ix4ServiceConfigurator.View.MsSql
 {
     /// <summary>
     /// Interaction logic for MsSqlOrdersSettingsView.xaml

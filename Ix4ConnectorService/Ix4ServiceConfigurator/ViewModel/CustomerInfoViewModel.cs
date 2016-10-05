@@ -1,20 +1,11 @@
 ﻿using Ix4ServiceConfigurator.View;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel;
 using System.Windows.Input;
-using System.Windows.Controls;
-using CompositionHelper;
 using Ix4Models;
 using Ix4Models.SettingsDataModel;
 using Ix4Models.SettingsManager;
-using System.Collections.ObjectModel;
 using System.Security;
 using System.Runtime.InteropServices;
-using Ix4ServiceConfigurator.Controls;
 
 namespace Ix4ServiceConfigurator.ViewModel
 {

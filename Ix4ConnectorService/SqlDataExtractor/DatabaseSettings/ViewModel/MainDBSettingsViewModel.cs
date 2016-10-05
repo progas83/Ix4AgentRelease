@@ -1,16 +1,9 @@
 ﻿using Ix4Models;
 using Ix4Models.SettingsDataModel;
-using SqlDataExtractor.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace SqlDataExtractor.DatabaseSettings.ViewModel
 {
-   public class MainDBSettingsViewModel : BaseViewModel
+    public class MainDBSettingsViewModel : BaseViewModel
     {
         MsSqlPluginSettings _msSqlPluginSettings;
       //  DbConnectionCommand _testConnectionCommand;
