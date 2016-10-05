@@ -20,7 +20,7 @@ namespace ConnectorWorkflowManager
         private CustomerInfo _customerSettings;
        // private CustomerDataComposition _dataCompositor;
     //    private IProxyIx4WebService _ix4WebServiceConnector;
-        private DataEnsure _ensureData;
+        //private DataEnsure _ensureData;
         protected Timer _timer;
         private static object _padlock = new object();
         private static readonly long RElapsedEvery = 5 * 1 * 1000;

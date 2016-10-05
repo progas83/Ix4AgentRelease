@@ -10,6 +10,8 @@ using Ix4Connector;
 using DataProcessorHelper;
 using Ix4Models;
 using Ix4Models.DataProviders.MsSqlDataProvider;
+using System.Data.SqlClient;
+using System.Xml;
 
 namespace WVDataProcessor
 {
@@ -202,14 +204,76 @@ namespace WVDataProcessor
                     }
                 }
 
-                var res = SendLicsRequestToIx4(request, "ordersFile.xml");
-                _loger.Log("Orders result: " + res);
+                LICSResponse response = SendLicsRequestToIx4(request, "ordersFile.xml");
+                _loger.Log("Orders result: " + response);
+                SimplestParcerLicsRequest(response);
             }
             catch (Exception ex)
             {
                 _loger.Log(ex);
             }
         }
+
+        private void SimplestParcerLicsRequest(LICSResponse objResponse)
+        {
+            try
+            {
+                ////TextReader tr = new StringReader(response);
+
+                //XmlSerializer serializer = new XmlSerializer(typeof(LICSResponse));
+
+                //XmlSerializer ResponseSerializer = new XmlSerializer(typeof(LICSResponse));
+                //LICSResponse objResponse;
+                //using (TextReader tr = new StringReader(response))
+                //{
+                //    objResponse = (LICSResponse)ResponseSerializer.Deserialize(tr);
+                //}
+
+                //Validate the results
+                if (objResponse.ArticleImport != null && objResponse.ArticleImport.CountOfFailed > 0)
+                {
+                    //Handle ArticleImportErrors
+                }
+
+                if (objResponse.DeliveryImport != null && objResponse.DeliveryImport.CountOfFailed > 0)
+                {
+                    //Handle DeliveryImportErrors
+                }
+
+                if (objResponse.OrderImport != null && objResponse.OrderImport.CountOfFailed > 0)
+                {
+                    //Handle OrderImportErrors
+                }
+
+
+
+
+
+
+                // LICSResponse resp = (LICSResponse)serializer.Deserialize(tr);
+                if (objResponse.OrderImport != null)
+                    foreach (var ord in objResponse.OrderImport.Order)
+                    {
+                        int status = 2;
+                        if (ord.State == 1)
+                        {
+                            status = 5;
+                        }
+                        else
+                        {
+                            status = 3;
+                        }
+                        SendToDB(ord.OrderNo, status);
+                        _loger.Log(string.Format("Has updated order with NO = {0}  new status = {1}", ord.ReferenceNo, status));
+                    }
+            }
+            catch (Exception ex)
+            {
+                _loger.Log(ex);
+            }
+
+        }
+
         private LICSRequestArticle GetArticleByNumber(string articleNo)
         {
             if (_cachedArticles != null)
@@ -221,9 +285,104 @@ namespace WVDataProcessor
             }
 
         }
+
+        ExportDataToSQL _dataExportetToSql;
         protected override void ProcessExportedData(ExportDataItemSettings settings)
         {
-            throw new NotImplementedException();
+            if (_dataExportetToSql == null)
+                _dataExportetToSql = new ExportDataToSQL(CustomerSettings.ExportDataSettings);
+            switch(settings.ExportDataTypeName)
+            {
+                case "GP":
+                    ProcessGPData();
+                    break;
+            }
+        }
+
+
+        private void ProcessGPData()
+        {
+
+            try
+            {
+                foreach (string mark in new string[] { "GP", "GS" })
+                {
+                    //if (!UpdateTimeWatcher.TimeToCheck(mark))
+                    //{
+                    //    continue;
+                    //}
+                    //else
+                    //{
+
+                    //}
+                    _loger.Log("Starting export data " + mark);
+                    XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
+
+                    XmlDocument xmlDoc = new XmlDocument();
+                    xmlDoc.InnerXml = nodeResult.OuterXml;
+                    var msgNodes = xmlDoc.GetElementsByTagName("MSG");
+
+                    //  var msgNodes = nodeResult.LastChild.LastChild.SelectNodes("MSG");
+                    _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
+                    if (msgNodes != null && msgNodes.Count > 0)
+                    {
+                        EnsureType ensureType = EnsureType.CollectData;
+                        switch (mark)
+                        {
+                            case "SA":
+                                ensureType = EnsureType.UpdateStoredData;
+                                break;
+                            case "GP":
+                                ensureType = EnsureType.CollectData;
+                                break;
+                            case "GS":
+                                ensureType = EnsureType.CollectData;
+                                break;
+                            default:
+                                ensureType = EnsureType.CollectData;
+                                break;
+                        }
+
+                        if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
+                        {
+                            _ensureData.RudeStoreExportedData(nodeResult, mark);
+                        }
+                        else
+                        {
+                            _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
+                        }
+                        _loger.Log("End export data " + mark);
+                        System.Threading.Thread.Sleep(30000);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                _loger.Log("Exception while export data");
+                _loger.Log(ex);
+            }
+        }
+
+        private void SendToDB(string no, int status)
+        {
+            try
+            {
+                using (var connection = new SqlConnection((CustomerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as MsSqlSettings).BuilDBConnection()))
+                {
+                    connection.Open();
+                    var cmdText = string.Format(@"UPDATE WAKopf SET Status = {0} WHERE ID = {1} ", status, no);
+                    SqlCommand cmd = new SqlCommand(cmdText, connection);
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    _loger.Log(string.Format("Wasnot errors while updating customer DB"));
+                }
+            }
+            catch (Exception ex)
+            {
+                _loger.Log("Exception in the Sent info to DB");
+                _loger.Log(ex);
+            }
         }
     }
 }

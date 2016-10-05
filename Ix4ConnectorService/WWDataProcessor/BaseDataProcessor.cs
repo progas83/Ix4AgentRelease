@@ -1,5 +1,4 @@
-﻿using DataProcessorHelper;
-using Ix4Connector;
+﻿using Ix4Connector;
 using Ix4Models;
 using Ix4Models.DataProviders.MsSqlDataProvider;
 using Ix4Models.SettingsDataModel;
