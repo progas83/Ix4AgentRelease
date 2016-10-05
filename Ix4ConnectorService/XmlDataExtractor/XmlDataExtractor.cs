@@ -10,7 +10,6 @@ using System.Windows.Controls;
 using System.Xml.Serialization;
 using XmlDataExtractor.Settings.View;
 using XmlDataExtractor.Settings.ViewModel;
-using Ix4Models.Converters;
 using Ix4Models.SettingsDataModel;
 using Ix4Models.Interfaces;
 using System.Xml;
@@ -120,8 +119,8 @@ namespace XmlDataExtractor
 
                                     //    _streamWriterFile.WriteLine(string.Format("Filename:  {0}", file));
 
-                                    LICSRequest req = GetCustomerDataFromXml(file);// CustomerDataComposition.Instance.GetCustomerDataFromXml(file);// xmlDataConnector.GetCustomerDataFromXml(file);
-                                    requests.Add(req);
+                                 //   LICSRequest req = GetCustomerDataFromXml(file);// CustomerDataComposition.Instance.GetCustomerDataFromXml(file);// xmlDataConnector.GetCustomerDataFromXml(file);
+                                  //  requests.Add(req);
 
                                 }
                             }
@@ -185,8 +184,8 @@ namespace XmlDataExtractor
 
                         //    _streamWriterFile.WriteLine(string.Format("Filename:  {0}", file));
 
-                        LICSRequest request = GetCustomerDataFromXml(file);// CustomerDataComposition.Instance.GetCustomerDataFromXml(file);// xmlDataConnector.GetCustomerDataFromXml(file);
-                        requests.Add(request);
+                      //  LICSRequest request = GetCustomerDataFromXml(file);// CustomerDataComposition.Instance.GetCustomerDataFromXml(file);// xmlDataConnector.GetCustomerDataFromXml(file);
+                      //  requests.Add(request);
                      
                     }
                 }
@@ -212,19 +211,19 @@ namespace XmlDataExtractor
             return requests;
         }
 
-        public LICSRequest GetCustomerDataFromXml(string fileName)
-        {
+        //public LICSRequest GetCustomerDataFromXml(string fileName)
+        //{
 
-            XmlSerializer xS = new XmlSerializer(typeof(OutputPayLoad));
-            LICSRequest licsRequest = new LICSRequest();
-            using (FileStream fs = new FileStream(fileName, FileMode.Open))
-            {
-                OutputPayLoad customerInfo = (OutputPayLoad)xS.Deserialize(fs);
-                licsRequest = customerInfo.ConvertToLICSRequest();
-            }
+        //    XmlSerializer xS = new XmlSerializer(typeof(OutputPayLoad));
+        //    LICSRequest licsRequest = new LICSRequest();
+        //    using (FileStream fs = new FileStream(fileName, FileMode.Open))
+        //    {
+        //        OutputPayLoad customerInfo = (OutputPayLoad)xS.Deserialize(fs);
+        //        licsRequest = customerInfo.ConvertToLICSRequest();
+        //    }
 
-            return licsRequest;
-        }
+        //    return licsRequest;
+        //}
 
         public void ExportDataToCustomerSource(IPluginSettings pluginSettings, string exportDataType, string exportData, string[] exportDataParameters = null)
         {

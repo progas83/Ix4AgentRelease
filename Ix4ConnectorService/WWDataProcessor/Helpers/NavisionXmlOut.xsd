@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.Atoll.biz/MobileIntegrationServer/Weinwelt">
+  <xsd:element name="OutputPayLoad">
+    <xsd:complexType>
+      <xsd:sequence>
+        <xsd:element name="OrderHeader">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="OrderID" type="xsd:string" />
+              <xsd:element name="OrderNumber" type="xsd:string" />
+              <xsd:element name="CustomerNumber" type="xsd:unsignedInt" />
+              <xsd:element name="CustomerName" type="xsd:string" />
+              <xsd:element name="CustomerName2" />
+              <xsd:element name="CustomerStreet" type="xsd:string" />
+              <xsd:element name="CustomerZIP" type="xsd:unsignedInt" />
+              <xsd:element name="CustomerTown" type="xsd:string" />
+              <xsd:element name="Date" type="xsd:string" />
+              <xsd:element name="WarehouseOrder" type="xsd:string" />
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="Positions">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element maxOccurs="unbounded" name="OutputPosition">
+                <xsd:complexType>
+                  <xsd:sequence>
+                    <xsd:element name="ArticleRowNumber" type="xsd:unsignedInt" />
+                    <xsd:element name="ArticleNumber" type="xsd:string" />
+                    <xsd:element name="Warehouse" type="xsd:string" />
+                    <xsd:element name="Description" type="xsd:string" />
+                    <xsd:element name="Description2" type="xsd:string" />
+                    <xsd:element name="VPECode" type="xsd:string" />
+                    <xsd:element name="VPECount" type="xsd:string" />
+                    <xsd:element name="BaseUnitQuantity" type="xsd:unsignedByte" />
+                    <xsd:element name="AttachedToLineNo" type="xsd:unsignedInt" />
+                  </xsd:sequence>
+                </xsd:complexType>
+              </xsd:element>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+        <xsd:element name="WarehouseTexte" />
+      </xsd:sequence>
+    </xsd:complexType>
+  </xsd:element>
+</xs:schema>

@@ -45,7 +45,6 @@
     <Compile Include="Attributes\ExportDataProcessorAttribute.cs" />
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="Class1.cs" />
-    <Compile Include="Converters\XmlDataConverterExtensions.cs" />
     <Compile Include="CurrentServiceInformation.cs" />
     <Compile Include="CustomDataSourceTypes.cs" />
     <Compile Include="DataProviders\MsSqlDataProvider\MsSqlDataProvider.cs" />
@@ -91,9 +90,6 @@
     <Compile Include="Schema\LICSResponse.cs">
       <DependentUpon>LICSResponse.xsd</DependentUpon>
     </Compile>
-    <Compile Include="Schema\NavisionXmlOut.cs">
-      <DependentUpon>NavisionXmlOut.xsd</DependentUpon>
-    </Compile>
     <Compile Include="SettingsManager\CustomerInfoSerializer.cs" />
     <Compile Include="SettingsManager\XmlConfigurationManager.cs" />
     <Compile Include="Utf8StringWriter.cs" />
@@ -103,9 +99,6 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Schema\LICSResponse.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Schema\NavisionXmlOut.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>

@@ -63,8 +63,42 @@ namespace WWDataProcessor
                 _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Deliveries);
             }
 
-           _updateTimeWatcher.SaveLastUpdateValues();
+            if (_customerSettings.ImportDataSettings.OrderSettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Orders))
+            {
+                CheckOrders();
+                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Orders);
+            }
+
+         //   _updateTimeWatcher.SaveLastUpdateValues();
         }
+
+        private void CheckOrders()
+        {
+            string[] xmlSourceFiles = Directory.GetFiles((_customerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as XmlFolderSettingsModel).XmlItemSourceFolder, "*.xml");
+            if (xmlSourceFiles.Length > 0)
+            {
+                foreach (string file in xmlSourceFiles)
+                {
+                  LICSRequest request = GetCustomerDataFromXml(file);
+                  bool res = SendLicsRequestToIx4(request, "deliveryFile.xml");
+                }
+            }
+        }
+        public LICSRequest GetCustomerDataFromXml(string fileName)
+        {
+
+            XmlSerializer xS = new XmlSerializer(typeof(OutputPayLoad));
+            LICSRequest licsRequest = new LICSRequest();
+            using (FileStream fs = new FileStream(fileName, FileMode.Open))
+            {
+                OutputPayLoad customerInfo = (OutputPayLoad)xS.Deserialize(fs);
+                licsRequest = customerInfo.ConvertToLICSRequest();
+            }
+
+            return licsRequest;
+        }
+
+
         List<LICSRequestArticle> _cachedArticles;
         private void CheckArticles()
         {
