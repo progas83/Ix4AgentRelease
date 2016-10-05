@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3C5A57D9-3352-4149-85C1-CAF909EF8E67}</ProjectGuid>
+    <ProjectGuid>{940BBB0D-D7FC-46F6-89A2-20797651F5EE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WWDataProcessor</RootNamespace>
-    <AssemblyName>WWDataProcessor</AssemblyName>
+    <RootNamespace>WVDataProcessor</RootNamespace>
+    <AssemblyName>WVDataProcessor</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -42,15 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataProcessor.cs" />
-    <Compile Include="Helpers\NavisionXmlOut.cs">
-      <DependentUpon>NavisionXmlOut.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Helpers\XmlDataConverterExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataProcessorHelper\DataProcessorHelper.csproj">
-      <Project>{c270cd3d-165d-4379-a9f7-2cf569a1aca1}</Project>
+      <Project>{C270CD3D-165D-4379-A9F7-2CF569A1ACA1}</Project>
       <Name>DataProcessorHelper</Name>
       <Private>False</Private>
     </ProjectReference>
@@ -67,13 +63,7 @@
     <ProjectReference Include="..\SinplestLogger\SimplestLogger.csproj">
       <Project>{18B499E8-956D-45C0-A9F7-6314CC00B777}</Project>
       <Name>SimplestLogger</Name>
-      <Private>False</Private>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Helpers\NavisionXmlOut.xsd">
-      <SubType>Designer</SubType>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

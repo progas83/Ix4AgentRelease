@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace WWDataProcessor.Properties {
+namespace DataProcessorHelper.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -61,9 +61,9 @@ namespace WWDataProcessor.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Ix4Models.ExportDataLastUpdate ExportData {
+        public global::Ix4Models.EDLastUpdate ExportData {
             get {
-                return ((global::Ix4Models.ExportDataLastUpdate)(this["ExportData"]));
+                return ((global::Ix4Models.EDLastUpdate)(this["ExportData"]));
             }
             set {
                 this["ExportData"] = value;

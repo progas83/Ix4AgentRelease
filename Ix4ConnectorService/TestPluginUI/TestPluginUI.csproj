@@ -103,11 +103,6 @@
       <Project>{fc7c4d19-401c-43b8-a054-1f4c1c6b8228}</Project>
       <Name>Ix4Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SqlDataExtractor\SqlDataExtractor.csproj">
-      <Project>{ba4eb636-2e78-438e-b3e6-a3daab363b52}</Project>
-      <Name>SqlDataExtractor</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

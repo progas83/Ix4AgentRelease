@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WWDataProcessor
+namespace DataProcessorHelper
 {
     public class UpdateTimeWatcher
     {
@@ -30,11 +30,11 @@ namespace WWDataProcessor
             {
                 if(Properties.LustUpdateSettings.Default.ExportData==null)
                 {
-                    _exportDataListUpdateInfo = Properties.LustUpdateSettings.Default.ExportData;
+                    //_exportDataListUpdateInfo = Properties.LustUpdateSettings.Default.ExportData;
                 }
                 else
                 {
-                    _exportDataListUpdateInfo = new ExportDataLastUpdate(exportTimeSettings);
+                    _exportDataListUpdateInfo = new EDLastUpdate(exportTimeSettings);
                 }
             }
             
@@ -52,12 +52,12 @@ namespace WWDataProcessor
             Properties.LustUpdateSettings.Default.Articles = _articlesLastUpdate;
             Properties.LustUpdateSettings.Default.Orders = _ordersLastUpdate;
             Properties.LustUpdateSettings.Default.Deliveries = _deliveriesLastUpdate;
-            Properties.LustUpdateSettings.Default.ExportData = _exportDataListUpdateInfo;
+          //  Properties.LustUpdateSettings.Default.ExportData = _exportDataListUpdateInfo;
         }
         private static long _articlesLastUpdate;// = 0;
         private static long _ordersLastUpdate;
         private static long _deliveriesLastUpdate;
-        private static Ix4Models.ExportDataLastUpdate _exportDataListUpdateInfo;
+        private static Ix4Models.EDLastUpdate _exportDataListUpdateInfo;
 
 
 
@@ -146,7 +146,7 @@ namespace WWDataProcessor
             }
         }
 
-        public static void SetLastUpdateTimeProperty(string exportDataType)
+        public void SetLastUpdateTimeProperty(string exportDataType)
         {
             try
             {

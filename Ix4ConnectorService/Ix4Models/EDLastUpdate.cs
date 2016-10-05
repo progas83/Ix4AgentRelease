@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace Ix4Models
 {
-    public class ExportDataLastUpdate : Dictionary<string,long>
+    public class EDLastUpdate : Dictionary<string, long>
     {
         private ExportDataSettings _exportDataSettings;
-        public ExportDataLastUpdate(ExportDataSettings exportDataSettings)
+        public EDLastUpdate(ExportDataSettings exportDataSettings)
         {
             _exportDataSettings = exportDataSettings;
-            foreach(var item in exportDataSettings.ExportDataItemSettings)
+            foreach (var item in exportDataSettings.ExportDataItemSettings)
             {
                 this.Add(item.ExportDataTypeName, 0);
             }

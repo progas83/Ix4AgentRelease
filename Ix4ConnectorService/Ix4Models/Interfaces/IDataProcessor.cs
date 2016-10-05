@@ -1,16 +1,11 @@
 ﻿using Ix4Models.SettingsDataModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Ix4Models.Interfaces
 {
     public interface IDataProcessor
     {
+        void LoadSettings(CustomerInfo customerSettings);
         void ImportData();
         void ExportData();
-        void LoadSettings(CustomerInfo customerSettings);
     }
 }

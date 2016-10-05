@@ -1,4 +1,5 @@
-﻿using Ix4Connector;
+﻿using DataProcessorHelper;
+using Ix4Connector;
 using Ix4Models;
 using Ix4Models.Attributes;
 using Ix4Models.DataProviders.MsSqlDataProvider;
@@ -15,66 +16,67 @@ using System.Xml.Serialization;
 namespace WWDataProcessor
 {
     [ExportDataProcessor("wsbio1000001")]
-    public class DataProcessor : IDataProcessor
+    public class DataProcessor : BaseDataProcessor, IDataProcessor
     {
-        private CustomerInfo _customerSettings;
-        private IProxyIx4WebService _ix4WebServiceConnector;
-        private UpdateTimeWatcher _updateTimeWatcher;
+        //private CustomerInfo _customerSettings;
+        //private IProxyIx4WebService _ix4WebServiceConnector;
+        //private UpdateTimeWatcher _updateTimeWatcher;
 
-        private static Logger _loger = Logger.GetLogger();
+       
         public DataProcessor()
         {
             //    _ensureData = new DataEnsure(_customerInfo.UserName);
         }
-        private CustomerInfo _CustomerSettings
+        //private CustomerInfo _CustomerSettings
+        //{
+        //    get
+        //    {
+        //        if (_customerSettings == null)
+        //            throw (new Exception("Settings was not load"));
+        //        return _customerSettings;
+        //    }
+        //}
+
+        //private MsSqlDataProvider _msSqlDataProvider;
+        //public void LoadSettings(CustomerInfo customerSettings)
+        //{
+        //    _customerSettings = customerSettings;
+        //    _ix4WebServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(_CustomerSettings.ClientID, _CustomerSettings.UserName, _CustomerSettings.Password, _CustomerSettings.ServiceEndpoint);
+        //    _updateTimeWatcher = new UpdateTimeWatcher(_CustomerSettings.ImportDataSettings, _CustomerSettings.ExportDataSettings);
+        //    _msSqlDataProvider = new MsSqlDataProvider();// _CustomerSettings.ImportDataSettings, _CustomerSettings.ExportDataSettings);
+        //}
+        //public void ExportData()
+        //{
+        //    //  throw new NotImplementedException();
+        //}
+
+        //public override void ImportData()
+        //{
+        //    base.ImportData();
+        //    //if (_customerSettings.ImportDataSettings.ArticleSettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Articles))
+        //    //{
+        //    //    CheckArticles();
+        //    //    _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Articles);
+        //    //}
+
+        //    //if (_customerSettings.ImportDataSettings.DeliverySettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Deliveries))
+        //    //{
+        //    //    CheckDeliveries();
+        //    //    _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Deliveries);
+        //    //}
+
+        //    //if (_customerSettings.ImportDataSettings.OrderSettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Orders))
+        //    //{
+        //    //    CheckOrders();
+        //    //    _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Orders);
+        //    //}
+
+        //    //   _updateTimeWatcher.SaveLastUpdateValues();
+        //}
+
+        protected override void CheckOrders()
         {
-            get
-            {
-                if (_customerSettings == null)
-                    throw (new Exception("Settings was not load"));
-                return _customerSettings;
-            }
-        }
-
-        private MsSqlDataProvider _msSqlDataProvider;
-        public void LoadSettings(CustomerInfo customerSettings)
-        {
-            _customerSettings = customerSettings;
-            _ix4WebServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(_CustomerSettings.ClientID, _CustomerSettings.UserName, _CustomerSettings.Password, _CustomerSettings.ServiceEndpoint);
-            _updateTimeWatcher = new UpdateTimeWatcher(_CustomerSettings.ImportDataSettings, _CustomerSettings.ExportDataSettings);
-            _msSqlDataProvider = new MsSqlDataProvider();// _CustomerSettings.ImportDataSettings, _CustomerSettings.ExportDataSettings);
-        }
-        public void ExportData()
-        {
-            //  throw new NotImplementedException();
-        }
-
-        public void ImportData()
-        {
-            if (_customerSettings.ImportDataSettings.ArticleSettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Articles))
-            {
-                CheckArticles();
-                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Articles);
-            }
-
-            if (_customerSettings.ImportDataSettings.DeliverySettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Deliveries))
-            {
-                CheckDeliveries();
-                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Deliveries);
-            }
-
-            if (_customerSettings.ImportDataSettings.OrderSettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Orders))
-            {
-                CheckOrders();
-                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Orders);
-            }
-
-            //   _updateTimeWatcher.SaveLastUpdateValues();
-        }
-
-        private void CheckOrders()
-        {
-            XmlFolderSettingsModel xmlSettings = _customerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as XmlFolderSettingsModel;
+            XmlFolderSettingsModel xmlSettings = CustomerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as XmlFolderSettingsModel;
             if(xmlSettings==null)
             {
                 _loger.Log("Wrong settings data for orders");
@@ -99,7 +101,7 @@ namespace WWDataProcessor
                 }
             }
         }
-        public LICSRequest GetCustomerDataFromXml(string fileName)
+        private LICSRequest GetCustomerDataFromXml(string fileName)
         {
 
             XmlSerializer xS = new XmlSerializer(typeof(OutputPayLoad));
@@ -113,19 +115,19 @@ namespace WWDataProcessor
             return licsRequest;
         }
 
-
-        List<LICSRequestArticle> _cachedArticles;
-        private void CheckArticles()
+       
+       
+        protected override void CheckArticles()
         {
             int countA = 0;
             try
             {
 
-                int currentClientID = _customerSettings.ClientID;
+                int currentClientID = CustomerSettings.ClientID;
 
                 LICSRequest request = new LICSRequest();
                 request.ClientId = currentClientID;
-                List<LICSRequestArticle> articles = _msSqlDataProvider.GetArticles(_customerSettings.ImportDataSettings.ArticleSettings.DataSourceSettings as MsSqlArticlesSettings);
+                List<LICSRequestArticle> articles = _msSqlDataProvider.GetArticles(CustomerSettings.ImportDataSettings.ArticleSettings.DataSourceSettings as MsSqlArticlesSettings);
                 _cachedArticles = articles;
                   _loger.Log(string.Format("Got ARTICLES {0}", articles != null ? articles.Count : 0));
 
@@ -166,21 +168,21 @@ namespace WWDataProcessor
             }
         }
 
-        private void CheckDeliveries()
+        protected override void CheckDeliveries()
         {
             try
             {
 
-                int currentClientID = _CustomerSettings.ClientID;
+                int currentClientID = CustomerSettings.ClientID;
                 LICSRequest request = new LICSRequest();
                 request.ClientId = currentClientID;
-                List<LICSRequestDelivery> deliveries = _msSqlDataProvider.GetDeliveries(_CustomerSettings.ImportDataSettings.DeliverySettings.DataSourceSettings as MsSqlDeliveriesSettings);
-                if (_CustomerSettings.ImportDataSettings.DeliverySettings.IncludeArticlesToRequest)
+                List<LICSRequestDelivery> deliveries = _msSqlDataProvider.GetDeliveries(CustomerSettings.ImportDataSettings.DeliverySettings.DataSourceSettings as MsSqlDeliveriesSettings);
+                if (CustomerSettings.ImportDataSettings.DeliverySettings.IncludeArticlesToRequest)
                 {
                     if (_cachedArticles == null)
                     {
                         _loger.Log("There is no cheched articles for filling deliveries");
-                        List<LICSRequestArticle> articles = _msSqlDataProvider.GetArticles(_CustomerSettings.ImportDataSettings.ArticleSettings.DataSourceSettings as MsSqlArticlesSettings);
+                        List<LICSRequestArticle> articles = _msSqlDataProvider.GetArticles(CustomerSettings.ImportDataSettings.ArticleSettings.DataSourceSettings as MsSqlArticlesSettings);
                         _cachedArticles = articles;
                         if (_cachedArticles == null)
                         {
@@ -238,53 +240,7 @@ namespace WWDataProcessor
 
         }
 
-        private LICSResponse SendLicsRequestToIx4(LICSRequest request, string fileName)
-        {
-            LICSResponse result = new LICSResponse();
-            lock (_o)
-            {
-                try
-                {
-                    if (_ix4WebServiceConnector != null)
-                    {
-                        XmlSerializer serializator = new XmlSerializer(typeof(LICSRequest));
-                        using (Stream st = new FileStream(CurrentServiceInformation.TemporaryXmlFileName, FileMode.OpenOrCreate))
-                        {
-                            serializator.Serialize(st, request);
-                            byte[] bytesRequest = ReadToEnd(st);
-                            string response = _ix4WebServiceConnector.ImportXmlRequest(bytesRequest, fileName);
-                            XmlSerializer xS = new XmlSerializer(typeof(LICSResponse));
-                            using (var sr = new StringReader(response))
-                            {
-                                result = (LICSResponse)xS.Deserialize(sr);
-                            }
-                            _loger.Log("Impoort data response : " + response);
-                        }
-                        {
-                            string dataFileName = string.Empty;
-                            int attemptLookForFile = 0;
-                            do
-                            {
-                                attemptLookForFile++;
-                                dataFileName = string.Format(CurrentServiceInformation.FloatTemporaryXmlFileName, attemptLookForFile);
-                            }
-                            while (File.Exists(dataFileName));
-                            File.Copy(CurrentServiceInformation.TemporaryXmlFileName, dataFileName);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    _loger.Log(ex);
-                }
-                finally
-                {
-                    File.Delete(CurrentServiceInformation.TemporaryXmlFileName);
-                }
-            }
-            return result;
-        }
-
+   
         private bool CheckStateRequest(string response)
         {
             bool result = true;
@@ -378,8 +334,7 @@ namespace WWDataProcessor
 
 
 
-        private static object _o = new object();
-        private readonly int _articlesPerRequest = 20;
+       
 
         // private void ExportData()
         // {
@@ -557,57 +512,7 @@ namespace WWDataProcessor
 
 
         }
-        private byte[] ReadToEnd(System.IO.Stream stream)
-        {
-            long originalPosition = 0;
-
-            if (stream.CanSeek)
-            {
-                originalPosition = stream.Position;
-                stream.Position = 0;
-            }
-
-            try
-            {
-                byte[] readBuffer = new byte[4096];
-
-                int totalBytesRead = 0;
-                int bytesRead;
-
-                while ((bytesRead = stream.Read(readBuffer, totalBytesRead, readBuffer.Length - totalBytesRead)) > 0)
-                {
-                    totalBytesRead += bytesRead;
-
-                    if (totalBytesRead == readBuffer.Length)
-                    {
-                        int nextByte = stream.ReadByte();
-                        if (nextByte != -1)
-                        {
-                            byte[] temp = new byte[readBuffer.Length * 2];
-                            Buffer.BlockCopy(readBuffer, 0, temp, 0, readBuffer.Length);
-                            Buffer.SetByte(temp, totalBytesRead, (byte)nextByte);
-                            readBuffer = temp;
-                            totalBytesRead++;
-                        }
-                    }
-                }
-
-                byte[] buffer = readBuffer;
-                if (readBuffer.Length != totalBytesRead)
-                {
-                    buffer = new byte[totalBytesRead];
-                    Buffer.BlockCopy(readBuffer, 0, buffer, 0, totalBytesRead);
-                }
-                return buffer;
-            }
-            finally
-            {
-                if (stream.CanSeek)
-                {
-                    stream.Position = originalPosition;
-                }
-            }
-        }
+    
 
         private bool HasItemsForSending(LICSRequest[] requests, Ix4RequestProps ix4Property)
         {
@@ -658,6 +563,9 @@ namespace WWDataProcessor
             return result;
         }
 
-
+        protected override void ProcessExportedData(ExportDataItemSettings settings)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
