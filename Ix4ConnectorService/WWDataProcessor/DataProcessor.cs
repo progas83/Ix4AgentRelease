@@ -46,7 +46,7 @@ namespace WWDataProcessor
         }
         public void ExportData()
         {
-          //  throw new NotImplementedException();
+            //  throw new NotImplementedException();
         }
 
         public void ImportData()
@@ -57,7 +57,7 @@ namespace WWDataProcessor
                 _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Articles);
             }
 
-            if (_customerSettings.ImportDataSettings.DeliverySettings.IsActivate &&_updateTimeWatcher.TimeToCheck(Ix4RequestProps.Deliveries))
+            if (_customerSettings.ImportDataSettings.DeliverySettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Deliveries))
             {
                 CheckDeliveries();
                 _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Deliveries);
@@ -69,18 +69,33 @@ namespace WWDataProcessor
                 _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Orders);
             }
 
-         //   _updateTimeWatcher.SaveLastUpdateValues();
+            //   _updateTimeWatcher.SaveLastUpdateValues();
         }
 
         private void CheckOrders()
         {
-            string[] xmlSourceFiles = Directory.GetFiles((_customerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as XmlFolderSettingsModel).XmlItemSourceFolder, "*.xml");
+            XmlFolderSettingsModel xmlSettings = _customerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as XmlFolderSettingsModel;
+            if(xmlSettings==null)
+            {
+                _loger.Log("Wrong settings data for orders");
+                return;
+            }
+            string[] xmlSourceFiles = Directory.GetFiles(xmlSettings.XmlItemSourceFolder, "*.xml");
             if (xmlSourceFiles.Length > 0)
             {
                 foreach (string file in xmlSourceFiles)
                 {
-                  LICSRequest request = GetCustomerDataFromXml(file);
-                  bool res = SendLicsRequestToIx4(request, "deliveryFile.xml");
+                    LICSRequest request = GetCustomerDataFromXml(file);
+                    LICSResponse response = SendLicsRequestToIx4(request, "deliveryFile.xml");
+                   if(response.DeliveryImport.CountOfFailed==0)
+                    {
+                        string successFolder = string.Format("{0}\\Archive", xmlSettings.XmlItemSourceFolder);
+                        if(!Directory.Exists(successFolder))
+                        {
+                            Directory.CreateDirectory(successFolder);
+                        }
+                        File.Move(file,string.Format("{0}\\{1}", successFolder,Path.GetFileName(file)));
+                    }
                 }
             }
         }
@@ -112,7 +127,7 @@ namespace WWDataProcessor
                 request.ClientId = currentClientID;
                 List<LICSRequestArticle> articles = _msSqlDataProvider.GetArticles(_customerSettings.ImportDataSettings.ArticleSettings.DataSourceSettings as MsSqlArticlesSettings);
                 _cachedArticles = articles;
-                //  _loger.Log(string.Format("Got ARTICLES {0}", articles != null ? articles.Length : 0));
+                  _loger.Log(string.Format("Got ARTICLES {0}", articles != null ? articles.Count : 0));
 
                 if (articles == null || articles.Count == 0)
                 {
@@ -129,17 +144,19 @@ namespace WWDataProcessor
                     if (tempAtricles.Count >= _articlesPerRequest || i == articles.Count - 1)
                     {
                         request.ArticleImport = tempAtricles.ToArray();
-                        var resSent =  SendLicsRequestToIx4(request, "articleFile.xml");
-                        if (resSent)
+                        LICSResponse resSent = SendLicsRequestToIx4(request, "articleFile.xml");
+                        if(resSent.ArticleImport.CountOfFailed==0)
                         {
                             countA++;
                             _loger.Log(string.Format("Was sent {0} request with {1} articles", countA, tempAtricles.Count));
-                            tempAtricles = new List<LICSRequestArticle>();
                         }
+                        else
+                        {
+
+                        }
+                        tempAtricles = new List<LICSRequestArticle>();
                     }
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -221,30 +238,29 @@ namespace WWDataProcessor
 
         }
 
-        private bool SendLicsRequestToIx4(LICSRequest request, string fileName)
+        private LICSResponse SendLicsRequestToIx4(LICSRequest request, string fileName)
         {
-            bool result = false;
+            LICSResponse result = new LICSResponse();
             lock (_o)
             {
                 try
                 {
                     if (_ix4WebServiceConnector != null)
                     {
-                        bool requestSuccess = true;
                         XmlSerializer serializator = new XmlSerializer(typeof(LICSRequest));
                         using (Stream st = new FileStream(CurrentServiceInformation.TemporaryXmlFileName, FileMode.OpenOrCreate))
                         {
-                            //  _loger.Log("Check customerID = ClientId" + request.ClientId);
                             serializator.Serialize(st, request);
                             byte[] bytesRequest = ReadToEnd(st);
-                           ///// string resp = _ix4WebServiceConnector.ImportXmlRequest(bytesRequest, fileName);
-                           ///// requestSuccess = CheckStateRequest(resp);
-                            //SimplestParcerLicsRequest(resp);
-                           //// _loger.Log(resp);
+                            string response = _ix4WebServiceConnector.ImportXmlRequest(bytesRequest, fileName);
+                            XmlSerializer xS = new XmlSerializer(typeof(LICSResponse));
+                            using (var sr = new StringReader(response))
+                            {
+                                result = (LICSResponse)xS.Deserialize(sr);
+                            }
+                            _loger.Log("Impoort data response : " + response);
                         }
-                        // if (!requestSuccess)
                         {
-                            //_errorCount++;
                             string dataFileName = string.Empty;
                             int attemptLookForFile = 0;
                             do
@@ -255,7 +271,6 @@ namespace WWDataProcessor
                             while (File.Exists(dataFileName));
                             File.Copy(CurrentServiceInformation.TemporaryXmlFileName, dataFileName);
                         }
-                        result = requestSuccess;
                     }
                 }
                 catch (Exception ex)
@@ -643,162 +658,6 @@ namespace WWDataProcessor
             return result;
         }
 
-        private void CheckPreparedRequest(CustomDataSourceTypes dataSourceType, Ix4RequestProps ix4Property)
-        {
 
-            try
-            {
-                // if (UpdateTimeWatcher.TimeToCheck(ix4Property))
-                //{
-                //    _loger.Log(string.Format("Start Check {0} using {1} plugin", ix4Property.ToString(), dataSourceType.ToString()));
-                //    LICSRequest[] requests = _dataCompositor.GetPreparedRequests(dataSourceType, ix4Property);
-
-                //    if (requests != null && HasItemsForSending(requests, ix4Property))
-                //    {
-                //        foreach (var item in requests)
-                //        {
-                //            //_loger.Log(string.Format("Count of available {0} = {1}", ix4Property, item.OrderImport.Length));
-                //            //_loger.Log("LicsReques orders = " + item.SerializeObjectToString<LICSRequest>());
-                //            item.ClientId = _customerInfo.ClientID;
-                //            //_loger.Log("client id = " + _customerInfo.ClientID);
-                //            foreach (var order in item.OrderImport)
-                //            {
-                //                order.ClientNo = _customerInfo.ClientID;
-                //            }
-                //            bool res = SendLicsRequestToIx4(item, string.Format("{0}File.xml", ix4Property.ToString()));
-                //            _loger.Log(string.Format("{0} result: {1}", ix4Property, res));
-                //            if (res)
-                //            {
-                //                UpdateTimeWatcher.SetLastUpdateTimeProperty(ix4Property);
-                //            }
-                //        }
-                //    }
-                //    _loger.Log(string.Format("Finish Check {0} using {1} plugin", ix4Property.ToString(), dataSourceType.ToString()));
-                //    System.Threading.Thread.Sleep(30000);
-                //}
-
-            }
-            catch (Exception ex)
-            {
-                _loger.Log(ex);
-            }
-        }
-
-
-
-        //private void CheckDeliveries()
-        //{
-        //    try
-        //    {
-        //        if (UpdateTimeWatcher.TimeToCheck(Ix4RequestProps.Deliveries))
-        //        {
-        //            if (_cachedArticles == null)
-        //            {
-        //                _loger.Log("There is no cheched articles for filling deliveries");
-        //                CheckArticles();
-        //                if (_cachedArticles == null)
-        //                {
-        //                    _loger.Log("WE CANNOT GET DELIVERIES WITHOUT ARTICLES");
-        //                    return;
-        //                }
-        //            }
-        //            int currentClientID = _customerInfo.ClientID;
-        //            LICSRequest request = new LICSRequest();
-        //            request.ClientId = currentClientID;
-        //            LICSRequestDelivery[] deliveries = _dataCompositor.GetRequestDeliveries();
-        //            List<LICSRequestArticle> articlesByDelliveries = new List<LICSRequestArticle>();
-        //            _loger.Log(deliveries, "deliveries");
-        //            if (deliveries.Length == 0)
-        //            {
-        //                _loger.Log("There is no deliveries");
-        //                return;
-        //            }
-        //            foreach (LICSRequestDelivery delivery in deliveries)
-        //            {
-        //                bool deliveryHasErrors = false;
-        //                articlesByDelliveries = new List<LICSRequestArticle>();
-        //                delivery.ClientNo = currentClientID;
-        //                request.DeliveryImport = new LICSRequestDelivery[] { delivery };
-        //                foreach (var position in delivery.Positions)
-        //                {
-        //                    LICSRequestArticle findArticle = GetArticleByNumber(position.ArticleNo);
-        //                    if (findArticle == null)
-        //                    {
-        //                        _loger.Log("Cannot find article with no:  " + position.ArticleNo);
-        //                        _loger.Log("Delivery with wrong article position:  " + delivery);
-        //                        deliveryHasErrors = true;
-        //                    }
-        //                    else
-        //                    {
-        //                        articlesByDelliveries.Add(findArticle);
-        //                    }
-        //                }
-        //                if (deliveryHasErrors)
-        //                {
-        //                    _loger.Log("Delivery " + delivery + "WAS NOT SEND");
-        //                    continue;
-        //                }
-        //                else
-        //                {
-        //                    request.ArticleImport = articlesByDelliveries.ToArray();
-        //                    _loger.Log("Delivery before sending: ");
-        //                    foreach (LICSRequestDelivery item in request.DeliveryImport)
-        //                    {
-        //                        _loger.Log(item.SerializeObjectToString<LICSRequestDelivery>());
-        //                    }
-
-        //                    var res = SendLicsRequestToIx4(request, "deliveryFile.xml");
-        //                    _loger.Log("Delivery result: " + res);
-        //                }
-
-        //            }
-        //            UpdateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Deliveries);
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _loger.Log(ex);
-        //    }
-        //}
-
-
-
-
-
-
-        //private void CheckOrders()
-        //{
-        //    try
-        //    {
-        //        if (_customerInfo == null)
-        //        {
-        //            return;
-        //        }
-
-        //        string[] xmlSourceFiles = Directory.GetFiles(_customerInfo.PluginSettings.XmlSettings.XmlOrdersSourceFolder);
-        //        if (xmlSourceFiles.Length > 0)
-        //        {
-        //            foreach (string file in xmlSourceFiles)
-        //            {
-        //                LICSRequest request = new LICSRequest();
-
-        //                LICSRequestOrder[] requestOrders = _dataCompositor.GetRequestOrders();
-        //                request.OrderImport = requestOrders;
-        //                request.ClientId = _customerInfo.ClientID;
-        //                var res = SendLicsRequestToIx4(request, Path.GetFileName(file));
-        //            }
-        //        }
-
-
-        //        string mes1 = string.Format("Service Timer has been elapsed at {0} | {1}", DateTime.UtcNow.ToShortDateString(), DateTime.UtcNow.ToShortTimeString());
-        //        string mes2 = string.Format("Count of files in the folder {0} = {1}", _customerInfo.PluginSettings.XmlSettings.XmlArticleSourceFolder, xmlSourceFiles.Length);
-        //        WrightLog(mes1);
-        //        WrightLog(mes2);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        WrightLog(ex.Message);
-        //    }
-        //}
     }
 }
