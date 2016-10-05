@@ -6,25 +6,25 @@
              xmlns:local="clr-namespace:SqlDataExtractor.Settings.View"
              mc:Ignorable="d"  Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <StackPanel Orientation="Vertical" >
+    <DockPanel >
         <Label Content="SQL query for getting all deliveries" 
                            HorizontalAlignment="Stretch" 
                            HorizontalContentAlignment="Center" 
                            VerticalContentAlignment="Center" 
-                           DockPanel.Dock="Top" Margin="0,0,0,5">
-        </Label>
-        <TextBox TextWrapping="Wrap" Text="{Binding DeliveriesQuery}" MinHeight="50" DockPanel.Dock="Top" Margin="0,0,0,5">
+                           DockPanel.Dock="Top" Margin="0,0,0,5"/>
 
-        </TextBox>
+        <TextBox TextWrapping="Wrap" Text="{Binding DeliveriesQuery}" MinHeight="50" HorizontalContentAlignment="Left" DockPanel.Dock="Top" Margin="0,0,0,5"/>
+
+
 
         <Label Content="SQL query for getting positions for particular delivery" 
                            HorizontalAlignment="Stretch" 
                            HorizontalContentAlignment="Center" 
                            VerticalContentAlignment="Center" 
-                           DockPanel.Dock="Top" Margin="0,0,0,5">
-        </Label>
-        <TextBox TextWrapping="Wrap" Text="{Binding DeliveryPositionsQuery}" MinHeight="50" DockPanel.Dock="Top" Margin="0,0,0,5">
+                           DockPanel.Dock="Top" Margin="0,0,0,5"/>
 
-        </TextBox>
-    </StackPanel>
+        <TextBox TextWrapping="Wrap" Text="{Binding DeliveryPositionsQuery}" MinHeight="50" HorizontalContentAlignment="Left" DockPanel.Dock="Top" Margin="0,0,0,5"/>
+
+
+    </DockPanel>
 </UserControl>

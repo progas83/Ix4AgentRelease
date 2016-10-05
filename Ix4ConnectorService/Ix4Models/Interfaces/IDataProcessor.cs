@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ix4Models.SettingsDataModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,5 +11,6 @@ namespace Ix4Models.Interfaces
     {
         void ImportData();
         void ExportData();
+        void LoadSettings(CustomerInfo customerSettings);
     }
 }

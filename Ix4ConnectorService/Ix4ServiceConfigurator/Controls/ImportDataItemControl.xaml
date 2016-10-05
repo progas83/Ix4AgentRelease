@@ -51,7 +51,7 @@
                        VerticalContentAlignment="Top" 
                        Content="{Binding Source={StaticResource Localization}, Path=ScheduleSettings}" />-->
             <local:ScheduleControl Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Margin="5" DataContext="{Binding Scheduler}" HorizontalAlignment="Left"/>
-            <ContentControl Margin="5" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" DockPanel.Dock="Top"
+            <ContentControl Margin="5" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" DockPanel.Dock="Left"
                             HorizontalAlignment="Stretch" Width="Auto" MaxHeight="400"
                             ScrollViewer.CanContentScroll="True" 
                             ScrollViewer.PanningMode="VerticalFirst" 

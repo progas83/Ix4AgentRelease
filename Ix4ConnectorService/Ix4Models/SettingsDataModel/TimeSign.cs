@@ -13,10 +13,10 @@ namespace Ix4Models.SettingsDataModel
         [XmlEnum(Name ="Unassigned")]
         Unassigned = 0,
         [XmlEnum(Name= "Min")]
-        Min = 60,
+        Min = 1,
         [XmlEnum(Name = "Hour")]
-        Hour = 3600,
+        Hour = 60,
         [XmlEnum(Name = "Day")]
-        Day = 86400
+        Day = 1440
     }
 }

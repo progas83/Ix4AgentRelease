@@ -43,7 +43,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Args\ExportDataAsyncCompletedEventArgs.cs" />
-    <Compile Include="ExportData.cs" />
     <Compile Include="IProxyIx4WebService.cs" />
     <Compile Include="Ix4ConnectorManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

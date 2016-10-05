@@ -21,21 +21,21 @@ namespace Ix4ServiceConfigurator.ViewModel
           //  _compositor = new CustomerDataComposition(XmlConfigurationManager.Instance.GetCustomerInformation().ImportDataSettings.ArticleSettings);
         }
 
-        private void InitSettings(Ix4RequestProps itemName)
-        {
-            switch (itemName)
-            {
-                case Ix4RequestProps.Articles:
-                    BaseSettings = XmlConfigurationManager.Instance.GetCustomerInformation().ImportDataSettings.ArticleSettings;
-                    break;
-                case Ix4RequestProps.Orders:
-                    BaseSettings = XmlConfigurationManager.Instance.GetCustomerInformation().ImportDataSettings.OrderSettings;
-                    break;
-                case Ix4RequestProps.Deliveries:
-                    BaseSettings = XmlConfigurationManager.Instance.GetCustomerInformation().ImportDataSettings.DeliverySettings;
-                    break;
-            }
-        }
+        //private void InitSettings(Ix4RequestProps itemName)
+        //{
+        //    switch (itemName)
+        //    {
+        //        case Ix4RequestProps.Articles:
+        //            BaseSettings = XmlConfigurationManager.Instance.GetCustomerInformation().ImportDataSettings.ArticleSettings;
+        //            break;
+        //        case Ix4RequestProps.Orders:
+        //            BaseSettings = XmlConfigurationManager.Instance.GetCustomerInformation().ImportDataSettings.OrderSettings;
+        //            break;
+        //        case Ix4RequestProps.Deliveries:
+        //            BaseSettings = XmlConfigurationManager.Instance.GetCustomerInformation().ImportDataSettings.DeliverySettings;
+        //            break;
+        //    }
+        //}
 
         public BaseLicsRequestSettings BaseSettings { get; set; }
 

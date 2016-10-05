@@ -10,11 +10,8 @@ namespace Ix4ServiceConfigurator.ViewModel
 {
      public class ImportDataSettingsViewModel : BaseViewModel
     {
-       // private ImportDataSettings _importDataSettings;
-
         public ImportDataSettingsViewModel(ImportDataSettings importDataSettings)
         {
-          //  this._importDataSettings = importDataSettings;
             ArticlesSettings = new ImportDataItemViewModel(importDataSettings.ArticleSettings);
             OrdersSettings = new ImportDataItemViewModel(importDataSettings.OrderSettings);
             DeliveriesSettings = new ImportDataItemViewModel(importDataSettings.DeliverySettings);

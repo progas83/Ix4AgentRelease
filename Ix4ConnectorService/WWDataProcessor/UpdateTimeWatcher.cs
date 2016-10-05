@@ -128,7 +128,7 @@ namespace WWDataProcessor
             return result;
         }
 
-        public static void SetLastUpdateTimeProperty(Ix4RequestProps ix4Property)
+        public void SetLastUpdateTimeProperty(Ix4RequestProps ix4Property)
         {
             switch (ix4Property)
             {

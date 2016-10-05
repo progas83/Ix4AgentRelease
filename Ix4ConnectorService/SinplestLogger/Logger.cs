@@ -1,6 +1,4 @@
-﻿using Ix4Models;
-using Ix4Models.Enums;
-using SinplestLogger.Mailer;
+﻿using SinplestLogger.Mailer;
 using System;
 using System.IO;
 
@@ -15,7 +13,10 @@ namespace SimplestLogger
         string _logFileName = string.Empty;
         string _currentDate = string.Empty;
 
-       
+        private static readonly string _loggerFileName = string.Format("{0}{1}", System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "\\logger{0}.log");// @"C:\Ilya\ServiceProgram\configuration.xml";// "configuration.xml";
+        public static string LoggerFileName { get { return _loggerFileName; } }
+
+
         private Logger()
         {
         }
@@ -76,7 +77,7 @@ namespace SimplestLogger
             do
             {
                 i++;
-                newLogFileName = string.Format(CurrentServiceInformation.LoggerFileName, i);
+                newLogFileName = string.Format(LoggerFileName, i);
             }
             while (File.Exists(newLogFileName));
             _logFileName = newLogFileName;

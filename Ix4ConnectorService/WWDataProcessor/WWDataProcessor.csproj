@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="DataProcessor.cs" />
     <Compile Include="Properties\LustUpdateSettings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -69,7 +68,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\LustUpdateSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>LustUpdateSettings.Designer.cs</LastGenOutput>

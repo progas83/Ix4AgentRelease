@@ -10,7 +10,8 @@
         public const string NameForPluginMetadata = "ConnectorMetadata";
 
         public const string PluginsSubdirectory = "Plugins";
-    
+        public const string ClientsSubdirectory = "Clients";
+
 
         public const string CustomDataSourceTypeMsSql = "MsSql";
         public const string CustomDataSourceTypeCsv = "Csv";
@@ -22,9 +23,6 @@
 
         private static readonly string _xmlFileName = string.Format("{0}{1}", System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "\\configuration.xml");// @"C:\Ilya\ServiceProgram\configuration.xml";// "configuration.xml";
         public static string FileName { get { return _xmlFileName; } }
-
-        private static readonly string _loggerFileName = string.Format("{0}{1}", System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "\\logger{0}.log");// @"C:\Ilya\ServiceProgram\configuration.xml";// "configuration.xml";
-        public static string LoggerFileName { get { return _loggerFileName; } }
 
         private static readonly string _temporaryXmlFileName = string.Format("{0}{1}", System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "\\tmp.xml");// @"C:\Ilya\ServiceProgram\configuration.xml";// "configuration.xml";
         public static string TemporaryXmlFileName { get { return _temporaryXmlFileName; } }

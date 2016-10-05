@@ -12,6 +12,6 @@
                            HorizontalContentAlignment="Center" 
                            VerticalContentAlignment="Center" 
                            DockPanel.Dock="Top"/>
-        <TextBox TextWrapping="Wrap" Text="{Binding ArticlesQuery}" MinHeight="50" DockPanel.Dock="Top"/>
+        <TextBox TextWrapping="Wrap" Text="{Binding ArticlesQuery}" MinHeight="50" HorizontalContentAlignment="Left" DockPanel.Dock="Top"/>
     </DockPanel>
 </UserControl>
