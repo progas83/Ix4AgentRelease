@@ -170,12 +170,14 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
             List<LICSRequestOrder> orders = new List<LICSRequestOrder>();
             try
             {
-                using (var connection = new SqlConnection(settings.BuilDBConnection()))
+                if (settings == null)
                 {
-                    if (settings == null)
-                    {
-                        throw new Exception("Empty deliveries settings");
-                    }
+                    throw new Exception("Empty orders settings");
+                }
+                string dbConnectStr = settings.BuilDBConnection();
+                _loger.Log("connection string = "+ dbConnectStr);
+                using (var connection = new SqlConnection(dbConnectStr))
+                {
                     connection.Open();
                     var cmdText = settings.OrdersQuery;
                     _loger.Log(string.Format("Order reques sql {0}", cmdText));
