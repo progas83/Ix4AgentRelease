@@ -204,9 +204,11 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                         _loger.Log(string.Format("Order positions sql {0}", getOrderPositionsQuery));
                         SqlCommand cmdPositions = new SqlCommand(getOrderPositionsQuery, connection);
                         SqlDataReader readerPositions = cmdPositions.ExecuteReader();
-                        DataTable tablePositions = new DataTable();
-                        tablePositions.Load(readerPositions);
-                        orderItem.Positions = LoadItems<LICSRequestOrderPosition>(readerPositions).ToArray();
+                        //DataTable tablePositions = new DataTable();
+                        //tablePositions.Load(readerPositions);
+                        orderItem.Positions = LoadItems<LICSRequestOrderPosition>(readerPositions).ToArray<LICSRequestOrderPosition>();
+                        _loger.Log(orderItem.Positions, "orderItem.Positions");
+                        _loger.Log("Position number = " +orderItem.Positions.Length);
                         if (orderItem.Positions != null && orderItem.Positions.Length > 0)
                         {
                             orders.Add(orderItem);

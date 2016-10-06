@@ -174,8 +174,8 @@ namespace WVDataProcessor
                             }
                         }
                     }
-
-                    request.ArticleImport = articlesByOrders.ToArray();
+                    request.OrderImport = orders.ToArray<LICSRequestOrder>();
+                    request.ArticleImport = articlesByOrders.ToArray<LICSRequestArticle>();
                 }
                 else
                 {
@@ -183,6 +183,7 @@ namespace WVDataProcessor
                     {
                         order.ClientNo = currentClientID;
                     }
+                    request.OrderImport = orders.ToArray<LICSRequestOrder>();
                 }
 
                 LICSResponse response = SendLicsRequestToIx4(request, "ordersFile.xml");
