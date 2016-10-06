@@ -143,9 +143,9 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                         string getPositionsCommand = string.Format(settings.DeliveryPositionsQuery, delivery.DeliveryNo);
                         SqlCommand cmdPositions = new SqlCommand(getPositionsCommand, connection);
                         SqlDataReader positonsReader = cmdPositions.ExecuteReader();
-                        DataTable tablePositions = new DataTable();
-                        tablePositions.Load(positonsReader);
-                        delivery.Positions = LoadItems<LICSRequestDeliveryPosition>(positonsReader).ToArray();
+                       // DataTable tablePositions = new DataTable();
+                       // tablePositions.Load(positonsReader);
+                        delivery.Positions = LoadItems<LICSRequestDeliveryPosition>(positonsReader).ToArray<LICSRequestDeliveryPosition>();
                         if (delivery.Positions != null && delivery.Positions.Length > 0)
                         {
                             requestDeliveries.Add(delivery);

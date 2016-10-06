@@ -162,6 +162,7 @@ namespace WWDataProcessor
                             }
                             else
                             {
+                                findArticle.ClientNo = CustomerSettings.ClientID;
                                 articlesByDelliveries.Add(findArticle);
                             }
                         }
@@ -205,14 +206,41 @@ namespace WWDataProcessor
                     foreach (string file in xmlSourceFiles)
                     {
                         LICSRequest request = GetCustomerDataFromXml(file);
+                        request.ClientId = CustomerSettings.ClientID;
+
+                        if(request.ArticleImport!=null)
+                        {
+                            foreach(var article in request.ArticleImport)
+                            {
+                                article.ClientNo = CustomerSettings.ClientID;
+                            }
+                        }
+                        if(request.OrderImport!=null)
+                        {
+                            foreach(var ord in request.OrderImport)
+                            {
+                                ord.ClientNo = CustomerSettings.ClientID;
+                            }
+                        }
                         LICSResponse response = SendLicsRequestToIx4(request, "deliveryFile.xml");
                         if (response.DeliveryImport.CountOfFailed == 0)
                         {
-                            string successFolder = string.Format("{0}\\Archive", xmlSettings.XmlItemSourceFolder);
-                            if (!Directory.Exists(successFolder))
+                            string clientsDirectory = "D:\\Transfer\\XML_Archiv";
+                            string customDirectory = string.Format("{0}\\Archive", xmlSettings.XmlItemSourceFolder);
+                            string successFolder = string.Empty;
+                            if (!Directory.Exists(clientsDirectory))
                             {
-                                Directory.CreateDirectory(successFolder);
+                                if (!Directory.Exists(customDirectory))
+                                {
+                                    Directory.CreateDirectory(customDirectory);
+                                    successFolder = customDirectory;
+                                }
                             }
+                            else
+                            {
+                                successFolder = clientsDirectory;
+                            }
+                           
                             File.Move(file, string.Format("{0}\\{1}", successFolder, Path.GetFileName(file)));
                         }
                     }

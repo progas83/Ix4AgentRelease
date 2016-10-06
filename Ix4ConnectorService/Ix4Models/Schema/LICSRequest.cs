@@ -442,7 +442,14 @@ public partial class LICSRequestArticle {
         }
         set {
             this.inactiveField = value;
-            InactiveSpecified = true;
+            if (value < 0)
+            {
+                InactiveSpecified = false;
+            }
+            else
+            {
+                InactiveSpecified = true;
+            }
         }
     }
     
