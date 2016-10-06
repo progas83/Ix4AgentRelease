@@ -19,7 +19,7 @@ namespace WVDataProcessor
         protected static Logger _loger = Logger.GetLogger();
         private string _dbConnection = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=InterfaceDilosLMS; User ID=sa;Password=sa";
         //    private string _dbConnectionlms10dat = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=lms10dat; User ID=sa;Password=sa";
-        //    private string _dbConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Initial Catalog = InterfaceDilosLMS;Integrated Security=SSPI";
+        //private string _dbConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Initial Catalog = InterfaceDilosLMS;Integrated Security=SSPI";
         ExportDataSettings _exportSettings;
         public ExportDataToSQL(ExportDataSettings exportSettings) 
         {
@@ -209,7 +209,7 @@ namespace WVDataProcessor
             {
                 cmd.Parameters.AddWithValue("@hType", message.Type);
                 cmd.Parameters.AddWithValue("@hStatus", message.Status);
-                cmd.Parameters.AddWithValue("@hUser", message.User);
+                cmd.Parameters.AddWithValue("@hUser", message.User??string.Empty);
                 cmd.Parameters.AddWithValue("@hCreated", message.Created);
                 cmd.Parameters.AddWithValue("@hLastUpdate", DateTime.Now);
                 cmd.Parameters.AddWithValue("@hErrorText", string.IsNullOrEmpty(message.ErrorText) ? string.Empty : message.ErrorText);
