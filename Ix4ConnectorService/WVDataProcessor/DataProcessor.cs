@@ -18,7 +18,7 @@ namespace WVDataProcessor
     [ExportDataProcessor("wwinterface1000090")]
     public class DataProcessor : BaseDataProcessor, IDataProcessor
     {
-        
+
         protected override void CheckArticles()
         {
             int countA = 0;
@@ -274,7 +274,7 @@ namespace WVDataProcessor
         {
             if (_dataExportetToSql == null)
                 _dataExportetToSql = new ExportDataToSQL(CustomerSettings.ExportDataSettings);
-            switch(settings.ExportDataTypeName)
+            switch (settings.ExportDataTypeName)
             {
                 case "GP":
                     ProcessGPData();
@@ -291,7 +291,7 @@ namespace WVDataProcessor
                 case "CA":
                     ProcessCAData();
                     break;
-                default:break;
+                default: break;
             }
         }
 

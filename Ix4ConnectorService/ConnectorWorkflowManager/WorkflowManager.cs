@@ -18,13 +18,13 @@ namespace ConnectorWorkflowManager
     {
         private static WorkflowManager _manager;
         private CustomerInfo _customerSettings;
-       // private CustomerDataComposition _dataCompositor;
-    //    private IProxyIx4WebService _ix4WebServiceConnector;
+        // private CustomerDataComposition _dataCompositor;
+        //    private IProxyIx4WebService _ix4WebServiceConnector;
         //private DataEnsure _ensureData;
         protected Timer _timer;
         private static object _padlock = new object();
         private static readonly long RElapsedEvery = 30 * 1 * 1000;
-   //     private static readonly int _articlesPerRequest = 20;
+        //     private static readonly int _articlesPerRequest = 20;
 
 
         //bool _isArticlesBusy = false;
@@ -79,7 +79,7 @@ namespace ConnectorWorkflowManager
             }
             catch (Exception ex)
             {
-               _loger.Log(ex);
+                _loger.Log(ex);
             }
         }
 
@@ -103,36 +103,38 @@ namespace ConnectorWorkflowManager
 
                 _loger.Log("Service has been started at");
 
-               // _customerInfo = XmlConfigurationManager.Instance.GetCustomerInformation();
-               //// _dataCompositor = new CustomerDataComposition(_customerInfo.PluginSettings);
-               // _ix4WebServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(_customerInfo.ClientID, _customerInfo.UserName, _customerInfo.Password, _customerInfo.ServiceEndpoint);
-               // _ensureData = new DataEnsure(_customerInfo.UserName);
+                // _customerInfo = XmlConfigurationManager.Instance.GetCustomerInformation();
+                //// _dataCompositor = new CustomerDataComposition(_customerInfo.PluginSettings);
+                // _ix4WebServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(_customerInfo.ClientID, _customerInfo.UserName, _customerInfo.Password, _customerInfo.ServiceEndpoint);
+                // _ensureData = new DataEnsure(_customerInfo.UserName);
                 _timer.Enabled = true;
             }
             catch (Exception ex)
             {
                 _loger.Log(ex);
-              //  _loger.Log(_customerInfo, "_customerInfo");
-              //  _loger.Log(_ix4WebServiceConnector, "_ix4WebServiceConnector");
+                //  _loger.Log(_customerInfo, "_customerInfo");
+                //  _loger.Log(_ix4WebServiceConnector, "_ix4WebServiceConnector");
             }
         }
         private bool _isBusy = false;
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            if(!_isBusy && _currentDataProcessor != null)
+            if (!_isBusy && _currentDataProcessor != null)
             {
                 _timer.Enabled = false;
                 _isBusy = true;
                 try
                 {
-                    _loger.Log("Start checking data");
-                    _currentDataProcessor.ImportData();
-                    _loger.Log("Finish Import data");
-                    _currentDataProcessor.ExportData();
-                    _loger.Log("Finish checking data");
-
+                    if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
+                    {
+                        _loger.Log("Start checking data");
+                        _currentDataProcessor.ImportData();
+                        _loger.Log("Finish Import data");
+                        _currentDataProcessor.ExportData();
+                        _loger.Log("Finish checking data");
+                    }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     _loger.Log(ex);
                 }
@@ -149,7 +151,7 @@ namespace ConnectorWorkflowManager
             if (_timer != null && _timer.Enabled)
             {
                 _timer.Enabled = false;
-               _loger.Log("Service paused");
+                _loger.Log("Service paused");
             }
         }
 
