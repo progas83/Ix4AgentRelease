@@ -62,6 +62,8 @@ namespace WVDataProcessor
                         tempAtricles = new List<LICSRequestArticle>();
                     }
                 }
+
+                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Articles);
             }
             catch (Exception ex)
             {
@@ -124,6 +126,7 @@ namespace WVDataProcessor
 
                 var res = SendLicsRequestToIx4(request, "deliveryFile.xml");
                 _loger.Log("Delivery result: " + res);
+                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Deliveries);
             }
             catch (Exception ex)
             {
@@ -185,6 +188,7 @@ namespace WVDataProcessor
                 LICSResponse response = SendLicsRequestToIx4(request, "ordersFile.xml");
                 _loger.Log("Orders result: " + response);
                 SimplestParcerLicsRequest(response);
+                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Orders);
             }
             catch (Exception ex)
             {

@@ -57,8 +57,9 @@ namespace DataProcessorHelper
                 _customerSettings.ImportDataSettings.ArticleSettings.IsNowWorkingTime && 
                 _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Articles))
             {
+
                 CheckArticles();
-                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Articles);
+               
             }
 
             if (_customerSettings.ImportDataSettings.DeliverySettings.IsActivate &&
@@ -66,7 +67,7 @@ namespace DataProcessorHelper
                 _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Deliveries))
             {
                 CheckDeliveries();
-                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Deliveries);
+               
             }
 
             if (_customerSettings.ImportDataSettings.OrderSettings.IsActivate &&
@@ -74,9 +75,9 @@ namespace DataProcessorHelper
                 _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Orders))
             {
                 CheckOrders();
-                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Orders);
+            
             }
-            //_updateTimeWatcher.SaveLastUpdateValues();
+            _updateTimeWatcher.SaveLastUpdateValues();
         }
 
         public void ExportData()
@@ -105,13 +106,13 @@ namespace DataProcessorHelper
                         {
                             serializator.Serialize(st, request);
                             byte[] bytesRequest = ReadToEnd(st);
-                            //string response = _ix4WebServiceConnector.ImportXmlRequest(bytesRequest, fileName);
-                            //XmlSerializer xS = new XmlSerializer(typeof(LICSResponse));
-                            //using (var sr = new StringReader(response))
-                            //{
-                            //    result = (LICSResponse)xS.Deserialize(sr);
-                            //}
-                            //_loger.Log("Impoort data response : " + response);
+                            string response = _ix4WebServiceConnector.ImportXmlRequest(bytesRequest, fileName);
+                            XmlSerializer xS = new XmlSerializer(typeof(LICSResponse));
+                            using (var sr = new StringReader(response))
+                            {
+                                result = (LICSResponse)xS.Deserialize(sr);
+                            }
+                            _loger.Log("Impoort data response : " + response);
                         }
                         {
                             string dataFileName = string.Empty;

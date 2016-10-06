@@ -23,7 +23,7 @@ namespace ConnectorWorkflowManager
         //private DataEnsure _ensureData;
         protected Timer _timer;
         private static object _padlock = new object();
-        private static readonly long RElapsedEvery = 10 * 1 * 1000;
+        private static readonly long RElapsedEvery = 30 * 1 * 1000;
    //     private static readonly int _articlesPerRequest = 20;
 
 
@@ -125,8 +125,12 @@ namespace ConnectorWorkflowManager
                 _isBusy = true;
                 try
                 {
+                    _loger.Log("Start checking data");
                     _currentDataProcessor.ImportData();
+                    _loger.Log("Finish Import data");
                     _currentDataProcessor.ExportData();
+                    _loger.Log("Finish checking data");
+
                 }
                 catch(Exception ex)
                 {

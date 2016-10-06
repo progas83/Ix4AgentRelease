@@ -52,10 +52,8 @@ namespace Ix4Models.SettingsDataModel
         {
             get
             {
-                return Scheduler.StartTime.Hour <= DateTime.Now.Hour &&
-                    Scheduler.StartTime.Minute <= DateTime.Now.Minute &&
-                     DateTime.Now.Hour <= Scheduler.EndTime.Hour &&
-                     DateTime.Now.Minute <= Scheduler.EndTime.Minute;
+                return Scheduler.StartTime.TimeOfDay <= DateTime.Now.TimeOfDay &&
+                    DateTime.Now.TimeOfDay <= Scheduler.EndTime.TimeOfDay;
             }
         }
 
