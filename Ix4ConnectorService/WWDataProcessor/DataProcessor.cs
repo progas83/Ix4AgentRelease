@@ -73,50 +73,6 @@ namespace WWDataProcessor
 
         //    //   _updateTimeWatcher.SaveLastUpdateValues();
         //}
-
-        protected override void CheckOrders()
-        {
-            XmlFolderSettingsModel xmlSettings = CustomerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as XmlFolderSettingsModel;
-            if(xmlSettings==null)
-            {
-                _loger.Log("Wrong settings data for orders");
-                return;
-            }
-            string[] xmlSourceFiles = Directory.GetFiles(xmlSettings.XmlItemSourceFolder, "*.xml");
-            if (xmlSourceFiles.Length > 0)
-            {
-                foreach (string file in xmlSourceFiles)
-                {
-                    LICSRequest request = GetCustomerDataFromXml(file);
-                    LICSResponse response = SendLicsRequestToIx4(request, "deliveryFile.xml");
-                   if(response.DeliveryImport.CountOfFailed==0)
-                    {
-                        string successFolder = string.Format("{0}\\Archive", xmlSettings.XmlItemSourceFolder);
-                        if(!Directory.Exists(successFolder))
-                        {
-                            Directory.CreateDirectory(successFolder);
-                        }
-                        File.Move(file,string.Format("{0}\\{1}", successFolder,Path.GetFileName(file)));
-                    }
-                }
-            }
-        }
-        private LICSRequest GetCustomerDataFromXml(string fileName)
-        {
-
-            XmlSerializer xS = new XmlSerializer(typeof(OutputPayLoad));
-            LICSRequest licsRequest = new LICSRequest();
-            using (FileStream fs = new FileStream(fileName, FileMode.Open))
-            {
-                OutputPayLoad customerInfo = (OutputPayLoad)xS.Deserialize(fs);
-                licsRequest = customerInfo.ConvertToLICSRequest();
-            }
-
-            return licsRequest;
-        }
-
-       
-       
         protected override void CheckArticles()
         {
             int countA = 0;
@@ -127,9 +83,9 @@ namespace WWDataProcessor
 
                 LICSRequest request = new LICSRequest();
                 request.ClientId = currentClientID;
-                List<LICSRequestArticle> articles = _msSqlDataProvider.GetArticles(CustomerSettings.ImportDataSettings.ArticleSettings.DataSourceSettings as MsSqlArticlesSettings);
+                List<LICSRequestArticle> articles = _importDataProvider.GetArticles();// _msSqlDataProvider.GetArticles(CustomerSettings.ImportDataSettings.ArticleSettings.DataSourceSettings as MsSqlArticlesSettings);
                 _cachedArticles = articles;
-                  _loger.Log(string.Format("Got ARTICLES {0}", articles != null ? articles.Count : 0));
+                _loger.Log(string.Format("Got ARTICLES {0}", articles != null ? articles.Count : 0));
 
                 if (articles == null || articles.Count == 0)
                 {
@@ -147,7 +103,7 @@ namespace WWDataProcessor
                     {
                         request.ArticleImport = tempAtricles.ToArray();
                         LICSResponse resSent = SendLicsRequestToIx4(request, "articleFile.xml");
-                        if(resSent.ArticleImport.CountOfFailed==0)
+                        if (resSent.ArticleImport.CountOfFailed == 0)
                         {
                             countA++;
                             _loger.Log(string.Format("Was sent {0} request with {1} articles", countA, tempAtricles.Count));
@@ -159,6 +115,8 @@ namespace WWDataProcessor
                         tempAtricles = new List<LICSRequestArticle>();
                     }
                 }
+
+                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Articles);
             }
             catch (Exception ex)
             {
@@ -176,13 +134,13 @@ namespace WWDataProcessor
                 int currentClientID = CustomerSettings.ClientID;
                 LICSRequest request = new LICSRequest();
                 request.ClientId = currentClientID;
-                List<LICSRequestDelivery> deliveries = _msSqlDataProvider.GetDeliveries(CustomerSettings.ImportDataSettings.DeliverySettings.DataSourceSettings as MsSqlDeliveriesSettings);
+                List<LICSRequestDelivery> deliveries = _importDataProvider.GetDeliveries();
                 if (CustomerSettings.ImportDataSettings.DeliverySettings.IncludeArticlesToRequest)
                 {
                     if (_cachedArticles == null)
                     {
                         _loger.Log("There is no cheched articles for filling deliveries");
-                        List<LICSRequestArticle> articles = _msSqlDataProvider.GetArticles(CustomerSettings.ImportDataSettings.ArticleSettings.DataSourceSettings as MsSqlArticlesSettings);
+                        List<LICSRequestArticle> articles = _importDataProvider.GetArticles();
                         _cachedArticles = articles;
                         if (_cachedArticles == null)
                         {
@@ -208,8 +166,8 @@ namespace WWDataProcessor
                             }
                         }
                     }
-
-                    request.ArticleImport = articlesByDelliveries.ToArray();
+                    request.DeliveryImport = deliveries.ToArray<LICSRequestDelivery>();
+                    request.ArticleImport = articlesByDelliveries.ToArray<LICSRequestArticle>();
                 }
                 else
                 {
@@ -217,10 +175,12 @@ namespace WWDataProcessor
                     {
                         delivery.ClientNo = currentClientID;
                     }
+                    request.DeliveryImport = deliveries.ToArray<LICSRequestDelivery>();
                 }
 
                 var res = SendLicsRequestToIx4(request, "deliveryFile.xml");
                 _loger.Log("Delivery result: " + res);
+                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Deliveries);
             }
             catch (Exception ex)
             {
@@ -228,6 +188,60 @@ namespace WWDataProcessor
             }
         }
 
+        protected override void CheckOrders()
+        {
+            XmlFolderSettingsModel xmlSettings = CustomerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as XmlFolderSettingsModel;
+            if(xmlSettings==null)
+            {
+                _loger.Log("Wrong settings data for orders");
+                return;
+            }
+
+            try
+            {
+                string[] xmlSourceFiles = Directory.GetFiles(xmlSettings.XmlItemSourceFolder, "*.xml");
+                if (xmlSourceFiles.Length > 0)
+                {
+                    foreach (string file in xmlSourceFiles)
+                    {
+                        LICSRequest request = GetCustomerDataFromXml(file);
+                        LICSResponse response = SendLicsRequestToIx4(request, "deliveryFile.xml");
+                        if (response.DeliveryImport.CountOfFailed == 0)
+                        {
+                            string successFolder = string.Format("{0}\\Archive", xmlSettings.XmlItemSourceFolder);
+                            if (!Directory.Exists(successFolder))
+                            {
+                                Directory.CreateDirectory(successFolder);
+                            }
+                            File.Move(file, string.Format("{0}\\{1}", successFolder, Path.GetFileName(file)));
+                        }
+                    }
+                }
+                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Orders);
+            }
+            catch(Exception ex)
+            {
+                _loger.Log(ex);
+            }
+           
+        }
+        private LICSRequest GetCustomerDataFromXml(string fileName)
+        {
+
+            XmlSerializer xS = new XmlSerializer(typeof(OutputPayLoad));
+            LICSRequest licsRequest = new LICSRequest();
+            using (FileStream fs = new FileStream(fileName, FileMode.Open))
+            {
+                OutputPayLoad customerInfo = (OutputPayLoad)xS.Deserialize(fs);
+                licsRequest = customerInfo.ConvertToLICSRequest();
+            }
+
+            return licsRequest;
+        }
+
+       
+       
+      
         private LICSRequestArticle GetArticleByNumber(string articleNo)
         {
             if (_cachedArticles != null)
