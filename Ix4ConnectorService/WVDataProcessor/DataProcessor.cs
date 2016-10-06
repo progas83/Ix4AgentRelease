@@ -142,13 +142,13 @@ namespace WVDataProcessor
                 int currentClientID = CustomerSettings.ClientID;
                 LICSRequest request = new LICSRequest();
                 request.ClientId = currentClientID;
-                List<LICSRequestOrder> orders = _msSqlDataProvider.GetOrders(CustomerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as MsSqlDeliveriesSettings);
+                List<LICSRequestOrder> orders = _importDataProvider.GetOrders();// _msSqlDataProvider.GetOrders(CustomerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as MsSqlDeliveriesSettings);
                 if (CustomerSettings.ImportDataSettings.OrderSettings.IncludeArticlesToRequest)
                 {
                     if (_cachedArticles == null)
                     {
                         _loger.Log("There is no cheched articles for filling orders");
-                        List<LICSRequestArticle> articles = _msSqlDataProvider.GetArticles(CustomerSettings.ImportDataSettings.ArticleSettings.DataSourceSettings as MsSqlArticlesSettings);
+                        List<LICSRequestArticle> articles = _importDataProvider.GetArticles();// _msSqlDataProvider.GetArticles(CustomerSettings.ImportDataSettings.ArticleSettings.DataSourceSettings);
                         _cachedArticles = articles;
                         if (_cachedArticles == null)
                         {

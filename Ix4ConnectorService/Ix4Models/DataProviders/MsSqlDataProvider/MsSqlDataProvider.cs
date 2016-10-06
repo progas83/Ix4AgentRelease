@@ -190,17 +190,20 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                         LICSRequestOrder orderItem = LoadItem<LICSRequestOrder>(row);// new LICSRequestOrder();
 
                         string getOrderRecipientQuery = string.Format(settings.OrderRecipientQuery, orderItem.OrderNo);
-
+                        _loger.Log(string.Format("Order recipient reques sql {0}", getOrderRecipientQuery));
                         SqlCommand cmdRecipient = new SqlCommand(getOrderRecipientQuery, connection);
                         SqlDataReader readerRecipient = cmdRecipient.ExecuteReader();
                         DataTable tableRecipients = new DataTable();
                         tableRecipients.Load(readerRecipient);
                         orderItem.Recipient = LoadItem<LICSRequestOrderRecipient>(tableRecipients.Rows[0]);
 
+                        _loger.Log(string.Format("Order {0} recipient Name {1} FirstName {2}", orderItem.OrderNo,orderItem.Recipient.Name,orderItem.Recipient.FirstName));
+
 
                         string getOrderPositionsQuery = string.Format(settings.OrderPositionsQuery, orderItem.OrderNo);
+                        _loger.Log(string.Format("Order positions sql {0}", getOrderPositionsQuery));
                         SqlCommand cmdPositions = new SqlCommand(getOrderPositionsQuery, connection);
-                        SqlDataReader readerPositions = cmdRecipient.ExecuteReader();
+                        SqlDataReader readerPositions = cmdPositions.ExecuteReader();
                         DataTable tablePositions = new DataTable();
                         tablePositions.Load(readerPositions);
                         orderItem.Positions = LoadItems<LICSRequestOrderPosition>(readerPositions).ToArray();
