@@ -18,29 +18,6 @@ namespace WVDataProcessor
     [ExportDataProcessor("wwinterface1000090")]
     public class DataProcessor : BaseDataProcessor, IDataProcessor
     {
-      
-       
-
-       // private IProxyIx4WebService _ix4WebServiceConnector;
-       // private UpdateTimeWatcher _updateTimeWatcher;
-       // private CustomerInfo _customerSettings;
-        //private CustomerInfo _CustomerSettings
-        //{
-        //    get
-        //    {
-        //        if (_customerSettings == null)
-        //            throw (new Exception("Settings was not load"));
-        //        return _customerSettings;
-        //    }
-        //}
-        //private MsSqlDataProvider _msSqlDataProvider;
-        //public void LoadSettings(CustomerInfo customerSettings)
-        //{
-        //    _customerSettings = customerSettings;
-        //    _ix4WebServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(_CustomerSettings.ClientID, _CustomerSettings.UserName, _CustomerSettings.Password, _CustomerSettings.ServiceEndpoint);
-        //    _updateTimeWatcher = new UpdateTimeWatcher(_CustomerSettings.ImportDataSettings, _CustomerSettings.ExportDataSettings);
-        //    _msSqlDataProvider = new MsSqlDataProvider();
-        //}
         
         protected override void CheckArticles()
         {
@@ -58,7 +35,8 @@ namespace WVDataProcessor
 
                 if (articles == null || articles.Count == 0)
                 {
-                    // _loger.Log("There is no available articles");
+                    _loger.Log(articles, "articles");
+                    _loger.Log("There is no available articles");
                     return;
                 }
 
@@ -296,9 +274,66 @@ namespace WVDataProcessor
                 case "GP":
                     ProcessGPData();
                     break;
+                case "SA":
+                    ProcessSAData();
+                    break;
             }
         }
 
+        private void ProcessSAData()
+        {
+            try
+            {
+                foreach (string mark in new string[] { "SA" })
+                {
+                    _loger.Log("Starting export data " + mark);
+                    XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
+
+                    XmlDocument xmlDoc = new XmlDocument();
+                    xmlDoc.InnerXml = nodeResult.OuterXml;
+                    var msgNodes = xmlDoc.GetElementsByTagName("MSG");
+
+                    //  var msgNodes = nodeResult.LastChild.LastChild.SelectNodes("MSG");
+                    _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
+                    if (msgNodes != null && msgNodes.Count > 0)
+                    {
+                        EnsureType ensureType = EnsureType.CollectData;
+                        switch (mark)
+                        {
+                            case "SA":
+                                ensureType = EnsureType.UpdateStoredData;
+                                break;
+                            case "GP":
+                                ensureType = EnsureType.CollectData;
+                                break;
+                            case "GS":
+                                ensureType = EnsureType.CollectData;
+                                break;
+                            default:
+                                ensureType = EnsureType.CollectData;
+                                break;
+                        }
+
+                        if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
+                        {
+                            _ensureData.RudeStoreExportedData(nodeResult, mark);
+                        }
+                        else
+                        {
+                            _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
+                        }
+                        _loger.Log("End export data " + mark);
+                        System.Threading.Thread.Sleep(30000);
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                _loger.Log("Exception while export data");
+                _loger.Log(ex);
+            }
+        }
 
         private void ProcessGPData()
         {
@@ -307,14 +342,6 @@ namespace WVDataProcessor
             {
                 foreach (string mark in new string[] { "GP", "GS" })
                 {
-                    //if (!UpdateTimeWatcher.TimeToCheck(mark))
-                    //{
-                    //    continue;
-                    //}
-                    //else
-                    //{
-
-                    //}
                     _loger.Log("Starting export data " + mark);
                     XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
 

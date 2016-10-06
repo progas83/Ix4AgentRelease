@@ -28,9 +28,9 @@ namespace DataProcessorHelper
             _deliveriesLastUpdate = Properties.LustUpdateSettings.Default.Deliveries;
             if(_exportDataListUpdateInfo == null)
             {
-                if(Properties.LustUpdateSettings.Default.ExportData==null)
+                if(Properties.LustUpdateSettings.Default.ExportData!=null)
                 {
-                    //_exportDataListUpdateInfo = Properties.LustUpdateSettings.Default.ExportData;
+                    _exportDataListUpdateInfo = Properties.LustUpdateSettings.Default.ExportData;
                 }
                 else
                 {
@@ -99,6 +99,7 @@ namespace DataProcessorHelper
 
         public bool TimeToCheck(Ix4RequestProps ix4Property)
         {
+           // var t = GetTimeStamp();
 
             bool result = false;
             switch (ix4Property)

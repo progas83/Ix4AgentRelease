@@ -12,7 +12,7 @@ namespace Ix4Models.SettingsDataModel
     {
         public ImportDataSettings()
         {
-            ArticleSettings = new ArticleSettings() {TesttESTArticles = "SUSUSUSU" };
+            ArticleSettings = new ArticleSettings();
             OrderSettings = new OrderSettings();
             DeliverySettings = new DeliverySettings();
         }
@@ -41,6 +41,18 @@ namespace Ix4Models.SettingsDataModel
         public SchedulerSettings Scheduler { get; set; }
      
         public BaseDataSourceSettings DataSourceSettings { get; set; }
+
+        [XmlIgnore]
+        public bool IsNowWorkingTime
+        {
+            get
+            {
+                return Scheduler.StartTime.Hour <= DateTime.Now.Hour &&
+                    Scheduler.StartTime.Minute <= DateTime.Now.Minute &&
+                     DateTime.Now.Hour <= Scheduler.EndTime.Hour &&
+                     DateTime.Now.Minute <= Scheduler.EndTime.Minute;
+            }
+        }
     }
     [Serializable]
     public class ArticleSettings : BaseLicsRequestSettings
@@ -56,16 +68,6 @@ namespace Ix4Models.SettingsDataModel
         {
 
         }
-
-        private String _test;
-
-        public String TesttESTArticles
-        {
-            get { return _test; }
-            set { _test = value; }
-        }
-
-
     }
 
     [Serializable]

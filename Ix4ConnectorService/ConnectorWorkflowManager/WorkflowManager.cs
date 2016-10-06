@@ -23,8 +23,8 @@ namespace ConnectorWorkflowManager
         //private DataEnsure _ensureData;
         protected Timer _timer;
         private static object _padlock = new object();
-        private static readonly long RElapsedEvery = 5 * 1 * 1000;
-        private static readonly int _articlesPerRequest = 20;
+        private static readonly long RElapsedEvery = 10 * 1 * 1000;
+   //     private static readonly int _articlesPerRequest = 20;
 
 
         //bool _isArticlesBusy = false;
@@ -35,8 +35,8 @@ namespace ConnectorWorkflowManager
         {
             AssembleCustomerDataComponents();
             _customerSettings = XmlConfigurationManager.Instance.GetCustomerInformation();
-            _CurrentDataProcessor = GetDataProcessor(_customerSettings.UserName + _customerSettings.ClientID);
-            _CurrentDataProcessor.LoadSettings(_customerSettings);
+            _currentDataProcessor = GetDataProcessor(_customerSettings.UserName + _customerSettings.ClientID);
+            _currentDataProcessor.LoadSettings(_customerSettings);
         }
 
         public static WorkflowManager Instance
@@ -83,7 +83,7 @@ namespace ConnectorWorkflowManager
             }
         }
 
-        private IDataProcessor _CurrentDataProcessor { get; set; }
+        private IDataProcessor _currentDataProcessor { get; set; }
         private IDataProcessor GetDataProcessor(string name)
         {
             return DataProcessors.Where(l => l.Metadata.Name.Equals(name)).Select(l => l.Value).FirstOrDefault();
@@ -119,14 +119,14 @@ namespace ConnectorWorkflowManager
         private bool _isBusy = false;
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
-            if(!_isBusy && _CurrentDataProcessor != null)
+            if(!_isBusy && _currentDataProcessor != null)
             {
                 _timer.Enabled = false;
                 _isBusy = true;
                 try
                 {
-                    _CurrentDataProcessor.ImportData();
-                    _CurrentDataProcessor.ExportData();
+                    _currentDataProcessor.ImportData();
+                    _currentDataProcessor.ExportData();
                 }
                 catch(Exception ex)
                 {
@@ -171,7 +171,5 @@ namespace ConnectorWorkflowManager
 
             _loger.Log("Service has stopped");
         }
-
-
     }
 }

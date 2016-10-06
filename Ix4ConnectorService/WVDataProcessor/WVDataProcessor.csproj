@@ -64,6 +64,7 @@
     <ProjectReference Include="..\SinplestLogger\SimplestLogger.csproj">
       <Project>{18B499E8-956D-45C0-A9F7-6314CC00B777}</Project>
       <Name>SimplestLogger</Name>
+      <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

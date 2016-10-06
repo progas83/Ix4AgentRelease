@@ -53,31 +53,37 @@ namespace DataProcessorHelper
         protected abstract void ProcessExportedData(ExportDataItemSettings settings);
         public void ImportData()
         {
-            if (_customerSettings.ImportDataSettings.ArticleSettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Articles))
+            if (_customerSettings.ImportDataSettings.ArticleSettings.IsActivate && 
+                _customerSettings.ImportDataSettings.ArticleSettings.IsNowWorkingTime && 
+                _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Articles))
             {
                 CheckArticles();
                 _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Articles);
             }
 
-            if (_customerSettings.ImportDataSettings.DeliverySettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Deliveries))
+            if (_customerSettings.ImportDataSettings.DeliverySettings.IsActivate &&
+                _customerSettings.ImportDataSettings.DeliverySettings.IsNowWorkingTime &&
+                _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Deliveries))
             {
                 CheckDeliveries();
                 _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Deliveries);
             }
 
-            if (_customerSettings.ImportDataSettings.OrderSettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Orders))
+            if (_customerSettings.ImportDataSettings.OrderSettings.IsActivate &&
+                _customerSettings.ImportDataSettings.OrderSettings.IsNowWorkingTime &&
+                _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Orders))
             {
                 CheckOrders();
                 _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Orders);
             }
-            _updateTimeWatcher.SaveLastUpdateValues();
+            //_updateTimeWatcher.SaveLastUpdateValues();
         }
 
         public void ExportData()
         {
             foreach(ExportDataItemSettings itemExported in CustomerSettings.ExportDataSettings.ExportDataItemSettings)
             {
-                if(itemExported.IsActive && _updateTimeWatcher.TimeToCheck(itemExported.ExportDataTypeName))
+                if(itemExported.IsActive && itemExported.IsNowWorkingTime && _updateTimeWatcher.TimeToCheck(itemExported.ExportDataTypeName))
                 {
                     ProcessExportedData(itemExported);
                     _updateTimeWatcher.SetLastUpdateTimeProperty(itemExported.ExportDataTypeName);
