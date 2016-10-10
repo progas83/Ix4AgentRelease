@@ -129,7 +129,7 @@ namespace Ix4ServiceConfigurator.ViewModel.MsSql
         public string SelectedDbName
         {
             get { return _msSqlSettings.DataBaseName; }
-            set { _msSqlSettings.DataBaseName = value; OnPropertyChanged("DbName"); }
+            set { _msSqlSettings.DataBaseName = value; OnPropertyChanged("SelectedDbName"); }
         }
         public bool UseSqlServierAuth
         {

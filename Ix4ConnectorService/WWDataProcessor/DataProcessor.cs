@@ -240,8 +240,9 @@ namespace WWDataProcessor
                             {
                                 successFolder = clientsDirectory;
                             }
-                           
-                            File.Move(file, string.Format("{0}\\{1}", successFolder, Path.GetFileName(file)));
+                            string fn = Path.GetFileName(file);
+                            File.Move(file, string.Format("{0}\\{1}", successFolder, fn));
+                            _loger.Log(string.Format("File {0} moved to {1} folder",fn,successFolder));
                         }
                     }
                 }
