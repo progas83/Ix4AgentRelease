@@ -18,61 +18,10 @@ namespace WWDataProcessor
     [ExportDataProcessor("wsbio1000001")]
     public class DataProcessor : BaseDataProcessor, IDataProcessor
     {
-        //private CustomerInfo _customerSettings;
-        //private IProxyIx4WebService _ix4WebServiceConnector;
-        //private UpdateTimeWatcher _updateTimeWatcher;
-
-       
         public DataProcessor()
         {
-            //    _ensureData = new DataEnsure(_customerInfo.UserName);
         }
-        //private CustomerInfo _CustomerSettings
-        //{
-        //    get
-        //    {
-        //        if (_customerSettings == null)
-        //            throw (new Exception("Settings was not load"));
-        //        return _customerSettings;
-        //    }
-        //}
 
-        //private MsSqlDataProvider _msSqlDataProvider;
-        //public void LoadSettings(CustomerInfo customerSettings)
-        //{
-        //    _customerSettings = customerSettings;
-        //    _ix4WebServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(_CustomerSettings.ClientID, _CustomerSettings.UserName, _CustomerSettings.Password, _CustomerSettings.ServiceEndpoint);
-        //    _updateTimeWatcher = new UpdateTimeWatcher(_CustomerSettings.ImportDataSettings, _CustomerSettings.ExportDataSettings);
-        //    _msSqlDataProvider = new MsSqlDataProvider();// _CustomerSettings.ImportDataSettings, _CustomerSettings.ExportDataSettings);
-        //}
-        //public void ExportData()
-        //{
-        //    //  throw new NotImplementedException();
-        //}
-
-        //public override void ImportData()
-        //{
-        //    base.ImportData();
-        //    //if (_customerSettings.ImportDataSettings.ArticleSettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Articles))
-        //    //{
-        //    //    CheckArticles();
-        //    //    _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Articles);
-        //    //}
-
-        //    //if (_customerSettings.ImportDataSettings.DeliverySettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Deliveries))
-        //    //{
-        //    //    CheckDeliveries();
-        //    //    _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Deliveries);
-        //    //}
-
-        //    //if (_customerSettings.ImportDataSettings.OrderSettings.IsActivate && _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Orders))
-        //    //{
-        //    //    CheckOrders();
-        //    //    _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Orders);
-        //    //}
-
-        //    //   _updateTimeWatcher.SaveLastUpdateValues();
-        //}
         protected override void CheckArticles()
         {
             int countA = 0;
@@ -309,152 +258,6 @@ namespace WWDataProcessor
         }
 
 
-        /*   private CustomerInfo _customerInfo;
-           private IProxyIx4WebService _ix4WebServiceConnector;
-           // private DataEnsure _ensureData;
-           private UpdateTimeWatcher _updateTimeWatcher;
-
-           public void ImportData()
-           {
-
-               ImportDataSettings dataSettings = _customerInfo.ImportDataSettings;
-               WrightLog("Start checking");
-               if (dataSettings.ArticleSettings.IsActivate)//_customerInfo.im.PluginSettings.MsSqlSettings.CheckArticles)
-               {
-                   WrightLog("Start checking articles");
-                   CheckArticles();
-               }
-
-               if (dataSettings.DeliverySettings.IsActivate)
-               {
-                   WrightLog("Start checking deliveries");
-                   CheckDeliveries();
-               }
-
-               if (_customerInfo.PluginSettings.XmlSettings.CheckOrders)
-               {
-                   WrightLog("Start Check Orders");
-                   CheckPreparedRequest(CustomDataSourceTypes.Xml, Ix4RequestProps.Orders);
-               }
-
-           }
-           private static Logger _loger = Logger.GetLogger();
-           bool _isArticlesBusy = false;
-
-
-
-           private LICSRequestArticle[] GetRequestArticles()
-           {
-               MsSqlPluginSettings _customerInfo.ImportDataSettings.ArticleSettings.DataSourceSettings
-               LICSRequestArticle[] articles = null;
-               try
-               {
-                   using (var connection = new SqlConnection(DbConnection))
-                   {
-                       connection.Open();
-                       var cmdText = articleCmd;// _pluginSettings.ArticlesQuery;
-                       SqlCommand cmd = new SqlCommand(cmdText, connection);
-                       SqlDataReader reader = cmd.ExecuteReader();
-                       articles = LoadArticles(reader);
-                       _loger.Log(string.Format("Article no in SQL Extractor = {0}", articles.Length));
-                   }
-               }
-               catch (Exception ex)
-               {
-                   _loger.Log(ex);
-               }
-               return articles;
-           }
-
-
-           public void ExportData()
-           {
-
-           }
-
-        */
-
-
-
-
-       
-
-        // private void ExportData()
-        // {
-        //if (_ix4WebServiceConnector != null && _ensureData != null && _dataCompositor != null)
-        //{
-        //    // if (UpdateTimeWatcher.TimeToCheck("GP"))
-        //    {
-        //        try
-        //        {
-        //            foreach (string mark in new string[] {"SA"})// { "GP", "GS" })
-        //            {
-        //                //if (!UpdateTimeWatcher.TimeToCheck(mark))
-        //                //{
-        //                //    continue;
-        //                //}
-        //                //else
-        //                //{
-
-        //                //}
-        //                _loger.Log("Starting export data " + mark);
-        //                XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
-
-        //                XmlDocument xmlDoc = new XmlDocument();
-        //                xmlDoc.InnerXml = nodeResult.OuterXml;
-        //                var msgNodes = xmlDoc.GetElementsByTagName("MSG");
-
-        //                //  var msgNodes = nodeResult.LastChild.LastChild.SelectNodes("MSG");
-        //                _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
-        //                if (msgNodes != null && msgNodes.Count > 0)
-        //                {
-        //                    EnsureType ensureType = EnsureType.CollectData;
-        //                    switch (mark)
-        //                    {
-        //                        case "SA":
-        //                            ensureType = EnsureType.UpdateStoredData;
-        //                            break;
-        //                        case "GP":
-        //                            ensureType = EnsureType.CollectData;
-        //                            break;
-        //                        case "GS":
-        //                            ensureType = EnsureType.CollectData;
-        //                            break;
-        //                        default:
-        //                            ensureType = EnsureType.CollectData;
-        //                            break;
-        //                    }
-
-        //                    if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
-        //                    {
-        //                        _ensureData.RudeStoreExportedData(nodeResult, mark);
-        //                    }
-        //                    else
-        //                    {
-        //                        _ensureData.ProcessingStoredDataToClientStorage(mark, _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
-        //                    }
-        //                    _loger.Log("End export data " + mark);
-        //                    System.Threading.Thread.Sleep(30000);
-        //                }
-
-        //            }
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            _loger.Log("Exception while export data");
-        //            _loger.Log(ex);
-        //        }
-        //        //    UpdateTimeWatcher.SetLastUpdateTimeProperty(mark);
-
-
-        //    }
-        // }
-        //  }
-
-        //  private static int _errorCount = 0;
-
-
-
         private void SimplestParcerLicsRequest(string response)
         {
             try
@@ -608,7 +411,7 @@ namespace WWDataProcessor
 
         protected override void ProcessExportedData(ExportDataItemSettings settings)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
