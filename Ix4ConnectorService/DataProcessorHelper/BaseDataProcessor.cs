@@ -90,6 +90,7 @@ namespace DataProcessorHelper
                     _updateTimeWatcher.SetLastUpdateTimeProperty(itemExported.ExportDataTypeName);
                 }
             }
+            _updateTimeWatcher.SaveLastUpdateValues();
         }
       
         protected LICSResponse SendLicsRequestToIx4(LICSRequest request, string fileName)

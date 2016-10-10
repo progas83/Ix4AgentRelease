@@ -16,7 +16,6 @@ namespace DataProcessorHelper
         ExportDataSettings _exportTimeSettings;
         public UpdateTimeWatcher(ImportDataSettings importTimerSettings, ExportDataSettings exportTimeSettings )
         {
-            // _articlesLastUpdate.
             _importTimerSettings = importTimerSettings;
             _exportTimeSettings = exportTimeSettings;
 
@@ -37,22 +36,17 @@ namespace DataProcessorHelper
                     _exportDataListUpdateInfo = new EDLastUpdate(exportTimeSettings);
                 }
             }
-            
 
-            //  DateTime yesturdayHalfPastSeventeen = (new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 17, 30, 00)).AddDays(-1);
-            //  _articlesLastUpdate = (long)yesturdayHalfPastSeventeen.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-            //   _loger.Log("Articles last update total seconds = " + _articlesLastUpdate);
-
-            //    DateTime yesturdayTenPM = (new DateTime(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day, 7, 00, 00)).AddDays(-1);
-            //    _exportSALastUpdate = (long)yesturdayTenPM.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-        }
+            _loger.Log(string.Format("Articles lust update TS = {0}; Orders lust update = {1}; Deliveries lust update = {2}", Properties.LustUpdateSettings.Default.Articles, Properties.LustUpdateSettings.Default.Orders, Properties.LustUpdateSettings.Default.Deliveries));
+          }
 
         public void SaveLastUpdateValues()
         {
-            Properties.LustUpdateSettings.Default.Articles = _articlesLastUpdate;
-            Properties.LustUpdateSettings.Default.Orders = _ordersLastUpdate;
-            Properties.LustUpdateSettings.Default.Deliveries = _deliveriesLastUpdate;
-          //  Properties.LustUpdateSettings.Default.ExportData = _exportDataListUpdateInfo;
+            Properties.LustUpdateSettings.Default.Articles =  _articlesLastUpdate;
+            Properties.LustUpdateSettings.Default.Orders =  _ordersLastUpdate;
+            Properties.LustUpdateSettings.Default.Deliveries =  _deliveriesLastUpdate;
+            Properties.LustUpdateSettings.Default.ExportData = _exportDataListUpdateInfo;
+            Properties.LustUpdateSettings.Default.Save();
         }
         private static long _articlesLastUpdate;// = 0;
         private static long _ordersLastUpdate;
