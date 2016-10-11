@@ -11,6 +11,7 @@ using System.ComponentModel.Composition;
 using Ix4Models.Interfaces;
 using System.Reflection;
 using System.ComponentModel.Composition.Hosting;
+using SinplestLogger.Mailer;
 
 namespace ConnectorWorkflowManager
 {
@@ -141,7 +142,9 @@ namespace ConnectorWorkflowManager
                 finally
                 {
                     _isBusy = false;
+                    MailLogger.Instance.SendMailReport();
                     _timer.Enabled = true;
+
                 }
             }
         }

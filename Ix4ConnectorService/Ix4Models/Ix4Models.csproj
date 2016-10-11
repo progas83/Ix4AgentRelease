@@ -58,7 +58,6 @@
     <Compile Include="Enums\XmlResultHandleActions.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="Interfaces\ICryptor.cs" />
-    <Compile Include="Interfaces\ICustomerDataConnector.cs" />
     <Compile Include="Interfaces\IDataProcessor.cs" />
     <Compile Include="Interfaces\IDataProvider.cs" />
     <Compile Include="Interfaces\INameMetadata.cs" />
@@ -82,9 +81,7 @@
     <Compile Include="SettingsDataModel\ImportDataSettings.cs" />
     <Compile Include="SettingsDataModel\MailNotificationSettings.cs" />
     <Compile Include="SettingsDataModel\MsSqlImportDataSettings.cs" />
-    <Compile Include="SettingsDataModel\MsSqlPluginSettings.cs" />
     <Compile Include="SettingsDataModel\MsSqlSettings.cs" />
-    <Compile Include="SettingsDataModel\PluginsSettings.cs" />
     <Compile Include="SettingsDataModel\SchedulerSettings.cs" />
     <Compile Include="SettingsDataModel\TimeSign.cs" />
     <Compile Include="SettingsDataModel\XmlFolderSettingsModel.cs" />
