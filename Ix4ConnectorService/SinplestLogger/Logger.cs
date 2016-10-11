@@ -14,7 +14,7 @@ namespace SimplestLogger
         string _currentDate = string.Empty;
 
         private static readonly string _loggerFileName = string.Format("{0}{1}", System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "\\logger{0}.log");// @"C:\Ilya\ServiceProgram\configuration.xml";// "configuration.xml";
-        public static string LoggerFileName { get { return _loggerFileName; } }
+        private static string LoggerFileName { get { return _loggerFileName; } }
 
 
         private Logger()

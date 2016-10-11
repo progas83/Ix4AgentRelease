@@ -133,7 +133,20 @@ namespace WVDataProcessor
                 _loger.Log(ex);
             }
         }
-
+       
+        private bool OrdersHasPositions(List<LICSRequestOrder> orders)
+        {
+            bool result = false;
+            foreach(LICSRequestOrder order in orders)
+            {
+                if(order.Positions !=null && order.Positions.Count()>0)
+                {
+                    result = true;
+                    break;
+                }
+            }
+            return result;
+        }
         protected override void CheckOrders()
         {
             try
@@ -143,6 +156,13 @@ namespace WVDataProcessor
                 LICSRequest request = new LICSRequest();
                 request.ClientId = currentClientID;
                 List<LICSRequestOrder> orders = _importDataProvider.GetOrders();// _msSqlDataProvider.GetOrders(CustomerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as MsSqlDeliveriesSettings);
+                if (!OrdersHasPositions(orders))
+                {
+                    _loger.Log("There is no orders for importing");
+                    _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Orders);
+                    return;
+                }
+
                 if (CustomerSettings.ImportDataSettings.OrderSettings.IncludeArticlesToRequest)
                 {
                     if (_cachedArticles == null)
@@ -185,7 +205,7 @@ namespace WVDataProcessor
                     }
                     request.OrderImport = orders.ToArray<LICSRequestOrder>();
                 }
-
+               
                 LICSResponse response = SendLicsRequestToIx4(request, "ordersFile.xml");
                 _loger.Log("Orders result: " + response);
                 SimplestParcerLicsRequest(response);
