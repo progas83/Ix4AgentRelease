@@ -76,13 +76,17 @@ namespace Ix4ServiceConfigurator.ViewModel
                     break;
             }
         }
-
+        DBSettingsViewModel dbVM = null;
         private UserControl GetMsSqlControlForSettings()
         {
-            DBSettingsViewModel dbVM = new DBSettingsViewModel(BaseSettings);
-            DBSettingsView dbView = new DBSettingsView();
-            dbView.DataContext = dbVM;
-            return dbView;
+            if(dbVM==null)
+            {
+                dbVM = new DBSettingsViewModel(BaseSettings);
+            }
+                
+          //  DBSettingsView dbView = new DBSettingsView();
+          //  dbView.DataContext = dbVM;
+            return dbVM.DbSettingsView;// dbView;
         }
 
         private XamlFolderSettingsControl _xmlUserControl;

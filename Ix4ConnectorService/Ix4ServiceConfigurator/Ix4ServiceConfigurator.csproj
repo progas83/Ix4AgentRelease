@@ -123,6 +123,7 @@
     <Compile Include="View\MsSql\MsSqlOrdersSettingsView.xaml.cs">
       <DependentUpon>MsSqlOrdersSettingsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\MsSql\PwdAssistant.cs" />
     <Page Include="Controls\CustomerInfoControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

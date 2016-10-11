@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-        
+             xmlns:l="clr-namespace:Ix4ServiceConfigurator.View.MsSql"
              mc:Ignorable="d" Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"
              d:DesignHeight="300" d:DesignWidth="300">
     <ScrollViewer>
@@ -37,9 +37,11 @@
 
             <TextBox Margin="0,5,5,5" Text="{Binding DbUserName}" IsEnabled="{Binding ElementName=UISqlAuth,Path=IsChecked}" HorizontalAlignment="Stretch" 
                      VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="2"/>
-
-            <TextBox Margin="0,5,5,5"  Text="{Binding DbPassword}" IsEnabled="{Binding ElementName=UISqlAuth,Path=IsChecked}" HorizontalAlignment="Stretch"
-                     VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="3"/>
+            <PasswordBox PasswordChar="X" VerticalContentAlignment="Center" l:PwdAssistant.BindPassword="true" 
+                         l:PwdAssistant.BoundPassword="{Binding Path=DbPassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,5,5,5" IsEnabled="{Binding ElementName=UISqlAuth,Path=IsChecked}" HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="3"/>
+            <!--<TextBox Margin="0,5,5,5"  Text="{Binding DbPassword}" IsEnabled="{Binding ElementName=UISqlAuth,Path=IsChecked}" HorizontalAlignment="Stretch"
+                     VerticalContentAlignment="Center" Grid.Column="1" Grid.Row="3"/>-->
 
 
 

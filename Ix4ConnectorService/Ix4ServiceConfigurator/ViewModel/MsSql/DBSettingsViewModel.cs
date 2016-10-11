@@ -67,7 +67,12 @@ namespace Ix4ServiceConfigurator.ViewModel.MsSql
             }
             
             DbConnectionStatus = _testConnectionButton;
+            DbSettingsView = new DBSettingsView();
+            DbSettingsView.DataContext = this;
         }
+
+        public UserControl DbSettingsView { get; private set; }
+
         DbConnectionCommand _testConnectionCommand;
         public ICommand TestConnectionCommand { get { return _testConnectionCommand; } }
         public UserControl DBImportDataSettings { get;set;}

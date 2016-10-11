@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Xml.Serialization;
 
 namespace Ix4Models
@@ -30,5 +31,9 @@ namespace Ix4Models
             return str.Length <= maxLength ? str : str.Substring(0, maxLength);
         }
 
+        public static string HtmlDecode(this string str)
+        {
+            return HttpUtility.HtmlDecode(str);
+        }
     }
 }

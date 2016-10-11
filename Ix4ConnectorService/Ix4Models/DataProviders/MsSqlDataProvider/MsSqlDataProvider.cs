@@ -65,7 +65,7 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                     }
                     else
                     {
-                        propertyInfo.SetValue(item, Convert.ChangeType(row[column.ColumnName].ToString().Trim(), propertyInfo.PropertyType), null);
+                        propertyInfo.SetValue(item, Convert.ChangeType(row[column.ColumnName].ToString().Trim().HtmlDecode(), propertyInfo.PropertyType), null);
                     }
                 }
                 catch (Exception ex)
