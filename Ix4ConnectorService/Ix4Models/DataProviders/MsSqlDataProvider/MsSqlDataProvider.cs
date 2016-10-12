@@ -65,12 +65,13 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                     }
                     else
                     {
-                        propertyInfo.SetValue(item, Convert.ChangeType(row[column.ColumnName].ToString().Trim().HtmlDecode(), propertyInfo.PropertyType), null);
+                        propertyInfo.SetValue(item, Convert.ChangeType(row[column.ColumnName].ToString().Trim(), propertyInfo.PropertyType), null);
                     }
                 }
                 catch (Exception ex)
                 {
                     _loger.Log("Exception while reflect DataColumn values using Reflection");
+                    _loger.Log(string.Format("Exception with property {0} value = {1}", column.ColumnName, row[column.ColumnName]??"Empty value"));
                     _loger.Log(ex);
                 }
 
