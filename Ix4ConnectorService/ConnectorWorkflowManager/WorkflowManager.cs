@@ -103,18 +103,11 @@ namespace ConnectorWorkflowManager
                 }
 
                 _loger.Log("Service has been started at");
-
-                // _customerInfo = XmlConfigurationManager.Instance.GetCustomerInformation();
-                //// _dataCompositor = new CustomerDataComposition(_customerInfo.PluginSettings);
-                // _ix4WebServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(_customerInfo.ClientID, _customerInfo.UserName, _customerInfo.Password, _customerInfo.ServiceEndpoint);
-                // _ensureData = new DataEnsure(_customerInfo.UserName);
                 _timer.Enabled = true;
             }
             catch (Exception ex)
             {
                 _loger.Log(ex);
-                //  _loger.Log(_customerInfo, "_customerInfo");
-                //  _loger.Log(_ix4WebServiceConnector, "_ix4WebServiceConnector");
             }
         }
         private bool _isBusy = false;
