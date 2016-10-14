@@ -29,13 +29,12 @@ namespace WVDataProcessor
 
                 LICSRequest request = new LICSRequest();
                 request.ClientId = currentClientID;
-                List<LICSRequestArticle> articles = _importDataProvider.GetArticles();// _msSqlDataProvider.GetArticles(CustomerSettings.ImportDataSettings.ArticleSettings.DataSourceSettings as MsSqlArticlesSettings);
+                List<LICSRequestArticle> articles = _importDataProvider.GetArticles();
                 _cachedArticles = articles;
                 _loger.Log(string.Format("Got ARTICLES {0}", articles != null ? articles.Count : 0));
 
                 if (articles == null || articles.Count == 0)
                 {
-                    _loger.Log(articles, "articles");
                     _loger.Log("There is no available articles");
                     return;
                 }
@@ -50,14 +49,14 @@ namespace WVDataProcessor
                     {
                         request.ArticleImport = tempAtricles.ToArray();
                         LICSResponse resSent = SendLicsRequestToIx4(request, "articleFile.xml");
-                        if (resSent.ArticleImport.CountOfFailed == 0)
+                        if (resSent != null && resSent.ArticleImport != null)
                         {
                             countA++;
-                            _loger.Log(string.Format("Was sent {0} request with {1} articles", countA, tempAtricles.Count));
+                            _loger.Log(string.Format("Was sent {0} request with {1} articles.Count of CountOfSuccessful = {2}.Count of failed = {3}", countA, tempAtricles.Count, resSent.ArticleImport.CountOfSuccessful, resSent.ArticleImport.CountOfFailed));
                         }
                         else
                         {
-
+                            _loger.Log(string.Format("Error import Articles : State = {0} ; Message = {1}", resSent.State, resSent.Message));
                         }
                         tempAtricles = new List<LICSRequestArticle>();
                     }
@@ -69,7 +68,6 @@ namespace WVDataProcessor
             {
                 _loger.Log(ex);
                 _loger.Log("Inner excep " + ex.InnerException);
-                _loger.Log("Inner excep MESSAGE" + ex.InnerException.Message);
             }
         }
 

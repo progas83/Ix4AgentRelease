@@ -32,13 +32,11 @@ namespace WWDataProcessor
 
                 LICSRequest request = new LICSRequest();
                 request.ClientId = currentClientID;
-                List<LICSRequestArticle> articles = _importDataProvider.GetArticles();// _msSqlDataProvider.GetArticles(CustomerSettings.ImportDataSettings.ArticleSettings.DataSourceSettings as MsSqlArticlesSettings);
+                List<LICSRequestArticle> articles = _importDataProvider.GetArticles();
                 _cachedArticles = articles;
-                _loger.Log(string.Format("Got ARTICLES {0}", articles != null ? articles.Count : 0));
-
                 if (articles == null || articles.Count == 0)
                 {
-                    // _loger.Log("There is no available articles");
+                    _loger.Log("There is no available articles");
                     return;
                 }
 
@@ -52,15 +50,16 @@ namespace WWDataProcessor
                     {
                         request.ArticleImport = tempAtricles.ToArray();
                         LICSResponse resSent = SendLicsRequestToIx4(request, "articleFile.xml");
-                        if (resSent.ArticleImport.CountOfFailed == 0)
+                        if (resSent != null && resSent.ArticleImport != null)
                         {
                             countA++;
-                            _loger.Log(string.Format("Was sent {0} request with {1} articles", countA, tempAtricles.Count));
+                            _loger.Log(string.Format("Was sent {0} request with {1} articles.Count of CountOfSuccessful = {2}.Count of failed = {3}", countA, tempAtricles.Count, resSent.ArticleImport.CountOfSuccessful, resSent.ArticleImport.CountOfFailed));
                         }
                         else
                         {
-
+                            _loger.Log(string.Format("Error import Articles : State = {0} ; Message = {1}", resSent.State, resSent.Message));
                         }
+
                         tempAtricles = new List<LICSRequestArticle>();
                     }
                 }
@@ -71,7 +70,6 @@ namespace WWDataProcessor
             {
                 _loger.Log(ex);
                 _loger.Log("Inner excep " + ex.InnerException);
-                _loger.Log("Inner excep MESSAGE" + ex.InnerException.Message);
             }
         }
 
@@ -89,8 +87,7 @@ namespace WWDataProcessor
                     if (_cachedArticles == null)
                     {
                         _loger.Log("There is no cheched articles for filling deliveries");
-                        List<LICSRequestArticle> articles = _importDataProvider.GetArticles();
-                        _cachedArticles = articles;
+                        _cachedArticles = _importDataProvider.GetArticles();
                         if (_cachedArticles == null)
                         {
                             _loger.Log("WE CANNOT GET DELIVERIES WITHOUT ARTICLES");
@@ -128,8 +125,12 @@ namespace WWDataProcessor
                     request.DeliveryImport = deliveries.ToArray<LICSRequestDelivery>();
                 }
 
-                var res = SendLicsRequestToIx4(request, "deliveryFile.xml");
-                _loger.Log("Delivery result: " + res);
+                LICSResponse res = SendLicsRequestToIx4(request, "deliveryFile.xml");
+                if (res != null && res.DeliveryImport != null)
+                {
+                    _loger.Log(string.Format("Delivery result: CountOfFailed = {0} ; CountOfSuccess = {1}" + res.DeliveryImport.CountOfFailed, res.DeliveryImport.CountOfSuccessful));
+                }
+
                 _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Deliveries);
             }
             catch (Exception ex)
@@ -141,7 +142,7 @@ namespace WWDataProcessor
         protected override void CheckOrders()
         {
             XmlFolderSettingsModel xmlSettings = CustomerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as XmlFolderSettingsModel;
-            if(xmlSettings==null)
+            if (xmlSettings == null)
             {
                 _loger.Log("Wrong settings data for orders");
                 return;
@@ -155,84 +156,95 @@ namespace WWDataProcessor
                     foreach (string file in xmlSourceFiles)
                     {
                         LICSRequest request = GetCustomerDataFromXml(file);
-                        request.ClientId = CustomerSettings.ClientID;
+                        if (request != null)
+                        {
+                            request.ClientId = CustomerSettings.ClientID;
 
-                        if(request.ArticleImport!=null)
-                        {
-                            foreach(var article in request.ArticleImport)
+                            if (request.ArticleImport != null)
                             {
-                                article.ClientNo = CustomerSettings.ClientID;
+                                foreach (var article in request.ArticleImport)
+                                {
+                                    article.ClientNo = CustomerSettings.ClientID;
+                                }
                             }
-                        }
-                        if(request.OrderImport!=null)
-                        {
-                            foreach(var ord in request.OrderImport)
+                            if (request.OrderImport != null)
                             {
-                                ord.ClientNo = CustomerSettings.ClientID;
+                                foreach (var ord in request.OrderImport)
+                                {
+                                    ord.ClientNo = CustomerSettings.ClientID;
+                                }
                             }
-                        }
-                        LICSResponse response = SendLicsRequestToIx4(request, "deliveryFile.xml");
-                        if (response.DeliveryImport.CountOfFailed == 0)
-                        {
-                            string clientsDirectory = "D:\\Transfer\\XML_Archiv";
-                            string customDirectory = string.Format("{0}\\Archive", xmlSettings.XmlItemSourceFolder);
-                            string successFolder = string.Empty;
-                            if (!Directory.Exists(clientsDirectory))
+                            LICSResponse response = SendLicsRequestToIx4(request, "deliveryFile.xml");
+                            if (response!=null && response.DeliveryImport!=null && response.DeliveryImport.CountOfFailed == 0)
                             {
+                                string customDirectory = string.Format("{0}\\SuccessOrdersArchive", xmlSettings.XmlItemSourceFolder);
                                 if (!Directory.Exists(customDirectory))
                                 {
                                     Directory.CreateDirectory(customDirectory);
-                                    successFolder = customDirectory;
                                 }
+                                string fn = Path.GetFileName(file);
+                                File.Move(file, string.Format("{0}\\{1}", customDirectory, fn));
+                                _loger.Log(string.Format("File {0} moved to {1} folder", fn, customDirectory));
                             }
                             else
                             {
-                                successFolder = clientsDirectory;
+                                _loger.Log(string.Format("Error while import order. Response state = {0} Response message = {1}",response.State,response.Message));
                             }
-                            string fn = Path.GetFileName(file);
-                            File.Move(file, string.Format("{0}\\{1}", successFolder, fn));
-                            _loger.Log(string.Format("File {0} moved to {1} folder",fn,successFolder));
                         }
                     }
                 }
                 _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Orders);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _loger.Log(ex);
             }
-           
+
         }
+
+
         private LICSRequest GetCustomerDataFromXml(string fileName)
         {
-
-            XmlSerializer xS = new XmlSerializer(typeof(OutputPayLoad));
-            LICSRequest licsRequest = new LICSRequest();
-            using (FileStream fs = new FileStream(fileName, FileMode.Open))
+            LICSRequest licsRequest = null;
+            try
             {
-                OutputPayLoad customerInfo = (OutputPayLoad)xS.Deserialize(fs);
-                licsRequest = customerInfo.ConvertToLICSRequest();
-            }
+                XmlSerializer xS = new XmlSerializer(typeof(OutputPayLoad));
 
+                using (FileStream fs = new FileStream(fileName, FileMode.Open))
+                {
+                    OutputPayLoad customerInfo = (OutputPayLoad)xS.Deserialize(fs);
+                    licsRequest = customerInfo.ConvertToLICSRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                _loger.Log(ex);
+            }
             return licsRequest;
         }
 
-       
-       
-      
+
+
+
         private LICSRequestArticle GetArticleByNumber(string articleNo)
         {
+            LICSRequestArticle foundArticle = null;
             if (_cachedArticles != null)
-                return _cachedArticles.FirstOrDefault(item => item.ArticleNo.Equals(articleNo));
+            {
+                foundArticle = _cachedArticles.FirstOrDefault(item => item.ArticleNo.Equals(articleNo));
+                if (foundArticle == null)
+                {
+                    _loger.Log(string.Format("We didn't find Article with number {0}", articleNo));
+                }
+            }
             else
             {
                 _loger.Log("There is no CACHED ARTICLES!!!!!!!!!!");
-                return null;
             }
-
+            return foundArticle;
         }
 
-   
+
         private bool CheckStateRequest(string response)
         {
             bool result = true;
@@ -358,7 +370,7 @@ namespace WWDataProcessor
 
 
         }
-    
+
 
         private bool HasItemsForSending(LICSRequest[] requests, Ix4RequestProps ix4Property)
         {
@@ -411,7 +423,7 @@ namespace WWDataProcessor
 
         protected override void ProcessExportedData(ExportDataItemSettings settings)
         {
-            
+
         }
     }
 }

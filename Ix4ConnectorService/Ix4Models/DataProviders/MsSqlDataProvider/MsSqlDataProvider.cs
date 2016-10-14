@@ -105,7 +105,7 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                     var cmdText = settings.ArticlesQuery;
                     SqlCommand cmd = new SqlCommand(cmdText, connection);
                     SqlDataReader reader = cmd.ExecuteReader();
-                    articles = LoadItems<LICSRequestArticle>(reader);// LoadArticles(reader);// 
+                    articles = LoadItems<LICSRequestArticle>(reader); 
                     _loger.Log(string.Format("Article no in SQL Extractor = {0}", articles.Count));
                 }
             }
@@ -135,7 +135,6 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     DataTable table = new DataTable();
-                    //  List<LICSRequestDelivery> deliveries = new List<LICSRequestDelivery>();
                     table.Load(reader);
 
                     foreach (DataRow row in table.AsEnumerable())
@@ -145,8 +144,7 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                         string getPositionsCommand = string.Format(settings.DeliveryPositionsQuery, delivery.DeliveryNo);
                         SqlCommand cmdPositions = new SqlCommand(getPositionsCommand, connection);
                         SqlDataReader positonsReader = cmdPositions.ExecuteReader();
-                       // DataTable tablePositions = new DataTable();
-                       // tablePositions.Load(positonsReader);
+
                         delivery.Positions = LoadItems<LICSRequestDeliveryPosition>(positonsReader).ToArray<LICSRequestDeliveryPosition>();
                         if (delivery.Positions != null && delivery.Positions.Length > 0)
                         {
@@ -176,9 +174,7 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                 {
                     throw new Exception("Empty orders settings");
                 }
-                string dbConnectStr = settings.BuilDBConnection();
-                _loger.Log("connection string = "+ dbConnectStr);
-                using (var connection = new SqlConnection(dbConnectStr))
+                using (var connection = new SqlConnection(settings.BuilDBConnection()))
                 {
                     connection.Open();
                     var cmdText = settings.OrdersQuery;
