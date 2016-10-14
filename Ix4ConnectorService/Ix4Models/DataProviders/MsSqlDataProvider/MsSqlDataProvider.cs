@@ -59,6 +59,11 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                 try
                 {
                     PropertyInfo propertyInfo = item.GetType().GetProperty(column.ColumnName);
+                    if(propertyInfo==null)
+                    {
+                        _loger.Log(string.Format("There is no property {0}",column.ColumnName));
+                        continue;
+                    }
                     if (row[column.ColumnName].GetType().Equals(DBNull.Value.GetType()))
                     {
                         propertyInfo.SetValue(item, Convert.ChangeType(GetDefaultValue(propertyInfo.PropertyType), propertyInfo.PropertyType), null);
