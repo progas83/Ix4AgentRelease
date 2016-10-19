@@ -26,11 +26,20 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
             table.Load(reader);
             foreach (DataRow row in table.AsEnumerable())
             {
-                LICSRequestArticle article = LoadItem<LICSRequestArticle>(row);
-                if (article != null)
+                try
                 {
-                    items.Add(article);
+                    LICSRequestArticle article = LoadItem<LICSRequestArticle>(row);
+                    if (article != null)
+                    {
+                        items.Add(article);
+                    }
                 }
+                catch (Exception ex)
+                {
+                    _loger.Log("Exception while load handle article item");
+                    _loger.Log(ex);
+                }
+
             }
             return items;
         }
@@ -77,7 +86,8 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                 {
                     _loger.Log("Exception while reflect DataColumn values using Reflection");
                     _loger.Log(string.Format("Exception with property {0} value = {1}", column.ColumnName, row[column.ColumnName]??"Empty value"));
-                    _loger.Log(ex);
+                   // _loger.Log(ex);
+                    throw ex;
                 }
 
             }
@@ -110,7 +120,8 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                     var cmdText = settings.ArticlesQuery;
                     SqlCommand cmd = new SqlCommand(cmdText, connection);
                     SqlDataReader reader = cmd.ExecuteReader();
-                    articles = LoadItems<LICSRequestArticle>(reader); 
+                    articles = LoadArticles(reader);
+                   // articles = LoadItems<LICSRequestArticle>(reader); 
                     _loger.Log(string.Format("Article no in SQL Extractor = {0}", articles.Count));
                 }
             }
@@ -144,21 +155,36 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
 
                     foreach (DataRow row in table.AsEnumerable())
                     {
-                        LICSRequestDelivery delivery = LoadItem<LICSRequestDelivery>(row);
-
-                        string getPositionsCommand = string.Format(settings.DeliveryPositionsQuery, delivery.DeliveryNo);
-                        SqlCommand cmdPositions = new SqlCommand(getPositionsCommand, connection);
-                        SqlDataReader positonsReader = cmdPositions.ExecuteReader();
-
-                        delivery.Positions = LoadItems<LICSRequestDeliveryPosition>(positonsReader).ToArray<LICSRequestDeliveryPosition>();
-                        if (delivery.Positions != null && delivery.Positions.Length > 0)
+                        LICSRequestDelivery delivery = null;
+                        try
                         {
-                            requestDeliveries.Add(delivery);
+                            delivery  = LoadItem<LICSRequestDelivery>(row);
+                            if (delivery == null)
+                            {
+                                _loger.Log(delivery, "delivery");
+                                continue;
+                            }
+                            string getPositionsCommand = string.Format(settings.DeliveryPositionsQuery, delivery.DeliveryNo);
+                            SqlCommand cmdPositions = new SqlCommand(getPositionsCommand, connection);
+                            SqlDataReader positonsReader = cmdPositions.ExecuteReader();
+
+                            delivery.Positions = LoadItems<LICSRequestDeliveryPosition>(positonsReader).ToArray<LICSRequestDeliveryPosition>();
+                            if (delivery.Positions != null && delivery.Positions.Length > 0)
+                            {
+                                requestDeliveries.Add(delivery);
+                            }
+                            else
+                            {
+                                _loger.Log("There aren't positions for deliveryNO = " + delivery.DeliveryNo);
+                            }
                         }
-                        else
+                        catch(Exception ex)
                         {
-                            _loger.Log("There aren't positions for deliveryNO = " + delivery.DeliveryNo);
+                            _loger.Log("Exception while handle delivery item");
+                            _loger.Log(ex);
                         }
+                        
+                       
                     }
                 }
             }
@@ -190,38 +216,53 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                     table.Load(reader);
                     foreach (DataRow row in table.AsEnumerable())
                     {
-                        LICSRequestOrder orderItem = LoadItem<LICSRequestOrder>(row);// new LICSRequestOrder();
-
-                        string getOrderRecipientQuery = string.Format(settings.OrderRecipientQuery, orderItem.OrderNo);
-                        _loger.Log(string.Format("Order recipient reques sql {0}", getOrderRecipientQuery));
-                        SqlCommand cmdRecipient = new SqlCommand(getOrderRecipientQuery, connection);
-                        SqlDataReader readerRecipient = cmdRecipient.ExecuteReader();
-                        DataTable tableRecipients = new DataTable();
-                        tableRecipients.Load(readerRecipient);
-                        orderItem.Recipient = LoadItem<LICSRequestOrderRecipient>(tableRecipients.Rows[0]);
-
-                        _loger.Log(string.Format("Order {0} recipient Name {1} FirstName {2}", orderItem.OrderNo,orderItem.Recipient.Name,orderItem.Recipient.FirstName));
-
-
-                        string getOrderPositionsQuery = string.Format(settings.OrderPositionsQuery, orderItem.OrderNo);
-                        _loger.Log(string.Format("Order positions sql {0}", getOrderPositionsQuery));
-                        SqlCommand cmdPositions = new SqlCommand(getOrderPositionsQuery, connection);
-                        SqlDataReader readerPositions = cmdPositions.ExecuteReader();
-                        //DataTable tablePositions = new DataTable();
-                        //tablePositions.Load(readerPositions);
-                        orderItem.Positions = LoadItems<LICSRequestOrderPosition>(readerPositions).ToArray<LICSRequestOrderPosition>();
-                        _loger.Log(orderItem.Positions, "orderItem.Positions");
-                        _loger.Log("Position number = " +orderItem.Positions.Length);
-                        if (orderItem.Positions != null && orderItem.Positions.Length > 0)
+                        LICSRequestOrder orderItem = null;
+                        try
                         {
-                            orders.Add(orderItem);
+                            orderItem =  LoadItem<LICSRequestOrder>(row);
+                            if (orderItem == null)
+                            {
+                                _loger.Log(orderItem, "orderItem");
+                                continue;
+                            }
+
+                            string getOrderRecipientQuery = string.Format(settings.OrderRecipientQuery, orderItem.OrderNo);
+                            _loger.Log(string.Format("Order recipient reques sql {0}", getOrderRecipientQuery));
+                            SqlCommand cmdRecipient = new SqlCommand(getOrderRecipientQuery, connection);
+                            SqlDataReader readerRecipient = cmdRecipient.ExecuteReader();
+                            DataTable tableRecipients = new DataTable();
+                            tableRecipients.Load(readerRecipient);
+                            orderItem.Recipient = LoadItem<LICSRequestOrderRecipient>(tableRecipients.Rows[0]);
+
+                           // _loger.Log(string.Format("Order {0} recipient Name {1} FirstName {2}", orderItem.OrderNo, orderItem.Recipient.Name, orderItem.Recipient.FirstName));
+
+
+                            string getOrderPositionsQuery = string.Format(settings.OrderPositionsQuery, orderItem.OrderNo);
+                            _loger.Log(string.Format("Order positions sql query {0}", getOrderPositionsQuery));
+                            SqlCommand cmdPositions = new SqlCommand(getOrderPositionsQuery, connection);
+                            SqlDataReader readerPositions = cmdPositions.ExecuteReader();
+                            //DataTable tablePositions = new DataTable();
+                            //tablePositions.Load(readerPositions);
+                            orderItem.Positions = LoadItems<LICSRequestOrderPosition>(readerPositions).ToArray<LICSRequestOrderPosition>();
+                            // _loger.Log(orderItem.Positions, "orderItem.Positions");
+                            _loger.Log("Position number = " + orderItem.Positions.Length);
+                            if (orderItem.Positions.Length > 0)
+                            {
+                                orders.Add(orderItem);
+                            }
+                            else
+                            {
+                                string exceptionMessage = "There isn't positions in order No " + orderItem.OrderNo;
+                                _loger.Log(exceptionMessage);
+                                MailLogger.Instance.LogMail(new ContentDescription("Order without position", exceptionMessage));
+                            }
                         }
-                        else
+                        catch(Exception ex)
                         {
-                            string exceptionMessage = "There isn't positions in order No " + orderItem.OrderNo;
-                            _loger.Log(exceptionMessage);
-                            MailLogger.Instance.LogMail(new ContentDescription("Order without position",exceptionMessage));
+                            _loger.Log("Exception while handle order item");
+                            _loger.Log(ex);
                         }
+                      
                     }
                     //  orders = LoadOrders(reader, connection);
                     _loger.Log(string.Format("Orders no in SQL Extractor = {0}", orders.Count));
