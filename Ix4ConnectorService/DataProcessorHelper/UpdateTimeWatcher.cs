@@ -37,7 +37,7 @@ namespace DataProcessorHelper
                 }
             }
 
-            _loger.Log(string.Format("Articles lust update TS = {0}; Orders lust update = {1}; Deliveries lust update = {2}", Properties.LustUpdateSettings.Default.Articles, Properties.LustUpdateSettings.Default.Orders, Properties.LustUpdateSettings.Default.Deliveries));
+            _loger.Log(string.Format("Articles lust update TS = {0}; Orders lust update = {1}; Deliveries lust update = {2}", GetTimeFromTS(Properties.LustUpdateSettings.Default.Articles) ,GetTimeFromTS(Properties.LustUpdateSettings.Default.Orders), GetTimeFromTS(Properties.LustUpdateSettings.Default.Deliveries)));
           }
 
         public void SaveLastUpdateValues()
@@ -60,11 +60,15 @@ namespace DataProcessorHelper
      //   private static long _exportSALastUpdate = 1;
 
 
-
-
+         private string GetTimeFromTS(long seconds)
+        {
+            DateTime result = _startDT.AddSeconds(seconds);
+            return result.ToString();
+        }
+      private static  DateTime _startDT = new DateTime(1970, 1, 1);
         private static long GetTimeStamp()
         {
-            return (long)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+            return (long)(DateTime.UtcNow.Subtract(_startDT)).TotalSeconds;
         }
 
         public bool TimeToCheck(string exportDataType)
