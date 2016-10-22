@@ -61,7 +61,7 @@ namespace Ix4ServiceConfigurator.ViewModel.MsSql
             _msSqlSettings = sqlSourceSettings.DataSourceSettings as MsSqlSettings;
             _testConnectionCommand = new DbConnectionCommand(this);
             DbNames = new ObservableCollection<string>();
-            if(!string.IsNullOrEmpty(_msSqlSettings.ServerAdress) && !string.IsNullOrEmpty(_msSqlSettings.DataBaseName))
+            if(!string.IsNullOrEmpty(_msSqlSettings.ServerAdress))
             {
                 CheckMsSqlConnection();
             }
@@ -126,6 +126,7 @@ namespace Ix4ServiceConfigurator.ViewModel.MsSql
             {
                 DbConnectionStatus = "Failed connection";
                 ConnectionStatusError = ex.Message;
+                _msSqlSettings.DataBaseName = string.Empty;
             }
         }
 

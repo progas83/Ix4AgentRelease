@@ -3,13 +3,9 @@ using Ix4Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Ix4Models.SettingsDataModel;
-using Ix4Connector;
 using DataProcessorHelper;
 using Ix4Models;
-using Ix4Models.DataProviders.MsSqlDataProvider;
 using System.Data.SqlClient;
 using System.Xml;
 
@@ -131,13 +127,13 @@ namespace WVDataProcessor
                 _loger.Log(ex);
             }
         }
-       
+
         private bool OrdersHasPositions(List<LICSRequestOrder> orders)
         {
             bool result = false;
-            foreach(LICSRequestOrder order in orders)
+            foreach (LICSRequestOrder order in orders)
             {
-                if(order.Positions !=null && order.Positions.Count()>0)
+                if (order.Positions != null && order.Positions.Count() > 0)
                 {
                     result = true;
                     break;
@@ -203,7 +199,7 @@ namespace WVDataProcessor
                     }
                     request.OrderImport = orders.ToArray<LICSRequestOrder>();
                 }
-               
+
                 LICSResponse response = SendLicsRequestToIx4(request, "ordersFile.xml");
                 _loger.Log("Orders result: " + response);
                 SimplestParcerLicsRequest(response);
@@ -365,7 +361,7 @@ namespace WVDataProcessor
                             _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
                         }
                         _loger.Log("End export data " + mark);
-                        System.Threading.Thread.Sleep(30000);
+                        //System.Threading.Thread.Sleep(30000);
                     }
 
                 }
@@ -421,7 +417,7 @@ namespace WVDataProcessor
                             _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
                         }
                         _loger.Log("End export data " + mark);
-                        System.Threading.Thread.Sleep(30000);
+                        //  System.Threading.Thread.Sleep(30000);
                     }
 
                 }
@@ -485,7 +481,7 @@ namespace WVDataProcessor
                             _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
                         }
                         _loger.Log("End export data " + mark);
-                        System.Threading.Thread.Sleep(30000);
+                        //System.Threading.Thread.Sleep(30000);
                     }
 
                 }
@@ -549,7 +545,7 @@ namespace WVDataProcessor
                             _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
                         }
                         _loger.Log("End export data " + mark);
-                        System.Threading.Thread.Sleep(30000);
+                        //    System.Threading.Thread.Sleep(30000);
                     }
 
                 }
@@ -613,7 +609,7 @@ namespace WVDataProcessor
                             _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
                         }
                         _loger.Log("End export data " + mark);
-                        System.Threading.Thread.Sleep(30000);
+                        //System.Threading.Thread.Sleep(30000);
                     }
 
                 }
