@@ -578,7 +578,7 @@ namespace WVDataProcessor
                         switch (mark)
                         {
                             case "SA":
-                                ensureType = EnsureType.UpdateStoredData;
+                                ensureType = EnsureType.CollectData;
                                 break;
                             case "GP":
                                 ensureType = EnsureType.CollectData;
