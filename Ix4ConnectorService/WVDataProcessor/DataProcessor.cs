@@ -8,6 +8,7 @@ using DataProcessorHelper;
 using Ix4Models;
 using System.Data.SqlClient;
 using System.Xml;
+using SinplestLogger.Mailer;
 
 namespace WVDataProcessor
 {
@@ -259,9 +260,10 @@ namespace WVDataProcessor
                         else
                         {
                             status = 3;
+                            MailLogger.Instance.LogMail(new ContentDescription("Order was not imported", string.Format("Message: {0}",ord.Message)));
                         }
                         SendToDB(ord.OrderNo, status);
-                        _loger.Log(string.Format("Has updated order with NO = {0}  new status = {1}", ord.ReferenceNo, status));
+                        _loger.Log(string.Format("Has updated order with NO = {0}  new status = {1}", ord.OrderNo, status));
                     }
             }
             catch (Exception ex)
