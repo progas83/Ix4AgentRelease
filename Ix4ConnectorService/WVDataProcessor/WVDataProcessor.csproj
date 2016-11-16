@@ -23,7 +23,8 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
-	<AllowedReferenceRelatedFileExtensions></AllowedReferenceRelatedFileExtensions> 
+    <AllowedReferenceRelatedFileExtensions>
+    </AllowedReferenceRelatedFileExtensions>
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\ServiceProgram\Release\Clients\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
@@ -45,6 +46,7 @@
     <Compile Include="DataProcessor.cs" />
     <Compile Include="ExportDataToSQL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StoragePlaces.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataProcessorHelper\DataProcessorHelper.csproj">

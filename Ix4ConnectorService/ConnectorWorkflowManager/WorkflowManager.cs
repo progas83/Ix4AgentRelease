@@ -119,10 +119,10 @@ namespace ConnectorWorkflowManager
                 _isBusy = true;
                 try
                 {
-                   if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
+                   //if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
                     {
                         _loger.Log("Start checking data");
-                        _currentDataProcessor.ImportData();
+                    //    _currentDataProcessor.ImportData();
                         _loger.Log("Finish Import data");
                         _currentDataProcessor.ExportData();
                         _loger.Log("Finish checking data");

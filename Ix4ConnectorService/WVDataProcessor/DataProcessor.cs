@@ -9,6 +9,9 @@ using Ix4Models;
 using System.Data.SqlClient;
 using System.Xml;
 using SinplestLogger.Mailer;
+using System.Xml.Serialization;
+using System.IO;
+using System.Diagnostics;
 
 namespace WVDataProcessor
 {
@@ -313,26 +316,32 @@ namespace WVDataProcessor
 
         private void ProcessSAData()
         {
+            StoragePlaces storages = new StoragePlaces("SP", "WE", "LP");
             try
             {
                 foreach (string mark in new string[] { "SA" })
                 {
                     _loger.Log("Starting export data " + mark);
                     XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
-
+                 //   _ensureData.RudeStoreExportedData(nodeResult, mark);
                     XmlDocument xmlDoc = new XmlDocument();
                     xmlDoc.InnerXml = nodeResult.OuterXml;
-                    var msgNodes = xmlDoc.GetElementsByTagName("MSG");
+                 //   _ensureData.StoreExportedNodeList(xmlDoc.GetElementsByTagName("MSG"), mark, EnsureType.CollectData);
+                 //   Stopwatch diagnos = new Stopwatch();
+                 //   diagnos.Start();
+                    XmlNodeList msgNodes = storages.GetUpdatedStorageInformation(xmlDoc.GetElementsByTagName("MSG"));
+                 //   diagnos.Stop();
+                 //   var reeeer = diagnos.ElapsedMilliseconds;
 
-                    //  var msgNodes = nodeResult.LastChild.LastChild.SelectNodes("MSG");
-                    _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
+                  
                     if (msgNodes != null && msgNodes.Count > 0)
                     {
+                        _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
                         EnsureType ensureType = EnsureType.CollectData;
                         switch (mark)
                         {
                             case "SA":
-                                ensureType = EnsureType.UpdateStoredData;
+                                ensureType = EnsureType.CollectData;
                                 break;
                             case "GP":
                                 ensureType = EnsureType.CollectData;
@@ -360,7 +369,7 @@ namespace WVDataProcessor
                         }
                         else
                         {
-                            _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
+                            _ensureData.ProcessingSAStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
                         }
                         _loger.Log("End export data " + mark);
                         //System.Threading.Thread.Sleep(30000);

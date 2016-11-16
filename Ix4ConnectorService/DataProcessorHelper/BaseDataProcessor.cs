@@ -32,7 +32,7 @@ namespace DataProcessorHelper
         protected ImportDataSourcesBuilder _importDataProvider;
         protected List<LICSRequestArticle> _cachedArticles;
         protected DataEnsure _ensureData;
-        public static Logger _loger = Logger.GetLogger();
+        protected static Logger _loger = Logger.GetLogger();
         private static object _o = new object();
 
         protected readonly int _articlesPerRequest = 20;

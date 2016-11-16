@@ -260,7 +260,91 @@ namespace DataProcessorHelper
 
         }
 
-      
+        public void ProcessingSAStoredDataToClientStorage(string exportedDataName, SaveMsgDatatToTable dataConnector)
+        {
+            //if (exportedDataName == "GS" && _hasGPFatalError)
+            //{
+            //    _loger.Log("Can't process GS messages! Reason: GP has error");
+            //    return;
+            //}
+            if (dataConnector == null)
+            {
+                _loger.Log(string.Format("Data {0} has not been processed", exportedDataName));// "There is no stored file for data " + exportedDataName);
+                _loger.Log(dataConnector, "dataCompositor");
+                return;
+            }
+            string fileName = string.Empty;
+            if (_dataFileNames.ContainsKey(exportedDataName))
+            {
+                fileName = _dataFileNames[exportedDataName];
+            }
+            else
+            {
+                _loger.Log("There is no stored file for data " + exportedDataName);
+                return;
+            }
+
+            try
+            {
+                XmlDocument doc = new XmlDocument();
+                doc.Load(fileName);
+
+                XmlDocument docWithBadMsg = new XmlDocument();
+                XmlDeclaration xmlDeclaration = docWithBadMsg.CreateXmlDeclaration("1.0", "UTF-8", null);
+                XmlElement root = docWithBadMsg.DocumentElement;
+                docWithBadMsg.InsertBefore(xmlDeclaration, root);
+                docWithBadMsg.AppendChild(docWithBadMsg.CreateElement("CONTENT"));
+
+
+                XmlNodeList nodes = doc.GetElementsByTagName("MSG");
+                
+                while (nodes.Count != 0)
+                {
+                    XmlNode currentNode = nodes[0].ParentNode.RemoveChild(nodes[0]);
+                    MSG exportedMsg = dataConnector(currentNode);
+                    if (exportedMsg == null)
+                    {
+                        XmlNode insertedNode = docWithBadMsg.ImportNode(currentNode, true);
+                        docWithBadMsg.DocumentElement.AppendChild(insertedNode);
+                    }
+                    else
+                    {
+                        if (!exportedMsg.Saved)
+                        {
+                            string xmlContent = exportedMsg.SerializeObjectToString<MSG>();
+                            XmlDocument tempDoc = new XmlDocument();
+                            tempDoc.LoadXml(xmlContent);
+
+                            XmlNode insertedNode = docWithBadMsg.ImportNode(tempDoc.DocumentElement, true);
+                            docWithBadMsg.DocumentElement.AppendChild(insertedNode);
+                        }
+                        else
+                        {
+                            _loger.Log(string.Format("MSG {0} WAKopfID = {1} was succesfully saved ", exportedDataName, exportedMsg.WAKopfID));
+                        }
+                    }
+
+                    doc.Save(fileName);
+                }
+                XmlNodeList badNodes = docWithBadMsg.GetElementsByTagName("MSG");
+                if (exportedDataName == "GP")
+                {
+                    _hasGPFatalError = badNodes.Count > 0;
+                }
+                while (badNodes.Count != 0)
+                {
+                    XmlNode insertedNode = doc.ImportNode(badNodes[0].ParentNode.RemoveChild(badNodes[0]), true);
+                    doc.DocumentElement.AppendChild(insertedNode);
+                };
+                doc.Save(fileName);
+            }
+
+
+            catch (Exception ex)
+            {
+                _loger.Log(ex);
+            }
+        }
     }
 
     public enum EnsureType

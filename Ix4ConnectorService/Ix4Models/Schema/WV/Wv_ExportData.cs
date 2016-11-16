@@ -9,6 +9,7 @@
 //------------------------------------------------------------------------------
 
 using Ix4Models.Schema.WV;
+using System;
 using System.Xml.Serialization;
 
 // 
@@ -23,7 +24,8 @@ using System.Xml.Serialization;
 [System.ComponentModel.DesignerCategoryAttribute("code")]
 [System.Xml.Serialization.XmlTypeAttribute(AnonymousType=true)]
 [System.Xml.Serialization.XmlRootAttribute(Namespace="", IsNullable=false)]
-public partial class MSG {
+public partial class MSG : ICloneable
+{
     private int headerId;
 
     private bool saved;
@@ -78,6 +80,7 @@ public partial class MSG {
         set { headerId = value; }
     }
 
+    [XmlIgnore]
     [MSGSystem]
     public bool Saved
     {
@@ -376,6 +379,27 @@ public partial class MSG {
         set {
             this.mSGPos_TrackingNoField = value;
         }
+    }
+
+    //public MSG MakeCopy()
+    //{
+    //    MSG copy = new MSG();
+    //    copy.Amount = this.Amount;
+    //    copy.BinType = this.BinType;
+    //    copy.Created = this.Created;
+    //    copy.DeliveryNo = this.DeliveryNo;
+    //    copy.DilosPos = this.DilosPos;
+    //    copy.DilosProcessNo = this.DilosProcessNo;
+    //    copy.ErrorText = this.ErrorText;
+    //    copy.HeaderId = this.HeaderId;
+    //    copy.ItemNo = this.ItemNo;
+    //    copy.LastUpdate = this.LastUpdate;
+    //    copy.
+    //}
+
+    public object Clone()
+    {
+        return this.MemberwiseClone();//  throw new NotImplementedException();
     }
 }
 
