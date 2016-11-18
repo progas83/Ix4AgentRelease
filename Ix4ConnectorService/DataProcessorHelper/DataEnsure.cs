@@ -137,15 +137,19 @@ namespace DataProcessorHelper
            
         public void ProcessingStoredDataToClientStorage(string exportedDataName, SaveMsgDatatToTable dataConnector)
         {
-            if (exportedDataName == "GS" && _hasGPFatalError)
+            if (exportedDataName == "GS" || exportedDataName == "CA")
             {
-                _loger.Log("Can't process GS messages! Reason: GP has error");
-                return;
+                if (_hasGPFatalError)
+                {
+                    _loger.Log(string.Format("Can't process {0} messages! Reason: GP has error", exportedDataName));
+                    return;
+                }
+                
             }
             if (dataConnector == null)
             {
                 _loger.Log(string.Format("Data {0} has not been processed", exportedDataName));// "There is no stored file for data " + exportedDataName);
-                _loger.Log(dataConnector, "dataCompositor");
+                _loger.Log(dataConnector, "dataConnector");
                 return;
             }
             string fileName = string.Empty;

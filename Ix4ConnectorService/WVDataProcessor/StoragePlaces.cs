@@ -54,44 +54,55 @@ namespace WVDataProcessor
 
             foreach (XmlNode node in articlesData)
             {
-                MSG articleData = ConvertToMSG(node);
-
-                if(articlesData!=null)
+                try
                 {
-                    foreach(string storagePlace in _storages.Keys)
+                    MSG articleData = ConvertToMSG(node);
+
+                    if (articlesData != null)
                     {
-                        if(storagePlace.Equals(articleData.Storageplace))
+                        foreach (string storagePlace in _storages.Keys)
                         {
-                            MSG existedItemInCurrentStorage = _storages[storagePlace].FirstOrDefault(it => it.ItemNo.Equals(articleData.ItemNo));
-
-                            if (existedItemInCurrentStorage!=null)
+                            if (storagePlace.Equals(articleData.Storageplace))
                             {
-                                _storages[storagePlace].Remove(existedItemInCurrentStorage);
-                            }
-                            _storages[storagePlace].Add(articleData);
-                        }
-                        else
-                        {
-                            MSG existedItemInCurrentStorage = _storages[storagePlace].FirstOrDefault(it => it.ItemNo.Equals(articleData.ItemNo));
-                            if(existedItemInCurrentStorage==null)
-                            {
-                                MSG articleDataStub = GetCopyAllProperties(articleData);// (MSG)  articleData.Clone();
-                                articleDataStub.Amount = 0;
-                                articleDataStub.Storageplace = storagePlace;
-                                _storages[storagePlace].Add(articleDataStub);
+                                MSG existedItemInCurrentStorage = _storages[storagePlace].FirstOrDefault(it => it.ItemNo.Equals(articleData.ItemNo));
 
-                                string xmlContent = articleDataStub.SerializeObjectToString<MSG>();
-                                XmlDocument tempDoc = new XmlDocument();
-                                tempDoc.LoadXml(xmlContent);
-                                updatedArticlesInfoDoc.DocumentElement.AppendChild(updatedArticlesInfoDoc.ImportNode(tempDoc.DocumentElement, true));
+                                if (existedItemInCurrentStorage != null)
+                                {
+                                    _storages[storagePlace].Remove(existedItemInCurrentStorage);
+                                }
+                                _storages[storagePlace].Add(articleData);
+                            }
+                            else
+                            {
+                                MSG existedItemInCurrentStorage = _storages[storagePlace].FirstOrDefault(it => it.ItemNo.Equals(articleData.ItemNo));
+                                if (existedItemInCurrentStorage == null)
+                                {
+                                    MSG articleDataStub = GetCopyAllProperties(articleData);// (MSG)  articleData.Clone();
+                                    articleDataStub.Amount = 0;
+                                    articleDataStub.Storageplace = storagePlace;
+                                    articleDataStub.ShippingType = 0;// articleData.ShippingType;
+                                    _storages[storagePlace].Add(articleDataStub);
+
+                                    string xmlContent = articleDataStub.SerializeObjectToString<MSG>();
+                                    XmlDocument tempDoc = new XmlDocument();
+                                    tempDoc.LoadXml(xmlContent);
+                                    updatedArticlesInfoDoc.DocumentElement.AppendChild(updatedArticlesInfoDoc.ImportNode(tempDoc.DocumentElement, true));
+                                }
                             }
                         }
+
                     }
-                    
-                }
 
-                XmlNode insertedNode = updatedArticlesInfoDoc.ImportNode(node, true);
-                updatedArticlesInfoDoc.DocumentElement.AppendChild(insertedNode);
+                    XmlNode insertedNode = updatedArticlesInfoDoc.ImportNode(node, true);
+                    updatedArticlesInfoDoc.DocumentElement.AppendChild(insertedNode);
+                }
+                catch(Exception ex)
+                {
+                    _loger.Log(ex);
+                    _loger.Log("Need to handle SA messges from start");
+                    throw new Exception("Can't handle SA messages for all storageplaces. Can't GetUpdatedStorageInformation");
+                }
+                
             }
             return updatedArticlesInfoDoc.GetElementsByTagName("MSG"); 
         }

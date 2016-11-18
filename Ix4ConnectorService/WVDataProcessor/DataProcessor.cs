@@ -326,7 +326,8 @@ namespace WVDataProcessor
                  //   _ensureData.RudeStoreExportedData(nodeResult, mark);
                     XmlDocument xmlDoc = new XmlDocument();
                     xmlDoc.InnerXml = nodeResult.OuterXml;
-                 //   _ensureData.StoreExportedNodeList(xmlDoc.GetElementsByTagName("MSG"), mark, EnsureType.CollectData);
+                    XmlNodeList msgNodes1 = xmlDoc.GetElementsByTagName("MSG");
+                    _ensureData.StoreExportedNodeList(xmlDoc.GetElementsByTagName("MSG"), mark, EnsureType.CollectData);
                  //   Stopwatch diagnos = new Stopwatch();
                  //   diagnos.Start();
                     XmlNodeList msgNodes = storages.GetUpdatedStorageInformation(xmlDoc.GetElementsByTagName("MSG"));
@@ -389,7 +390,7 @@ namespace WVDataProcessor
 
             try
             {
-                foreach (string mark in new string[] { "GP", "GS" })
+                foreach (string mark in new string[] { "GP", "GS", "CA" })
                 {
                     _loger.Log("Starting export data " + mark);
                     XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
@@ -403,21 +404,6 @@ namespace WVDataProcessor
                     if (msgNodes != null && msgNodes.Count > 0)
                     {
                         EnsureType ensureType = EnsureType.CollectData;
-                        switch (mark)
-                        {
-                            case "SA":
-                                ensureType = EnsureType.UpdateStoredData;
-                                break;
-                            case "GP":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "GS":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            default:
-                                ensureType = EnsureType.CollectData;
-                                break;
-                        }
 
                         if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
                         {
