@@ -57,44 +57,66 @@ namespace WVDataProcessor
                 try
                 {
                     MSG articleData = ConvertToMSG(node);
-
+                    if(articleData.ItemNo==null)
+                    {
+                        continue;
+                    }
                     if (articlesData != null)
                     {
                         foreach (string storagePlace in _storages.Keys)
                         {
                             if (storagePlace.Equals(articleData.Storageplace))
                             {
-                                MSG existedItemInCurrentStorage = _storages[storagePlace].FirstOrDefault(it => it.ItemNo.Equals(articleData.ItemNo));
-
-                                if (existedItemInCurrentStorage != null)
+                                try
                                 {
-                                    _storages[storagePlace].Remove(existedItemInCurrentStorage);
+                                    MSG existedItemInCurrentStorage = _storages[storagePlace].FirstOrDefault(it => it.ItemNo!=null && it.ItemNo.Equals(articleData.ItemNo));
+
+                                    if (existedItemInCurrentStorage != null)
+                                    {
+                                        _storages[storagePlace].Remove(existedItemInCurrentStorage);
+                                    }
+                                    _storages[storagePlace].Add(articleData);
+
+
+                                //    string xmlContent = articleData.SerializeObjectToString<MSG>();
+                                //    XmlDocument tempDoc = new XmlDocument();
+                                 //   tempDoc.LoadXml(xmlContent);
+                                 //   updatedArticlesInfoDoc.DocumentElement.AppendChild(updatedArticlesInfoDoc.ImportNode(tempDoc.DocumentElement, true));
+
                                 }
-                                _storages[storagePlace].Add(articleData);
+                                catch (Exception ex)
+                                {
+
+                                }
+                               
+                                //XmlNode insertedNode = updatedArticlesInfoDoc.ImportNode(node, true);
+                                //updatedArticlesInfoDoc.DocumentElement.AppendChild(insertedNode);
                             }
                             else
                             {
                                 MSG existedItemInCurrentStorage = _storages[storagePlace].FirstOrDefault(it => it.ItemNo.Equals(articleData.ItemNo));
                                 if (existedItemInCurrentStorage == null)
                                 {
-                                    MSG articleDataStub = GetCopyAllProperties(articleData);// (MSG)  articleData.Clone();
+                                    MSG articleDataStub = (MSG)articleData.Clone();// GetCopyAllProperties(articleData);//   
                                     articleDataStub.Amount = 0;
                                     articleDataStub.Storageplace = storagePlace;
                                     articleDataStub.ShippingType = 0;// articleData.ShippingType;
                                     _storages[storagePlace].Add(articleDataStub);
 
-                                    string xmlContent = articleDataStub.SerializeObjectToString<MSG>();
-                                    XmlDocument tempDoc = new XmlDocument();
-                                    tempDoc.LoadXml(xmlContent);
-                                    updatedArticlesInfoDoc.DocumentElement.AppendChild(updatedArticlesInfoDoc.ImportNode(tempDoc.DocumentElement, true));
+
+                                    //                                    XmlNode insertedNode = updatedArticlesInfoDoc.ImportNode(node, true);
+                                    //                                  updatedArticlesInfoDoc.DocumentElement.AppendChild(insertedNode);
+                                  //  string xmlContent = articleDataStub.SerializeObjectToString<MSG>();
+                                  //  XmlDocument tempDoc = new XmlDocument();
+                                 //   tempDoc.LoadXml(xmlContent);
+                                   // updatedArticlesInfoDoc.DocumentElement.AppendChild(updatedArticlesInfoDoc.ImportNode(tempDoc.DocumentElement, true));
                                 }
                             }
                         }
 
                     }
 
-                    XmlNode insertedNode = updatedArticlesInfoDoc.ImportNode(node, true);
-                    updatedArticlesInfoDoc.DocumentElement.AppendChild(insertedNode);
+                   
                 }
                 catch(Exception ex)
                 {
@@ -104,7 +126,21 @@ namespace WVDataProcessor
                 }
                 
             }
-            return updatedArticlesInfoDoc.GetElementsByTagName("MSG"); 
+
+            List<MSG> summarizeList = new List<MSG>();
+            foreach (string storagePlace in _storages.Keys)
+            {
+                foreach(MSG saMsg in _storages[storagePlace])
+                {
+                    string xmlContent = saMsg.SerializeObjectToString<MSG>();
+                    XmlDocument tempDoc = new XmlDocument();
+                    tempDoc.LoadXml(xmlContent);
+                    updatedArticlesInfoDoc.DocumentElement.AppendChild(updatedArticlesInfoDoc.ImportNode(tempDoc.DocumentElement, true));
+                }
+              //  summarizeList.AddRange(_storages[storagePlace]);
+            }
+
+                return updatedArticlesInfoDoc.GetElementsByTagName("MSG"); 
         }
 
         private MSG GetCopyAllProperties(MSG source)

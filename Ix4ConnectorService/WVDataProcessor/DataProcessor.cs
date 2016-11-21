@@ -323,59 +323,27 @@ namespace WVDataProcessor
                 {
                     _loger.Log("Starting export data " + mark);
                     XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
-                 //   _ensureData.RudeStoreExportedData(nodeResult, mark);
                     XmlDocument xmlDoc = new XmlDocument();
                     xmlDoc.InnerXml = nodeResult.OuterXml;
                     XmlNodeList msgNodes1 = xmlDoc.GetElementsByTagName("MSG");
                     _ensureData.StoreExportedNodeList(xmlDoc.GetElementsByTagName("MSG"), mark, EnsureType.CollectData);
-                 //   Stopwatch diagnos = new Stopwatch();
-                 //   diagnos.Start();
                     XmlNodeList msgNodes = storages.GetUpdatedStorageInformation(xmlDoc.GetElementsByTagName("MSG"));
-                 //   diagnos.Stop();
-                 //   var reeeer = diagnos.ElapsedMilliseconds;
-
-                  
+ 
                     if (msgNodes != null && msgNodes.Count > 0)
                     {
                         _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
-                        EnsureType ensureType = EnsureType.CollectData;
-                        switch (mark)
-                        {
-                            case "SA":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "GP":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "GS":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "GR":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "CA":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "BO":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            default:
-                                ensureType = EnsureType.CollectData;
-                                break;
-                        }
-
+                        EnsureType ensureType = EnsureType.UpdateStoredData;
+                       
                         if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
                         {
                             _ensureData.RudeStoreExportedData(nodeResult, mark);
                         }
                         else
                         {
-                            _ensureData.ProcessingSAStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
+                            _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);
                         }
                         _loger.Log("End export data " + mark);
-                        //System.Threading.Thread.Sleep(30000);
                     }
-
                 }
             }
             catch (Exception ex)
