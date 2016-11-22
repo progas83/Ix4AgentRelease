@@ -76,40 +76,23 @@ namespace WVDataProcessor
                                         _storages[storagePlace].Remove(existedItemInCurrentStorage);
                                     }
                                     _storages[storagePlace].Add(articleData);
-
-
-                                //    string xmlContent = articleData.SerializeObjectToString<MSG>();
-                                //    XmlDocument tempDoc = new XmlDocument();
-                                 //   tempDoc.LoadXml(xmlContent);
-                                 //   updatedArticlesInfoDoc.DocumentElement.AppendChild(updatedArticlesInfoDoc.ImportNode(tempDoc.DocumentElement, true));
-
                                 }
                                 catch (Exception ex)
                                 {
 
                                 }
-                               
-                                //XmlNode insertedNode = updatedArticlesInfoDoc.ImportNode(node, true);
-                                //updatedArticlesInfoDoc.DocumentElement.AppendChild(insertedNode);
                             }
                             else
                             {
                                 MSG existedItemInCurrentStorage = _storages[storagePlace].FirstOrDefault(it => it.ItemNo.Equals(articleData.ItemNo));
                                 if (existedItemInCurrentStorage == null)
                                 {
-                                    MSG articleDataStub = (MSG)articleData.Clone();// GetCopyAllProperties(articleData);//   
+                                    MSG articleDataStub = (MSG)articleData.Clone();
                                     articleDataStub.Amount = 0;
                                     articleDataStub.Storageplace = storagePlace;
-                                    articleDataStub.ShippingType = 0;// articleData.ShippingType;
+                                    articleDataStub.ShippingType = 0;
                                     _storages[storagePlace].Add(articleDataStub);
-
-
-                                    //                                    XmlNode insertedNode = updatedArticlesInfoDoc.ImportNode(node, true);
-                                    //                                  updatedArticlesInfoDoc.DocumentElement.AppendChild(insertedNode);
-                                  //  string xmlContent = articleDataStub.SerializeObjectToString<MSG>();
-                                  //  XmlDocument tempDoc = new XmlDocument();
-                                 //   tempDoc.LoadXml(xmlContent);
-                                   // updatedArticlesInfoDoc.DocumentElement.AppendChild(updatedArticlesInfoDoc.ImportNode(tempDoc.DocumentElement, true));
+                                    
                                 }
                             }
                         }
