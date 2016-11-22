@@ -325,8 +325,8 @@ namespace WVDataProcessor
                     XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
                     XmlDocument xmlDoc = new XmlDocument();
                     xmlDoc.InnerXml = nodeResult.OuterXml;
-                    XmlNodeList msgNodes1 = xmlDoc.GetElementsByTagName("MSG");
-                    _ensureData.StoreExportedNodeList(xmlDoc.GetElementsByTagName("MSG"), mark, EnsureType.CollectData);
+                   // XmlNodeList msgNodes1 = xmlDoc.GetElementsByTagName("MSG");
+                   // _ensureData.StoreExportedNodeList(xmlDoc.GetElementsByTagName("MSG"), mark, EnsureType.CollectData);
                     XmlNodeList msgNodes = storages.GetUpdatedStorageInformation(xmlDoc.GetElementsByTagName("MSG"));
  
                     if (msgNodes != null && msgNodes.Count > 0)

@@ -166,6 +166,18 @@ namespace WVDataProcessor
                 }
 
             }
+            else if(message.Type.Equals("SA"))
+            {
+                int existedHeaderID = FindExistedSAHeader(message, con);
+                if (existedHeaderID != -1)
+                {
+                    modified = existedHeaderID;
+                }
+                else
+                {
+                    modified = InsertNewHeaderRecord(message, con);
+                }
+            }
             else
             {
                 modified = InsertNewHeaderRecord(message, con);
@@ -181,6 +193,35 @@ namespace WVDataProcessor
                 using (SqlCommand cmd = new SqlCommand("SELECT HeaderID FROM MsgPos WHERE HeaderID IN (SELECT ID FROM MsgHeader WHERE TYPE = 'GS')  AND WAKopfID = @pCurrentWAKopfID", con))
                 {
                     cmd.Parameters.AddWithValue("@pCurrentWAKopfID", message.WAKopfID);
+                    con.Open();
+                    var existedItem = cmd.ExecuteScalar();
+                    if (existedItem != null)
+                    {
+                        existedHeaderID = Convert.ToInt32(existedItem);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _loger.Log(ex);
+            }
+            finally
+            {
+                if (con.State == System.Data.ConnectionState.Open)
+                    con.Close();
+            }
+            return existedHeaderID;
+        }
+
+        private int FindExistedSAHeader(MSG message, SqlConnection con)
+        {
+            int existedHeaderID = -1;
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand("SELECT HeaderID FROM MsgPos WHERE HeaderID IN (SELECT ID FROM MsgHeader WHERE TYPE = 'SA' AND Created>=@pCurrentCreated )  AND ItemNo= @pCurrentItemNo", con))
+                {
+                    cmd.Parameters.AddWithValue("@pCurrentItemNo", message.ItemNo);
+                    cmd.Parameters.AddWithValue("@pCurrentCreated", message.Created);
                     con.Open();
                     var existedItem = cmd.ExecuteScalar();
                     if (existedItem != null)
