@@ -316,7 +316,7 @@ namespace WVDataProcessor
 
         private void ProcessSAData()
         {
-            StoragePlaces storages = new StoragePlaces("SP", "WE", "LP");
+            StoragePlaces storages = new StoragePlaces();// "SP", "WE", "LP");
             try
             {
                 foreach (string mark in new string[] { "SA" })
@@ -326,7 +326,7 @@ namespace WVDataProcessor
                     XmlDocument xmlDoc = new XmlDocument();
                     xmlDoc.InnerXml = nodeResult.OuterXml;
                    // XmlNodeList msgNodes1 = xmlDoc.GetElementsByTagName("MSG");
-                   // _ensureData.StoreExportedNodeList(xmlDoc.GetElementsByTagName("MSG"), mark, EnsureType.CollectData);
+                    _ensureData.StoreExportedNodeList(xmlDoc.GetElementsByTagName("MSG"), mark, EnsureType.CollectData);
                     XmlNodeList msgNodes = storages.GetUpdatedStorageInformation(xmlDoc.GetElementsByTagName("MSG"));
  
                     if (msgNodes != null && msgNodes.Count > 0)
