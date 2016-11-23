@@ -61,20 +61,24 @@ namespace WVDataProcessor
             {
                 try
                 {
-                    
-                    MSG articleData = ConvertToMSG(node);
-                    if (articleData.ItemNo == null)
+                  //  node.ChildNodes
+                  //  var t = node["ItemNo"];
+                  //  var ttt = node["MSGPos_ItemNo"].LastChild.Value;
+                  //  MSG articleData = ConvertToMSG(node);
+                   // var tt = node["MSGPos_ItemNo"];
+                    if (node["MSGPos_ItemNo"] == null)
                     {
                         continue;
                     }
-                    ArtikelInStoragesInfo artikelInStoragesInfo =  allArtikelsInfo.FirstOrDefault(artikelInfo => artikelInfo.ArtikelNr.Equals(articleData.ItemNo));
+                   
+                    ArtikelInStoragesInfo artikelInStoragesInfo =  allArtikelsInfo.FirstOrDefault(artikelInfo => artikelInfo.ArtikelNr.Equals(node["MSGPos_ItemNo"].LastChild.Value));
                     if(artikelInStoragesInfo!=null)
                     {
-                        artikelInStoragesInfo.AddInfoToStoragePlace(articleData);
+                        artikelInStoragesInfo.AddInfoToStoragePlace(node);
                     }
                     else
                     {
-                        allArtikelsInfo.Add(new ArtikelInStoragesInfo(articleData));
+                        allArtikelsInfo.Add(new ArtikelInStoragesInfo(node));
                     }
 
 
@@ -133,12 +137,12 @@ namespace WVDataProcessor
 
             foreach (ArtikelInStoragesInfo artikelInStoragesInfo in allArtikelsInfo)
             {
-                foreach (MSG artikelInfo in artikelInStoragesInfo.MakeInventarization())
+                foreach (XmlNode artikelInfo in artikelInStoragesInfo.MakeInventarization())
                 {
-                    string xmlContent = artikelInfo.SerializeObjectToString<MSG>();
-                    XmlDocument tempDoc = new XmlDocument();
-                    tempDoc.LoadXml(xmlContent);
-                    updatedArticlesInfoDoc.DocumentElement.AppendChild(updatedArticlesInfoDoc.ImportNode(tempDoc.DocumentElement, true));
+                   // string xmlContent = artikelInfo.SerializeObjectToString<MSG>();
+                  //  XmlDocument tempDoc = new XmlDocument();
+                   // tempDoc.LoadXml(xmlContent);
+                    updatedArticlesInfoDoc.DocumentElement.AppendChild(updatedArticlesInfoDoc.ImportNode(artikelInfo, true));
                 }
             }
 
