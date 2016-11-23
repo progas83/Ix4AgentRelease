@@ -40,17 +40,17 @@ namespace WVDataProcessor
         public IEnumerable<MSG> MakeInventarization()
         {
             List<MSG> inventurenResult = new List<MSG>();
-            MSG baseArtikelInfo = _storagePlaces["SP"];
+            MSG baseArtikelInfo = _storagePlaces["LP"];
             if (baseArtikelInfo != null)
             {
-                if(_storagePlaces["LP"]==null)
+                if(_storagePlaces["SP"]==null)
                 {
-                    MSG lpArtikelInfo =(MSG) baseArtikelInfo.Clone();
-                    lpArtikelInfo.Storageplace = "LP";
-                    lpArtikelInfo.Amount = 0;
-                    lpArtikelInfo.ResAmount = baseArtikelInfo.ResAmount;
-                    lpArtikelInfo.ShippingType = ConvertBackShippingType(baseArtikelInfo.ShippingType);
-                    _storagePlaces["LP"] = lpArtikelInfo;
+                    MSG spArtikelInfo =(MSG) baseArtikelInfo.Clone();
+                    spArtikelInfo.Storageplace = "SP";
+                    spArtikelInfo.Amount = 0;
+                    spArtikelInfo.ResAmount = 0;// baseArtikelInfo.ResAmount;
+                 //   spArtikelInfo.ShippingType = 0;// ConvertBackShippingType(baseArtikelInfo.ShippingType);
+                    _storagePlaces["SP"] = spArtikelInfo;
                 }
 
                 if(_storagePlaces["WE"]==null)
@@ -59,11 +59,11 @@ namespace WVDataProcessor
                     weArtikelInfo.Storageplace = "WE";
                     weArtikelInfo.Amount = 0;
                     weArtikelInfo.ResAmount = 0;
-                    weArtikelInfo.ShippingType = ConvertBackShippingType(baseArtikelInfo.ShippingType);
+                 //   weArtikelInfo.ShippingType =0;// ConvertBackShippingType(baseArtikelInfo.ShippingType);
                     _storagePlaces["WE"] = weArtikelInfo;
                 }
 
-                baseArtikelInfo.ResAmount = 0;
+               // baseArtikelInfo.ResAmount = 0;
                 inventurenResult.Add(_storagePlaces["SP"]);
                 inventurenResult.Add(_storagePlaces["LP"]);
                 inventurenResult.Add(_storagePlaces["WE"]);

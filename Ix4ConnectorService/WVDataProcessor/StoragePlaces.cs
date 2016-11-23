@@ -61,6 +61,7 @@ namespace WVDataProcessor
             {
                 try
                 {
+                    
                     MSG articleData = ConvertToMSG(node);
                     if (articleData.ItemNo == null)
                     {
