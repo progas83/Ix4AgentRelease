@@ -35,7 +35,7 @@ namespace WVDataProcessor
 
         public void AddInfoToStoragePlace(XmlNode artikelInfo)
         {
-            if(artikelInfo["MSGPos_Storageplace"]!=null)
+            if (artikelInfo["MSGPos_Storageplace"]!=null)
             {
                 _storagePlaces[artikelInfo["MSGPos_Storageplace"].LastChild.Value] = artikelInfo;
             }

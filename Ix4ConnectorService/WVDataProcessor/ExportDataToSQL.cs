@@ -127,6 +127,10 @@ namespace WVDataProcessor
 
                 for (int i = 0; i < posProperties.Length; i++)
                 {
+                    if(message.Type.Equals("SA") && posProperties[i].Name.Equals("ShippingType"))
+                    {
+                        continue;
+                    }
                     if (posProperties[i].GetValue(message) != null)
                     {
                         tableColumnsNames.Append(",");
