@@ -1,12 +1,8 @@
-﻿using Ix4Models;
-using SimplestLogger;
+﻿using SimplestLogger;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -15,14 +11,6 @@ namespace WVDataProcessor
     public class StoragePlaces
     {
         protected static Logger _loger = Logger.GetLogger();
-        //private Dictionary<string, List<MSG>> _storages = new Dictionary<string, List<MSG>>();
-        //public StoragePlaces(params string[] storagesName)
-        //{
-        //    foreach(string storageName in storagesName)
-        //    {
-        //        _storages.Add(storageName, new List<MSG>());
-        //    }
-        //}
 
         private MSG ConvertToMSG(XmlNode msgNode)
         {
@@ -61,11 +49,6 @@ namespace WVDataProcessor
             {
                 try
                 {
-                  //  node.ChildNodes
-                  //  var t = node["ItemNo"];
-                  //  var ttt = node["MSGPos_ItemNo"].LastChild.Value;
-                  //  MSG articleData = ConvertToMSG(node);
-                   // var tt = node["MSGPos_ItemNo"];
                     if (node["MSGPos_ItemNo"] == null)
                     {
                         continue;
@@ -80,55 +63,12 @@ namespace WVDataProcessor
                     {
                         allArtikelsInfo.Add(new ArtikelInStoragesInfo(node));
                     }
-
-
-
-
-                    //if (articlesData != null)
-                    //{
-                    //    foreach (string storagePlace in _storages.Keys)
-                    //    {
-                    //        if (storagePlace.Equals(articleData.Storageplace))
-                    //        {
-                    //            try
-                    //            {
-                    //                MSG existedItemInCurrentStorage = _storages[storagePlace].FirstOrDefault(it => it.ItemNo!=null && it.ItemNo.Equals(articleData.ItemNo));
-
-                    //                if (existedItemInCurrentStorage != null)
-                    //                {
-                    //                    _storages[storagePlace].Remove(existedItemInCurrentStorage);
-                    //                }
-                    //                _storages[storagePlace].Add(articleData);
-                    //            }
-                    //            catch (Exception ex)
-                    //            {
-
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            MSG existedItemInCurrentStorage = _storages[storagePlace].FirstOrDefault(it => it.ItemNo.Equals(articleData.ItemNo));
-                    //            if (existedItemInCurrentStorage == null)
-                    //            {
-                    //                MSG articleDataStub = (MSG)articleData.Clone();
-                    //                articleDataStub.Amount = 0;
-                    //                articleDataStub.Storageplace = storagePlace;
-                    //                articleDataStub.ShippingType = 0;
-                    //                _storages[storagePlace].Add(articleDataStub);
-
-                    //            }
-                    //        }
-                    //    }
-
-                    //}
-
-
                 }
                 catch(Exception ex)
                 {
                     _loger.Log(ex);
-                  //  _loger.Log("Need to handle SA messges from start");
-                  //  throw new Exception("Can't handle SA messages for all storageplaces. Can't GetUpdatedStorageInformation");
+                    _loger.Log(string.Format("Error while processing node[MSGPos_ItemNo]={0}", node["MSGPos_ItemNo"]));
+                    throw new Exception("Can't handle SA messages for all storageplaces. Can't GetUpdatedStorageInformation");
                 }
 
               
@@ -139,51 +79,11 @@ namespace WVDataProcessor
             {
                 foreach (XmlNode artikelInfo in artikelInStoragesInfo.MakeInventarization())
                 {
-                   // string xmlContent = artikelInfo.SerializeObjectToString<MSG>();
-                  //  XmlDocument tempDoc = new XmlDocument();
-                   // tempDoc.LoadXml(xmlContent);
                     updatedArticlesInfoDoc.DocumentElement.AppendChild(updatedArticlesInfoDoc.ImportNode(artikelInfo, true));
                 }
             }
-
-            //List<MSG> summarizeList = new List<MSG>();
-            //foreach (string storagePlace in _storages.Keys)
-            //{
-            //    foreach(MSG saMsg in _storages[storagePlace])
-            //    {
-            //        string xmlContent = saMsg.SerializeObjectToString<MSG>();
-            //        XmlDocument tempDoc = new XmlDocument();
-            //        tempDoc.LoadXml(xmlContent);
-            //        updatedArticlesInfoDoc.DocumentElement.AppendChild(updatedArticlesInfoDoc.ImportNode(tempDoc.DocumentElement, true));
-            //    }
-            //  //  summarizeList.AddRange(_storages[storagePlace]);
-            //}
-
             return updatedArticlesInfoDoc.GetElementsByTagName("MSG"); 
         }
 
-        //private MSG GetCopyAllProperties(MSG source)
-        //{
-        //    MSG result = new MSG();
-        //    PropertyInfo[] posProperties = source.GetType().GetProperties();
-        //    try
-        //    {
-        //        foreach (PropertyInfo propInfo in posProperties)
-        //        {
-        //            object propertyValue = propInfo.GetValue(source);
-        //            if (propertyValue != null)
-        //            {
-        //                propInfo.SetValue(result, propertyValue);
-        //            }
-        //        }
-        //    }
-        //    catch(Exception ex)
-        //    {
-
-        //    }
-           
-
-        //    return result;
-        //}
     }
 }

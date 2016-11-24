@@ -102,33 +102,33 @@ namespace WVDataProcessor
             return doc.GetElementsByTagName("MSG"); // doc. _storagePlaces["SP"].AppendChild(_storagePlaces["LP"]).AppendChild(_storagePlaces["WE"]).ChildNodes;// inventurenResult;
         }
 
-        private int ConvertBackShippingType(int shippingType)
-        {
-            int resultShippingType = 100;
-            switch (shippingType)
-            {
-                case 9:
-                    resultShippingType = 100;
-                    break;
-                case 1:
-                    resultShippingType = 900;
-                    break;
-                case 5:
-                    resultShippingType = 200;
-                    break;
-                case 6:
-                    resultShippingType = 800;
-                    break;
-                case 13:
-                    resultShippingType = 130;
-                    break;
-                case 19:
-                    resultShippingType = 0;
-                    break;
-                default:
-                    break;
-            }
-            return resultShippingType;
-        }
+        //private int ConvertBackShippingType(int shippingType)
+        //{
+        //    int resultShippingType = 100;
+        //    switch (shippingType)
+        //    {
+        //        case 9:
+        //            resultShippingType = 100;
+        //            break;
+        //        case 1:
+        //            resultShippingType = 900;
+        //            break;
+        //        case 5:
+        //            resultShippingType = 200;
+        //            break;
+        //        case 6:
+        //            resultShippingType = 800;
+        //            break;
+        //        case 13:
+        //            resultShippingType = 130;
+        //            break;
+        //        case 19:
+        //            resultShippingType = 0;
+        //            break;
+        //        default:
+        //            break;
+        //    }
+        //    return resultShippingType;
+        //}
     }
 }

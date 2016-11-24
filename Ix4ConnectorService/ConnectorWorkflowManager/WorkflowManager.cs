@@ -19,16 +19,10 @@ namespace ConnectorWorkflowManager
     {
         private static WorkflowManager _manager;
         private CustomerInfo _customerSettings;
-        // private CustomerDataComposition _dataCompositor;
-        //    private IProxyIx4WebService _ix4WebServiceConnector;
-        //private DataEnsure _ensureData;
         protected Timer _timer;
         private static object _padlock = new object();
-        private static readonly long RElapsedEvery = 30 * 1 * 1000;
-        //     private static readonly int _articlesPerRequest = 20;
+        private static readonly long RElapsedEvery = 60 * 1 * 1000;
 
-
-        //bool _isArticlesBusy = false;
 
         private static Logger _loger = Logger.GetLogger();
 
@@ -119,10 +113,10 @@ namespace ConnectorWorkflowManager
                 _isBusy = true;
                 try
                 {
-                   //if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
+                   if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
                     {
                         _loger.Log("Start checking data");
-                    //    _currentDataProcessor.ImportData();
+                        _currentDataProcessor.ImportData();
                         _loger.Log("Finish Import data");
                         _currentDataProcessor.ExportData();
                         _loger.Log("Finish checking data");

@@ -246,12 +246,6 @@ namespace WVDataProcessor
                     //Handle OrderImportErrors
                 }
 
-
-
-
-
-
-                // LICSResponse resp = (LICSResponse)serializer.Deserialize(tr);
                 if (objResponse.OrderImport != null)
                     foreach (var ord in objResponse.OrderImport.Order)
                     {
@@ -263,7 +257,7 @@ namespace WVDataProcessor
                         else
                         {
                             status = 3;
-                            MailLogger.Instance.LogMail(new ContentDescription("Order was not imported", string.Format("Message: {0}",ord.Message)));
+                            MailLogger.Instance.LogMail(new ContentDescription(string.Format("Order {0} was not imported",ord.OrderNo), string.Format("Message: {0}",ord.Message)));
                         }
                         SendToDB(ord.OrderNo, status);
                         _loger.Log(string.Format("Has updated order with NO = {0}  new status = {1}", ord.OrderNo, status));
@@ -316,7 +310,7 @@ namespace WVDataProcessor
 
         private void ProcessSAData()
         {
-            StoragePlaces storages = new StoragePlaces();// "SP", "WE", "LP");
+            StoragePlaces articelInventure = new StoragePlaces();// "SP", "WE", "LP");
             try
             {
                 foreach (string mark in new string[] { "SA" })
@@ -329,12 +323,12 @@ namespace WVDataProcessor
                    // xmlDoc.Load(@"E:\ServiceProgram\Ix4AgentRelease\Clients\ArchiveData\wwinterface_SA1.xml");
                  //   XmlNodeList msgNodes1 = xmlDoc.GetElementsByTagName("MSG");
                   //  _ensureData.StoreExportedNodeList(xmlDoc.GetElementsByTagName("MSG"), mark, EnsureType.CollectData);
-                    XmlNodeList msgNodes = storages.GetUpdatedStorageInformation(xmlDoc.GetElementsByTagName("MSG"));
+                    XmlNodeList msgNodes = articelInventure.GetUpdatedStorageInformation(xmlDoc.GetElementsByTagName("MSG"));
  
                     if (msgNodes != null && msgNodes.Count > 0)
                     {
                         _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
-                        EnsureType ensureType = EnsureType.UpdateStoredData;
+                        EnsureType ensureType = EnsureType.CollectData;
                        
                         if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
                         {
@@ -360,7 +354,7 @@ namespace WVDataProcessor
 
             try
             {
-                foreach (string mark in new string[] { "GP", "GS", "CA" })
+                foreach (string mark in new string[] { "GP", "GS" })//, "CA" })
                 {
                     _loger.Log("Starting export data " + mark);
                     XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);

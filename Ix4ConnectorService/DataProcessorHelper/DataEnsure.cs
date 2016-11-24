@@ -148,7 +148,7 @@ namespace DataProcessorHelper
             }
             if (dataConnector == null)
             {
-                _loger.Log(string.Format("Data {0} has not been processed", exportedDataName));// "There is no stored file for data " + exportedDataName);
+                _loger.Log(string.Format("Data {0} has not been processed", exportedDataName));
                 _loger.Log(dataConnector, "dataConnector");
                 return;
             }
@@ -232,123 +232,118 @@ namespace DataProcessorHelper
             XmlNode respp = (XmlNode)ser.Deserialize(new FileStream("wwinterface_SA_Ex1.xml", FileMode.Open));
             return respp;
         }
-        private void TestSaveSA(XmlNode nodeResult)
-        {
-            string fileName = "TestML.xml";
-            XmlReader reader = XmlReader.Create(new FileStream(fileName, FileMode.Open));
+        //private void TestSaveSA(XmlNode nodeResult)
+        //{
+        //    string fileName = "TestML.xml";
+        //    XmlReader reader = XmlReader.Create(new FileStream(fileName, FileMode.Open));
 
-            //  XmlSerializer serializator = new XmlSerializer(typeof(MSG));
-            try
-            {
-                XmlDocument xmlDoc = new XmlDocument();
-                if (!File.Exists(fileName))
-                {
-                    XmlDeclaration xmlDeclaration = xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
-                    XmlElement root = xmlDoc.DocumentElement;
-                    xmlDoc.InsertBefore(xmlDeclaration, root);
-                    var ch = xmlDoc.ImportNode(nodeResult.LastChild, true);
-                    xmlDoc.Save(fileName);
-                }
-                else
-                {
-                    xmlDoc.Load(fileName);
-                }
-                XmlNode insertedNode = xmlDoc.ImportNode(nodeResult, true);
-                xmlDoc.DocumentElement.AppendChild(insertedNode);
-                xmlDoc.Save(fileName);
-            }
-            catch (Exception ex)
-            {
-                _loger.Log(ex);
-            }
+        //    //  XmlSerializer serializator = new XmlSerializer(typeof(MSG));
+        //    try
+        //    {
+        //        XmlDocument xmlDoc = new XmlDocument();
+        //        if (!File.Exists(fileName))
+        //        {
+        //            XmlDeclaration xmlDeclaration = xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
+        //            XmlElement root = xmlDoc.DocumentElement;
+        //            xmlDoc.InsertBefore(xmlDeclaration, root);
+        //            var ch = xmlDoc.ImportNode(nodeResult.LastChild, true);
+        //            xmlDoc.Save(fileName);
+        //        }
+        //        else
+        //        {
+        //            xmlDoc.Load(fileName);
+        //        }
+        //        XmlNode insertedNode = xmlDoc.ImportNode(nodeResult, true);
+        //        xmlDoc.DocumentElement.AppendChild(insertedNode);
+        //        xmlDoc.Save(fileName);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _loger.Log(ex);
+        //    }
 
-        }
+        //}
 
-        public void ProcessingSAStoredDataToClientStorage(string exportedDataName, SaveMsgDatatToTable dataConnector)
-        {
-            //if (exportedDataName == "GS" && _hasGPFatalError)
-            //{
-            //    _loger.Log("Can't process GS messages! Reason: GP has error");
-            //    return;
-            //}
-            if (dataConnector == null)
-            {
-                _loger.Log(string.Format("Data {0} has not been processed", exportedDataName));// "There is no stored file for data " + exportedDataName);
-                _loger.Log(dataConnector, "dataCompositor");
-                return;
-            }
-            string fileName = string.Empty;
-            if (_dataFileNames.ContainsKey(exportedDataName))
-            {
-                fileName = _dataFileNames[exportedDataName];
-            }
-            else
-            {
-                _loger.Log("There is no stored file for data " + exportedDataName);
-                return;
-            }
+        //public void ProcessingSAStoredDataToClientStorage(string exportedDataName, SaveMsgDatatToTable dataConnector)
+        //{
+        //    if (dataConnector == null)
+        //    {
+        //        _loger.Log(string.Format("Data {0} has not been processed", exportedDataName));
+        //        _loger.Log(dataConnector, "dataCompositor");
+        //        return;
+        //    }
+        //    string fileName = string.Empty;
+        //    if (_dataFileNames.ContainsKey(exportedDataName))
+        //    {
+        //        fileName = _dataFileNames[exportedDataName];
+        //    }
+        //    else
+        //    {
+        //        _loger.Log("There is no stored file for data " + exportedDataName);
+        //        return;
+        //    }
 
-            try
-            {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(fileName);
+        //    try
+        //    {
+        //        XmlDocument doc = new XmlDocument();
+        //        doc.Load(fileName);
 
-                XmlDocument docWithBadMsg = new XmlDocument();
-                XmlDeclaration xmlDeclaration = docWithBadMsg.CreateXmlDeclaration("1.0", "UTF-8", null);
-                XmlElement root = docWithBadMsg.DocumentElement;
-                docWithBadMsg.InsertBefore(xmlDeclaration, root);
-                docWithBadMsg.AppendChild(docWithBadMsg.CreateElement("CONTENT"));
+        //        XmlDocument docWithBadMsg = new XmlDocument();
+        //        XmlDeclaration xmlDeclaration = docWithBadMsg.CreateXmlDeclaration("1.0", "UTF-8", null);
+        //        XmlElement root = docWithBadMsg.DocumentElement;
+        //        docWithBadMsg.InsertBefore(xmlDeclaration, root);
+        //        docWithBadMsg.AppendChild(docWithBadMsg.CreateElement("CONTENT"));
 
 
-                XmlNodeList nodes = doc.GetElementsByTagName("MSG");
+        //        XmlNodeList nodes = doc.GetElementsByTagName("MSG");
                 
-                while (nodes.Count != 0)
-                {
-                    XmlNode currentNode = nodes[0].ParentNode.RemoveChild(nodes[0]);
-                    MSG exportedMsg = dataConnector(currentNode);
-                    if (exportedMsg == null)
-                    {
-                        XmlNode insertedNode = docWithBadMsg.ImportNode(currentNode, true);
-                        docWithBadMsg.DocumentElement.AppendChild(insertedNode);
-                    }
-                    else
-                    {
-                        if (!exportedMsg.Saved)
-                        {
-                            string xmlContent = exportedMsg.SerializeObjectToString<MSG>();
-                            XmlDocument tempDoc = new XmlDocument();
-                            tempDoc.LoadXml(xmlContent);
+        //        while (nodes.Count != 0)
+        //        {
+        //            XmlNode currentNode = nodes[0].ParentNode.RemoveChild(nodes[0]);
+        //            MSG exportedMsg = dataConnector(currentNode);
+        //            if (exportedMsg == null)
+        //            {
+        //                XmlNode insertedNode = docWithBadMsg.ImportNode(currentNode, true);
+        //                docWithBadMsg.DocumentElement.AppendChild(insertedNode);
+        //            }
+        //            else
+        //            {
+        //                if (!exportedMsg.Saved)
+        //                {
+        //                    string xmlContent = exportedMsg.SerializeObjectToString<MSG>();
+        //                    XmlDocument tempDoc = new XmlDocument();
+        //                    tempDoc.LoadXml(xmlContent);
 
-                            XmlNode insertedNode = docWithBadMsg.ImportNode(tempDoc.DocumentElement, true);
-                            docWithBadMsg.DocumentElement.AppendChild(insertedNode);
-                        }
-                        else
-                        {
-                            _loger.Log(string.Format("MSG {0} WAKopfID = {1} was succesfully saved ", exportedDataName, exportedMsg.WAKopfID));
-                        }
-                    }
+        //                    XmlNode insertedNode = docWithBadMsg.ImportNode(tempDoc.DocumentElement, true);
+        //                    docWithBadMsg.DocumentElement.AppendChild(insertedNode);
+        //                }
+        //                else
+        //                {
+        //                    _loger.Log(string.Format("MSG {0} WAKopfID = {1} was succesfully saved ", exportedDataName, exportedMsg.WAKopfID));
+        //                }
+        //            }
 
-                    doc.Save(fileName);
-                }
-                XmlNodeList badNodes = docWithBadMsg.GetElementsByTagName("MSG");
-                if (exportedDataName == "GP")
-                {
-                    _hasGPFatalError = badNodes.Count > 0;
-                }
-                while (badNodes.Count != 0)
-                {
-                    XmlNode insertedNode = doc.ImportNode(badNodes[0].ParentNode.RemoveChild(badNodes[0]), true);
-                    doc.DocumentElement.AppendChild(insertedNode);
-                };
-                doc.Save(fileName);
-            }
+        //            doc.Save(fileName);
+        //        }
+        //        XmlNodeList badNodes = docWithBadMsg.GetElementsByTagName("MSG");
+        //        if (exportedDataName == "GP")
+        //        {
+        //            _hasGPFatalError = badNodes.Count > 0;
+        //        }
+        //        while (badNodes.Count != 0)
+        //        {
+        //            XmlNode insertedNode = doc.ImportNode(badNodes[0].ParentNode.RemoveChild(badNodes[0]), true);
+        //            doc.DocumentElement.AppendChild(insertedNode);
+        //        };
+        //        doc.Save(fileName);
+        //    }
 
 
-            catch (Exception ex)
-            {
-                _loger.Log(ex);
-            }
-        }
+        //    catch (Exception ex)
+        //    {
+        //        _loger.Log(ex);
+        //    }
+        //}
     }
 
     public enum EnsureType
