@@ -10,6 +10,8 @@
 
 using Ix4Models.Schema.WV;
 using System;
+using System.Reflection;
+using System.Text;
 using System.Xml.Serialization;
 
 // 
@@ -274,6 +276,33 @@ public partial class MSG : ICloneable
         set {
             this.mSGPos_ShippingTypeField = value;
         }
+    }
+
+    public override string ToString()
+    {
+        StringBuilder currentInstanceStatusInfo = new StringBuilder();
+        PropertyInfo[] posProperties = this.GetType().GetProperties();
+        if(posProperties!=null)
+        {
+            currentInstanceStatusInfo.Append("Current MSG : ");
+            try
+            {
+                foreach (PropertyInfo propInfo in posProperties)
+                {
+                    object propertyValue = propInfo.GetValue(this);
+                    if (propertyValue != null)
+                    {
+                        currentInstanceStatusInfo.Append(string.Format(" {0} = {1} ", propInfo.Name, (string) propertyValue));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
+        
+        return currentInstanceStatusInfo.ToString();
     }
 
     private int GetModifiedShippingType()

@@ -101,7 +101,7 @@ namespace WVDataProcessor
                     }
                     else
                     {
-                        _loger.Log("There was no correct header number for MSG.WAKopfID = " + message.WAKopfID);
+                        _loger.Log("There was no correct header number for MSG = "+ message.ToString());
                     }
                 }
             }
