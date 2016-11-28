@@ -301,9 +301,6 @@ namespace WVDataProcessor
                 case "GR":
                     ProcessGRData();
                     break;
-                case "CA":
-                    ProcessCAData();
-                    break;
                 default: break;
             }
         }
@@ -351,12 +348,18 @@ namespace WVDataProcessor
 
         private void ProcessGPData()
         {
-
+            int countOfGSMessages = 0;
             try
             {
-                foreach (string mark in new string[] { "GP", "GS" })//, "CA" })
+                foreach (string mark in new string[] { "GP", "GS" , "CA" })
                 {
+                    if(mark.Equals("CA") && countOfGSMessages == 0)
+                    {
+                        _loger.Log("Count of GS messages = 0. Cant starting export CA data " + mark);
+                        return;
+                    }
                     _loger.Log("Starting export data " + mark);
+
                     XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
 
                     XmlDocument xmlDoc = new XmlDocument();
@@ -365,8 +368,13 @@ namespace WVDataProcessor
 
                     //  var msgNodes = nodeResult.LastChild.LastChild.SelectNodes("MSG");
                     _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
+                    
                     if (msgNodes != null && msgNodes.Count > 0)
                     {
+                        if (mark.Equals("GS"))
+                        {
+                            countOfGSMessages = msgNodes.Count;
+                        }
                         EnsureType ensureType = EnsureType.CollectData;
 
                         if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
