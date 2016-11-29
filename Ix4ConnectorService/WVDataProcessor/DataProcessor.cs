@@ -601,12 +601,12 @@ namespace WVDataProcessor
                     SqlCommand cmd = new SqlCommand(cmdText, connection);
                     SqlDataReader reader = cmd.ExecuteReader();
 
-                    _loger.Log(string.Format("Wasnot errors while updating customer DB"));
+                   // _loger.Log(string.Format("Wasnot errors while updating customer DB"));
                 }
             }
             catch (Exception ex)
             {
-                _loger.Log("Exception in the Sent info to DB");
+                _loger.Log(string.Format("Exception while order {0} status update to {1}",no,status));
                 _loger.Log(ex);
             }
         }

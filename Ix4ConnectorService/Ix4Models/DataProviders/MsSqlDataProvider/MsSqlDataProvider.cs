@@ -209,7 +209,7 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                 {
                     connection.Open();
                     var cmdText = settings.OrdersQuery;
-                    _loger.Log(string.Format("Order reques sql {0}", cmdText));
+                    //_loger.Log(string.Format("Order reques sql {0}", cmdText));
                     SqlCommand cmd = new SqlCommand(cmdText, connection);
                     SqlDataReader reader = cmd.ExecuteReader();
                     DataTable table = new DataTable();
@@ -227,7 +227,7 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                             }
 
                             string getOrderRecipientQuery = string.Format(settings.OrderRecipientQuery, orderItem.OrderNo);
-                            _loger.Log(string.Format("Order recipient reques sql {0}", getOrderRecipientQuery));
+                        //    _loger.Log(string.Format("Order recipient reques sql {0}", getOrderRecipientQuery));
                             SqlCommand cmdRecipient = new SqlCommand(getOrderRecipientQuery, connection);
                             SqlDataReader readerRecipient = cmdRecipient.ExecuteReader();
                             DataTable tableRecipients = new DataTable();
@@ -238,14 +238,14 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
 
 
                             string getOrderPositionsQuery = string.Format(settings.OrderPositionsQuery, orderItem.OrderNo);
-                            _loger.Log(string.Format("Order positions sql query {0}", getOrderPositionsQuery));
+                       //     _loger.Log(string.Format("Order positions sql query {0}", getOrderPositionsQuery));
                             SqlCommand cmdPositions = new SqlCommand(getOrderPositionsQuery, connection);
                             SqlDataReader readerPositions = cmdPositions.ExecuteReader();
                             //DataTable tablePositions = new DataTable();
                             //tablePositions.Load(readerPositions);
                             orderItem.Positions = LoadItems<LICSRequestOrderPosition>(readerPositions).ToArray<LICSRequestOrderPosition>();
                             // _loger.Log(orderItem.Positions, "orderItem.Positions");
-                            _loger.Log("Position number = " + orderItem.Positions.Length);
+                      //      _loger.Log("Position number = " + orderItem.Positions.Length);
                             if (orderItem.Positions.Length > 0)
                             {
                                 orders.Add(orderItem);
