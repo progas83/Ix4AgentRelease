@@ -196,7 +196,7 @@ namespace DataProcessorHelper
                         }
                         else
                         {
-                            _loger.Log(string.Format("MSG {0} WAKopfID = {1} was succesfully saved ", exportedDataName, exportedMsg.WAKopfID));
+                            _loger.Log(string.Format("MSG {0} was succesfully saved ", exportedDataName));
                         }
                     }
 

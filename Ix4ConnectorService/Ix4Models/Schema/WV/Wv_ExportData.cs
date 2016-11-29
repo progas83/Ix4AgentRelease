@@ -292,7 +292,7 @@ public partial class MSG : ICloneable
                     object propertyValue = propInfo.GetValue(this);
                     if (propertyValue != null)
                     {
-                        currentInstanceStatusInfo.Append(string.Format(" {0} = {1} {2}", propInfo.Name, (string) propertyValue, Environment.NewLine));
+                        currentInstanceStatusInfo.Append(string.Format(" {0} = {1} {2}", propInfo.Name, Convert.ToString(propertyValue), Environment.NewLine));
                     }
                 }
             }
