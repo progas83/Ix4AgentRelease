@@ -38,6 +38,9 @@ namespace WVDataProcessor
                 red = (MSG)sr.Deserialize(tr);
 
                 InsertIntoTable(red);
+
+                _loger.Log("Succefully exported MSG");
+                _loger.Log(red.ToString());
                 //itemsCount++;
                 //_loger.Log("Succefully exported MSG");
                 //_loger.Log(nodeToSave.OuterXml);
@@ -103,6 +106,7 @@ namespace WVDataProcessor
                     {
                         _loger.Log("There was no correct header number for MSG = "+ message.ToString());
                     }
+                    //_loger.Log(string.Format("Just saved MSG : ",message.ToString()));
                 }
             }
             catch (Exception ex)
@@ -144,7 +148,7 @@ namespace WVDataProcessor
                 }
 
                 string commandText = string.Format(@"INSERT INTO {0} ({1}) VALUES({2})", tabelName, tableColumnsNames.ToString(), commandParametersNames.ToString());
-                _loger.Log(string.Format("Insert position command = {0}", commandText));
+               // _loger.Log(string.Format("Insert position command = {0}", commandText));
                 sqlCommand.CommandText = commandText;
             }
             catch (Exception ex)
@@ -268,7 +272,7 @@ namespace WVDataProcessor
                     {
                         dr.Read();
                         modified = Convert.ToInt32(dr["LastItemID"]);
-                        _loger.Log(string.Format("New header was inserted to DB for WakopfID = {0}. As result got HeaderId = {1}", message.WAKopfID, modified));
+                        _loger.Log(string.Format("New header was inserted to DB . As result got HeaderId = {0}", modified));
                     }
                     else
                     {
@@ -277,7 +281,8 @@ namespace WVDataProcessor
                 }
                 catch (Exception ex)
                 {
-                    _loger.Log(string.Format("Could not create new record MsgHeader for ", message.WAKopfID));
+                    _loger.Log(string.Format("Could not create new record MsgHeader for {0}", message.Type));
+                    _loger.Log(message.ToString());
                     _loger.Log(ex);
 
                 }
@@ -291,29 +296,29 @@ namespace WVDataProcessor
             return modified;
         }
 
-        private string GetTableName(string msgType)
-        {
-            string result = string.Empty;
-            switch (msgType)
-            {
-                case "GR":
-                    break;
-                case "GP":
-                    break;
-                case "GS":
-                    break;
-                case "CA":
-                    break;
-                case "BO":
-                    break;
-                case "SA":
-                    break;
+        //private string GetTableName(string msgType)
+        //{
+        //    string result = string.Empty;
+        //    switch (msgType)
+        //    {
+        //        case "GR":
+        //            break;
+        //        case "GP":
+        //            break;
+        //        case "GS":
+        //            break;
+        //        case "CA":
+        //            break;
+        //        case "BO":
+        //            break;
+        //        case "SA":
+        //            break;
 
-                default:
-                    break;
-            }
-            return result;
-        }
+        //        default:
+        //            break;
+        //    }
+        //    return result;
+        //}
         // „InterfaceDilosLMS“ – the tables „Msgheader“ and „Msgpos“.
         //         “GR” Goods Received
         //-          “GP” Goods Picked
