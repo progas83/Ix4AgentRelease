@@ -11,8 +11,8 @@ namespace SinplestLogger.Mailer
         private MailLogger()
         {
             _report = new MailReportHtml(_clientName);
-           // _mailRecipientHolder.Add("michael.blessing@christ-logistik.de");
-           // _mailRecipientHolder.Add("uwe@fischer.la");
+            //_mailRecipientHolder.Add("michael.blessing@christ-logistik.de");
+            _mailRecipientHolder.Add("joachim.krieger@christ-logistik.de");
         }
         private static MailLogger _mailLogger = null;
         private static object _oLock = new object();
