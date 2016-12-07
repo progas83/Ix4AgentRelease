@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WVDataProcessor", "WVDataPr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessorHelper", "DataProcessorHelper\DataProcessorHelper.csproj", "{C270CD3D-165D-4379-A9F7-2CF569A1ACA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WV_newDataProcessor", "WV_newDataProcessor\WV_newDataProcessor.csproj", "{9C0001FA-A703-4A96-BFCA-AD2FDCBA8BD7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,6 +92,10 @@ Global
 		{C270CD3D-165D-4379-A9F7-2CF569A1ACA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C270CD3D-165D-4379-A9F7-2CF569A1ACA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C270CD3D-165D-4379-A9F7-2CF569A1ACA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C0001FA-A703-4A96-BFCA-AD2FDCBA8BD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C0001FA-A703-4A96-BFCA-AD2FDCBA8BD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C0001FA-A703-4A96-BFCA-AD2FDCBA8BD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C0001FA-A703-4A96-BFCA-AD2FDCBA8BD7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,5 +106,6 @@ Global
 		{3C5A57D9-3352-4149-85C1-CAF909EF8E67} = {8FF8DB96-DB4B-4B21-BC24-DA8EF17DB113}
 		{940BBB0D-D7FC-46F6-89A2-20797651F5EE} = {8FF8DB96-DB4B-4B21-BC24-DA8EF17DB113}
 		{C270CD3D-165D-4379-A9F7-2CF569A1ACA1} = {8FF8DB96-DB4B-4B21-BC24-DA8EF17DB113}
+		{9C0001FA-A703-4A96-BFCA-AD2FDCBA8BD7} = {8FF8DB96-DB4B-4B21-BC24-DA8EF17DB113}
 	EndGlobalSection
 EndGlobal

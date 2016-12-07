@@ -74,6 +74,7 @@
     <Compile Include="Schema\WV\MSGPosAttribute.cs" />
     <Compile Include="Schema\WV\MSGSystemAttribute.cs" />
     <Compile Include="Schema\WV\Wv_ExportData.cs" />
+    <Compile Include="Schema\WV\WV_ExportInventureData.cs" />
     <Compile Include="SettingsDataModel\BaseDataSourceSettings.cs" />
     <Compile Include="SettingsDataModel\CsvPluginSettings.cs" />
     <Compile Include="SettingsDataModel\CustomerInfo.cs" />

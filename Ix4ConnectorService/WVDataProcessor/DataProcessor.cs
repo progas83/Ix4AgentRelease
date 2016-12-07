@@ -319,7 +319,7 @@ namespace WVDataProcessor
 
                    // xmlDoc.Load(@"E:\ServiceProgram\Ix4AgentRelease\Clients\ArchiveData\wwinterface_SA1.xml");
                  //   XmlNodeList msgNodes1 = xmlDoc.GetElementsByTagName("MSG");
-                  //  _ensureData.StoreExportedNodeList(xmlDoc.GetElementsByTagName("MSG"), mark, EnsureType.CollectData);
+                    _ensureData.StoreExportedNodeList(xmlDoc.GetElementsByTagName("MSG"), mark, EnsureType.CollectData);
                     XmlNodeList msgNodes = articelInventure.GetUpdatedStorageInformation(xmlDoc.GetElementsByTagName("MSG"));
  
                     if (msgNodes != null && msgNodes.Count > 0)
