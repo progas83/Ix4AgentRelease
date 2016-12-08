@@ -8,6 +8,17 @@ namespace WV_newDataProcessor
 {
     public class TableFieldMapInfo
     {
+        public TableFieldMapInfo()
+        {
+
+        }
+        public TableFieldMapInfo(string fieldName,string fieldType, string xmlElementName, bool allowDBNull = false)
+        {
+            FieldName = fieldName;
+            FieldTypeFullName = fieldType;
+            XmlElementName = xmlElementName;
+            AllowDBNull = allowDBNull;
+        }
         private string _fieldName;
 
         public string FieldName
@@ -39,6 +50,15 @@ namespace WV_newDataProcessor
         {
             get { return _xmlElementName; }
             set { _xmlElementName = value; }
+        }
+
+        public string GetDefaultValue()
+        {
+           Type fieldType = Type.GetType(this._fieldTypeFullName);
+            if (fieldType.IsValueType)
+                return Activator.CreateInstance(fieldType).ToString();
+
+            return string.Empty;
         }
     }
 }

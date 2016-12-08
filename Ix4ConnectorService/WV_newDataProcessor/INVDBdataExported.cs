@@ -41,12 +41,12 @@ namespace WV_newDataProcessor
                 foreach(var groupItem in groups)
                 {
                     IEnumerable<XElement> msgHeaderElemens =  groupItem.FirstOrDefault().Descendants().Where(x => x.Name.LocalName.StartsWith("MSGHeader")).ToList();
-                    if (_storageCollaborator.SaveData(msgHeaderElemens, "Inventuren") > 0)
+                    if (_storageCollaborator.SaveData(msgHeaderElemens, "Inventuren") > -1)
                     {
                         foreach (var posItem in groupItem)
                         {
                             IEnumerable<XElement> msgPosElemens = posItem.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos")).ToList();
-                            if (_storageCollaborator.SaveData(msgPosElemens, "Inventurpositionen") > 0)
+                            if (_storageCollaborator.SaveData(msgPosElemens, "Inventurpositionen") > -1)
                             {
 
                             }

@@ -45,6 +45,9 @@ namespace WV_newDataProcessor
             return new KeyValuePair<string, string>(tableFieldName, datValue);
         }
 
-        public string GetTablesFieldsAndValuesQuery(IEnumerable<XElement>)
+        IEnumerable<KeyValuePair<string, string>> IDataMapper.GetTablesFieldsAndValuesQuery(IEnumerable<XElement> xmlValues)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

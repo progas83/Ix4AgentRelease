@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataExporter.cs" />
+    <Compile Include="DataTableMapper.cs" />
     <Compile Include="DBQueryMaker.cs" />
     <Compile Include="ExportDataBuilder.cs" />
     <Compile Include="ExportedDataReport.cs" />

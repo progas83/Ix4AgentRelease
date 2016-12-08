@@ -10,6 +10,6 @@ namespace WV_newDataProcessor
   public  interface IDataMapper
     {
         string TableName { get; }
-        KeyValuePair<string,string> MapToTableField(XElement dataXmlElement);
+        IEnumerable<KeyValuePair<string, string>> GetTablesFieldsAndValuesQuery(IEnumerable<XElement> xmlValues);
     }
 }

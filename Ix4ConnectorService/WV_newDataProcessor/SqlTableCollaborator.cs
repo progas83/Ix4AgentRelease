@@ -22,17 +22,23 @@ namespace WV_newDataProcessor
         protected static Logger _loger = Logger.GetLogger();
         public int SaveData(IEnumerable<XElement> exportedDataElements,string tableName)
         {
-            IDataMapper dataMapper = _dataToTableMappers.FirstOrDefault(mapper=>mapper.TableName.Equals(tableName));
             int recordNumber = -1;
+            IDataMapper dataMapper = _dataToTableMappers.FirstOrDefault(mapper=>mapper.TableName.Equals(tableName));
+            if(dataMapper==null)
+            {
+                _loger.Log(string.Format("There is no mapper for {0} table",tableName));
+                return -1;
+            }
+            
             StringBuilder colums= new StringBuilder();
             StringBuilder values = new StringBuilder();
-
-            foreach(XElement element in exportedDataElements)
+            IEnumerable<KeyValuePair<string, string>> mappedData = dataMapper.GetTablesFieldsAndValuesQuery(exportedDataElements);
+            foreach(KeyValuePair<string,string> mappedFieldValue in mappedData)
             {
-                KeyValuePair<string,string> mappedData = dataMapper.MapToTableField(element);
-                colums.Append(string.Format("\"{0}\",", mappedData.Key));
-                values.Append(string.Format("\"{0}\",", mappedData.Value));
+                colums.Append(string.Format("[{0}],", mappedFieldValue.Key));
+                values.Append(string.Format("'{0}',", mappedFieldValue.Value));
             }
+
             try
             {
                 using (var connection = new SqlConnection(_dbConnectionString))
@@ -44,15 +50,17 @@ namespace WV_newDataProcessor
                     SqlDataReader dr = sqlCommand.ExecuteReader();
                     if (dr.HasRows)
                     {
-                        dr.Read();
-                        recordNumber = Convert.ToInt32(dr["LastItemID"]);
+                        bool resd = dr.Read();
+                        var tttt = dr.GetSchemaTable().Columns;
+                        recordNumber = dr["LastItemID"].GetType().Equals(typeof(DBNull)) ? 0 : Convert.ToInt32(dr["LastItemID"]);// Convert.ToInt32("-1");// dr.GetSchemaTable().Columns["LastItemID"]);
+                      //  var tttt1 = dr.GetSchemaTable().Columns["ColumnName"];
                         _loger.Log(string.Format("New record was insert into {0} with index = {1}", tableName, recordNumber));
                     }
                     else
                     {
-                        _loger.Log("Cant get last inserted headerID");
+                        _loger.Log("Cant get last inserted record ID");
                     }
-                    var resQuery = sqlCommand.ExecuteNonQuery();
+                  //  var resQuery = sqlCommand.ExecuteNonQuery();
                 }
             }
             catch(Exception ex)
