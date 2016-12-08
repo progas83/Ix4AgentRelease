@@ -43,14 +43,11 @@
   <ItemGroup>
     <Compile Include="DataExporter.cs" />
     <Compile Include="DataTableMapper.cs" />
-    <Compile Include="DBQueryMaker.cs" />
     <Compile Include="ExportDataBuilder.cs" />
     <Compile Include="ExportedDataReport.cs" />
-    <Compile Include="IDataExporter.cs" />
     <Compile Include="IDataMapper.cs" />
     <Compile Include="IDataTargetCollaborator.cs" />
     <Compile Include="INVDBdataExported.cs" />
-    <Compile Include="InventurenDataMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlTableCollaborator.cs" />
     <Compile Include="TableFieldMapInfo.cs" />

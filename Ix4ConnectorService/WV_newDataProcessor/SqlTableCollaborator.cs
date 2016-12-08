@@ -51,21 +51,18 @@ namespace WV_newDataProcessor
                     if (dr.HasRows)
                     {
                         bool resd = dr.Read();
-                        var tttt = dr.GetSchemaTable().Columns;
                         recordNumber = dr["LastItemID"].GetType().Equals(typeof(DBNull)) ? 0 : Convert.ToInt32(dr["LastItemID"]);// Convert.ToInt32("-1");// dr.GetSchemaTable().Columns["LastItemID"]);
-                      //  var tttt1 = dr.GetSchemaTable().Columns["ColumnName"];
                         _loger.Log(string.Format("New record was insert into {0} with index = {1}", tableName, recordNumber));
                     }
                     else
                     {
                         _loger.Log("Cant get last inserted record ID");
                     }
-                  //  var resQuery = sqlCommand.ExecuteNonQuery();
                 }
             }
             catch(Exception ex)
             {
-
+                _loger.Log(ex);
             }
            
             return recordNumber;

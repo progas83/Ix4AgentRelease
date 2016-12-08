@@ -18,13 +18,7 @@ namespace WV_newDataProcessor
         }
         public ExportedDataReport ExportData()
         {
-            //  XmlNode invdbData =  Ix4InterfaceService.ExportData(ExportDataName, null);
-            //  base.SaveExportedDataToFile(invdbData);
-            //  base.SaveExportedDataToFile(invdbData);
-            //  base.SaveExportedDataToFile(invdbData);
             XmlDocument exportedDataDocument = GetStoredExportedData();
-
-
 
             if(exportedDataDocument!=null)
             {
@@ -54,16 +48,14 @@ namespace WV_newDataProcessor
                     }
                    
                 }
-                //var headerGroups = doc.Descendants("MSG").GroupBy(x=>(string)x.Element("MSGHeader_Inventurnummer")).GroupBy(x => (string)x.
-                //Element("MSGHeader_Inventurnummer")), (string)x.Element("MSGHeader_Mandant"))
-
 
                 XmlNodeList nodes = exportedDataDocument.GetElementsByTagName("MSG");
                 while(nodes.Count!=0)
                 {
                     XmlNode currentNode = nodes[0].ParentNode.RemoveChild(nodes[0]);
                 }
-
+                exportedDataDocument.Save(this.FileFullName);
+                XmlNodeList nodes1 = exportedDataDocument.GetElementsByTagName("MSG");
             }
             return new ExportedDataReport();
         }

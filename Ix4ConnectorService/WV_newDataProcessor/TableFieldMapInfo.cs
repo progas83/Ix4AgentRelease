@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WV_newDataProcessor
 {
@@ -12,7 +8,7 @@ namespace WV_newDataProcessor
         {
 
         }
-        public TableFieldMapInfo(string fieldName,string fieldType, string xmlElementName, bool allowDBNull = false)
+        public TableFieldMapInfo(string fieldName, string fieldType, string xmlElementName, bool allowDBNull = false)
         {
             FieldName = fieldName;
             FieldTypeFullName = fieldType;
@@ -54,9 +50,20 @@ namespace WV_newDataProcessor
 
         public string GetDefaultValue()
         {
-           Type fieldType = Type.GetType(this._fieldTypeFullName);
+            Type fieldType = Type.GetType(this._fieldTypeFullName);
+
             if (fieldType.IsValueType)
-                return Activator.CreateInstance(fieldType).ToString();
+            {
+                if (fieldType.Equals(typeof(DateTime)))
+                {
+                    return new DateTime(1970, 1, 1).ToString();
+                }
+                else
+                {
+                    return Activator.CreateInstance(fieldType).ToString();
+                }
+            }
+
 
             return string.Empty;
         }
