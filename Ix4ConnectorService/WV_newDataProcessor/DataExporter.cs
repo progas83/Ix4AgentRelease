@@ -18,7 +18,7 @@ namespace WV_newDataProcessor
         protected string FileFullName { get { return string.Format("{0}\\{1}.xml", _archiveFolder, ExportDataName); } }
         protected IProxyIx4WebService Ix4InterfaceService;
         public event EventHandler<DataReportEventArgs> ReportEvent;
-        protected abstract DataReport ProcessExportedData(XmlDocument exportedData);
+        protected abstract DataReport ProcessExportedData(XDocument exportedData);
 
 
         protected string ExportDataName
@@ -71,9 +71,10 @@ namespace WV_newDataProcessor
             DataReport report = new DataReport();
             if (HasStoredData())
             {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(FileFullName);
-                report = ProcessExportedData(doc);
+                XDocument docc = XDocument.Load(FileFullName);
+                //XmlDocument doc = new XmlDocument();
+               // doc.Load(FileFullName);
+                report = ProcessExportedData(docc);
                 OnOperationComplete(new DataReportEventArgs(report));
             }
             report = ProcessExportedData(GetStoredExportedData());
@@ -97,9 +98,9 @@ namespace WV_newDataProcessor
             bool result = false;
             if (System.IO.File.Exists(FileFullName))
             {
-                XmlDocument doc = new XmlDocument();
-                doc.Load(FileFullName);
-                if (doc.GetElementsByTagName("MSG").Count > 0)
+                XDocument doc = XDocument.Load(FileFullName);
+                
+                if (doc.Descendants("MSG").Count() > 0)
                 {
                     result = true;
                 }
@@ -111,16 +112,15 @@ namespace WV_newDataProcessor
             return result;
         }
 
-        private XmlDocument GetStoredExportedData()
+        private XDocument GetStoredExportedData()
         {
-            XmlDocument doc = null;
+            XDocument doc = new XDocument();// null;
             if (!HasStoredData())
             {
                 XmlNode invdbData = Ix4InterfaceService.ExportData(ExportDataName, null);
                 if (SaveExportedDataToFile(invdbData))
                 {
-                    doc = new XmlDocument();
-                    doc.Load(FileFullName);
+                    doc = XDocument.Load(FileFullName);
                 }
             }
             return doc;

@@ -3,7 +3,6 @@ using Ix4Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace WV_newDataProcessor
@@ -17,21 +16,17 @@ namespace WV_newDataProcessor
         }
 
 
-        protected override DataReport ProcessExportedData(XmlDocument exportedDataDocument)
+        protected override DataReport ProcessExportedData(XDocument exportedDataDocument)
         {
             DataReport report = new DataReport(string.Format("Export {0} items", ExportDataName));
             try
             {
                 if (exportedDataDocument != null)
                 {
-                    XmlNodeList nodes = exportedDataDocument.GetElementsByTagName("MSG");
-                    if (nodes.Count > 0)
+                    if (exportedDataDocument.Descendants("MSG").Count() > 0)
                     {
-                        _loger.Log(string.Format("Have got {0} of {1} items", nodes.Count, ExportDataName));
-                        XDocument doc = XDocument.Parse(exportedDataDocument.InnerXml);
-
-
-                        var groups = from c in doc.Descendants("MSG")
+                        _loger.Log(string.Format("Have got {0} of {1} items", exportedDataDocument.Descendants("MSG").Count(), ExportDataName));
+                        var groups = from c in exportedDataDocument.Descendants("MSG")
                                      group c by new
                                      {
                                          p1 = c.Element("MSGHeader_Inventurnummer").Value,
@@ -55,7 +50,7 @@ namespace WV_newDataProcessor
                                 if (_storageCollaborator.SaveData(msgPosElemens, "Inventurpositionen") > -1)
                                 {
                                     posItem.Remove();
-                                    doc.Save(FileFullName);
+                                    exportedDataDocument.Save(FileFullName);
                                     operationResult.ItemOperationSuccess = true;
                                     _loger.Log(string.Format("Inventurpositionen element with MSGPos_Position = {0} succesfully saved", storedInventurpositionenElement.Value ?? "Unknown value"));
                                 }
