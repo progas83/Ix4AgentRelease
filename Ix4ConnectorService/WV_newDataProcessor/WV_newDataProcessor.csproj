@@ -42,9 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataExporter.cs" />
+    <Compile Include="DataReport.cs" />
+    <Compile Include="DataReportEventArgs.cs" />
     <Compile Include="DataTableMapper.cs" />
     <Compile Include="ExportDataBuilder.cs" />
-    <Compile Include="ExportedDataReport.cs" />
     <Compile Include="IDataMapper.cs" />
     <Compile Include="IDataTargetCollaborator.cs" />
     <Compile Include="INVDBdataExported.cs" />

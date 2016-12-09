@@ -5,11 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ix4Connector;
+using SimplestLogger;
 
 namespace WV_newDataProcessor
 {
    public class ExportDataBuilder
     {
+        private static Logger _loger = Logger.GetLogger();
         private ExportDataSettings _exportDataSettings;
         private IProxyIx4WebService _ix4WebServiceConnector;
 

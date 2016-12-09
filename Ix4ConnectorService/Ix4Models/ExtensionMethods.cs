@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 namespace Ix4Models
@@ -42,6 +43,16 @@ namespace Ix4Models
             byte[] bytes = new byte[str.Length * sizeof(char)];
             System.Buffer.BlockCopy(str.ToCharArray(), 0, bytes, 0, bytes.Length);
             return bytes;
+        }
+
+        public static string GetContent(this IEnumerable<XElement> items)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (XElement item in items)
+            {
+                sb.Append(item.ToString());
+            }
+            return sb.ToString();
         }
     }
 }

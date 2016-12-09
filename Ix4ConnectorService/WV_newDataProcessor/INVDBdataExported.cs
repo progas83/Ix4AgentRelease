@@ -1,9 +1,8 @@
 ﻿using Ix4Connector;
+using Ix4Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -12,52 +11,86 @@ namespace WV_newDataProcessor
     public class INVDBdataExported : DataExporter
     {
         IDataTargetCollaborator _storageCollaborator;
-        public INVDBdataExported(IProxyIx4WebService ix4InterfaceService, IDataTargetCollaborator storageCollaborator) : base(ix4InterfaceService,"INVDB")
+        public INVDBdataExported(IProxyIx4WebService ix4InterfaceService, IDataTargetCollaborator storageCollaborator) : base(ix4InterfaceService, "INVDB")
         {
             _storageCollaborator = storageCollaborator;
         }
-        public ExportedDataReport ExportData()
+
+
+        protected override DataReport ProcessExportedData(XmlDocument exportedDataDocument)
         {
-            XmlDocument exportedDataDocument = GetStoredExportedData();
-
-            if(exportedDataDocument!=null)
+            DataReport report = new DataReport(string.Format("Export {0} items", ExportDataName));
+            try
             {
-                XDocument doc = XDocument.Parse(exportedDataDocument.InnerXml);
-
-
-                var groups = from c in doc.Descendants("MSG")
-                          group c by new {  p1 = c.Element("MSGHeader_Inventurnummer").Value,
-                                            p2 = c.Element("MSGHeader_Mandant").Value,
-                                            p3 = c.Element("MSGHeader_Bezeichnung").Value,
-                                            p4 = c.Element("MSGHeader_GenDate").Value,
-                                            p5 = c.Element("MSGHeader_ModDate").Value
-                } into g select g;
-                foreach(var groupItem in groups)
+                if (exportedDataDocument != null)
                 {
-                    IEnumerable<XElement> msgHeaderElemens =  groupItem.FirstOrDefault().Descendants().Where(x => x.Name.LocalName.StartsWith("MSGHeader")).ToList();
-                    if (_storageCollaborator.SaveData(msgHeaderElemens, "Inventuren") > -1)
+                    XmlNodeList nodes = exportedDataDocument.GetElementsByTagName("MSG");
+                    if (nodes.Count > 0)
                     {
-                        foreach (var posItem in groupItem)
+                        _loger.Log(string.Format("Have got {0} of {1} items", nodes.Count, ExportDataName));
+                        XDocument doc = XDocument.Parse(exportedDataDocument.InnerXml);
+
+
+                        var groups = from c in doc.Descendants("MSG")
+                                     group c by new
+                                     {
+                                         p1 = c.Element("MSGHeader_Inventurnummer").Value,
+                                         p2 = c.Element("MSGHeader_Mandant").Value,
+                                         p3 = c.Element("MSGHeader_Bezeichnung").Value,
+                                         p4 = c.Element("MSGHeader_GenDate").Value,
+                                         p5 = c.Element("MSGHeader_ModDate").Value
+                                     } into g
+                                     select g;
+
+                        foreach (var groupItem in groups)
                         {
-                            IEnumerable<XElement> msgPosElemens = posItem.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos")).ToList();
-                            if (_storageCollaborator.SaveData(msgPosElemens, "Inventurpositionen") > -1)
+                            IEnumerable<XElement> msgHeaderElement = groupItem.FirstOrDefault().Descendants().Where(x => x.Name.LocalName.StartsWith("MSGHeader")).ToList();
+                            foreach (var posItem in groupItem)
                             {
 
-                            }
-                        }
-                    }
-                   
-                }
+                                IEnumerable<XElement> msgPosElemens = posItem.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos"));
+                                XElement storedInventurpositionenElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_Position"));
+                                OperationResult operationResult = new OperationResult(string.Format("MSGPos_Position = {0}", storedInventurpositionenElement.Value));
 
-                XmlNodeList nodes = exportedDataDocument.GetElementsByTagName("MSG");
-                while(nodes.Count!=0)
-                {
-                    XmlNode currentNode = nodes[0].ParentNode.RemoveChild(nodes[0]);
+                                if (_storageCollaborator.SaveData(msgPosElemens, "Inventurpositionen") > -1)
+                                {
+                                    posItem.Remove();
+                                    doc.Save(FileFullName);
+                                    operationResult.ItemOperationSuccess = true;
+                                    _loger.Log(string.Format("Inventurpositionen element with MSGPos_Position = {0} succesfully saved", storedInventurpositionenElement.Value ?? "Unknown value"));
+                                }
+                                else
+                                {
+                                    operationResult.ItemOperationSuccess = false;
+                                    operationResult.ItemContent = msgPosElemens.GetContent();
+                                }
+                                report.Operations.Add(operationResult);
+                            }
+
+                            XElement storedInventurHeaderElement = msgHeaderElement.FirstOrDefault(x => x.Name.LocalName.Equals("MSGHeader_Inventurnummer"));
+                            OperationResult saveMsgHeaderResult = new OperationResult(string.Format("MSGPos_Position = {0}", storedInventurHeaderElement.Value));
+                            if (_storageCollaborator.SaveData(msgHeaderElement, "Inventuren") > -1)
+                            {
+                                saveMsgHeaderResult.ItemOperationSuccess = true;
+                            }
+                            else
+                            {
+                                saveMsgHeaderResult.ItemOperationSuccess = false;
+                                saveMsgHeaderResult.ItemContent = msgHeaderElement.GetContent();
+                            }
+
+                            report.Operations.Add(saveMsgHeaderResult);
+                        }
+
+                    }
                 }
-                exportedDataDocument.Save(this.FileFullName);
-                XmlNodeList nodes1 = exportedDataDocument.GetElementsByTagName("MSG");
             }
-            return new ExportedDataReport();
+            catch (Exception ex)
+            {
+                _loger.Log(ex);
+            }
+
+            return report;
         }
     }
 }
