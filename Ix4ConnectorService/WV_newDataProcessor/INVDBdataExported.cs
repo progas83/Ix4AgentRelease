@@ -7,10 +7,10 @@ using System.Xml.Linq;
 
 namespace WV_newDataProcessor
 {
-    public class INVDBdataExported : DataExporter
+    public class INVDBdataExporter : DataExporter
     {
         IDataTargetCollaborator _storageCollaborator;
-        public INVDBdataExported(IProxyIx4WebService ix4InterfaceService, IDataTargetCollaborator storageCollaborator) : base(ix4InterfaceService, "INVDB")
+        public INVDBdataExporter(IProxyIx4WebService ix4InterfaceService, IDataTargetCollaborator storageCollaborator) : base(ix4InterfaceService, "INVDB")
         {
             _storageCollaborator = storageCollaborator;
         }

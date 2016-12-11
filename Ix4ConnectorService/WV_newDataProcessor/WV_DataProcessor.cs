@@ -23,9 +23,19 @@ namespace WV_newDataProcessor
            
             ExportDataBuilder exportDataBuilder = new ExportDataBuilder(CustomerSettings.ExportDataSettings, _ix4WebServiceConnector);
 
-            INVDBdataExported invDbExporter =(INVDBdataExported) exportDataBuilder.GetDataExporter("INVDB");
-            invDbExporter.ExportData();
-            invDbExporter.ExportData();
+            //INVDBdataExporter invDbExporter =(INVDBdataExporter) exportDataBuilder.GetDataExporter("INVDB");
+            //invDbExporter.ReportEvent += OnProcessReportResult;
+            //invDbExporter.ExportData();
+            //invDbExporter.ExportData();
+
+            SAdataExporter saDataExporter = (SAdataExporter)exportDataBuilder.GetDataExporter("SA");
+            saDataExporter.ReportEvent += OnProcessReportResult;
+            saDataExporter.ExportData();
+        }
+
+        private void OnProcessReportResult(object sender, DataReportEventArgs e)
+        {
+            
         }
 
         public void ImportData()
