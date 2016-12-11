@@ -28,9 +28,14 @@ namespace WV_newDataProcessor
             //invDbExporter.ExportData();
             //invDbExporter.ExportData();
 
-            SAdataExporter saDataExporter = (SAdataExporter)exportDataBuilder.GetDataExporter("SA");
-            saDataExporter.ReportEvent += OnProcessReportResult;
-            saDataExporter.ExportData();
+            //SAdataExporter saDataExporter = (SAdataExporter)exportDataBuilder.GetDataExporter("SA");
+            //saDataExporter.ReportEvent += OnProcessReportResult;
+            //saDataExporter.ExportData();
+
+            GPdataExporter gpDataExporter = (GPdataExporter)exportDataBuilder.GetDataExporter("GP");
+            gpDataExporter.ReportEvent += OnProcessReportResult;
+            gpDataExporter.ExportData();
+
         }
 
         private void OnProcessReportResult(object sender, DataReportEventArgs e)

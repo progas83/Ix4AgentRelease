@@ -115,7 +115,7 @@ namespace WV_newDataProcessor
         private XDocument GetStoredExportedData()
         {
             XDocument doc = new XDocument();// null;
-            if (!HasStoredData())
+            if (!HasStoredData() )//(&& !ExportDataName.Equals("GP")))
             {
                 XmlNode invdbData = Ix4InterfaceService.ExportData(ExportDataName, null);
                 if (SaveExportedDataToFile(invdbData))

@@ -33,9 +33,9 @@ namespace WV_newDataProcessor
                         IEnumerable<XElement> elementsWIthErrors = exportedDataDocument.Descendants("MSG").Where(x => x.Element("MSGPos_ItemNo") == null || x.Element("MSGPos_ItemNo").Value == null);
                         elementsWIthErrors.Remove();
                         exportedDataDocument.Save(FileFullName);
-                      
 
-                        var groups = from c in exportedDataDocument.Descendants("MSG").Where(x=>x.Element("MSGPos_ItemNo")!=null && x.Element("MSGPos_ItemNo").Value != null)
+
+                        var groups = from c in exportedDataDocument.Descendants("MSG").Where(x => x.Element("MSGPos_ItemNo") != null && x.Element("MSGPos_ItemNo").Value != null)
                                      group c by new
                                      {
                                          p1 = c.Element("MSGHeader_Created").Value,
@@ -45,7 +45,7 @@ namespace WV_newDataProcessor
 
                         foreach (var groupItem in groups)
                         {
-                            if(groupItem.Descendants().FirstOrDefault(elem=>elem.Name.LocalName.Equals("MSGPos_ItemNo")).Value==null)
+                            if (groupItem.Descendants().FirstOrDefault(elem => elem.Name.LocalName.Equals("MSGPos_ItemNo")).Value == null)
                             {
                                 continue;
                             }
@@ -57,12 +57,17 @@ namespace WV_newDataProcessor
                             if (recordHeaderNumber > 0)
                             {
                                 saveMsgHeaderResult.ItemOperationSuccess = true;
+
+
                                 foreach (var posItem in groupItem)
                                 {
 
-                                    List<XElement> msgPosElemens = posItem.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos")).ToList<XElement>();
                                     XElement headerIdElement = new XElement("MSGPos_HeaderID");
                                     headerIdElement.Value = recordHeaderNumber.ToString();
+                                    posItem.Add(headerIdElement);
+                                    List<XElement> msgPosElemens = posItem.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos")).ToList<XElement>();
+
+
                                     XElement amountElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_Amount"));
                                     if (amountElement.Value != null)
                                     {
@@ -70,13 +75,13 @@ namespace WV_newDataProcessor
                                         amountElement.Value = Convert.ToInt32(d).ToString();
                                     }
 
-                                    amountElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_ResAmount"));
+                                    XElement resAmountElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_ResAmount"));
                                     if (amountElement.Value != null)
                                     {
                                         double d = Double.Parse(amountElement.Value, CultureInfo.InvariantCulture);
                                         amountElement.Value = Convert.ToInt32(d).ToString();
                                     }
-                                    msgPosElemens.Add(headerIdElement);
+
                                     OperationResult saveMsgPos = new OperationResult(string.Format("Save SA message MsgPos item {0} ", posItem.Element("MSGPos_ItemNo").Value));
 
                                     if (_storageCollaborator.SaveData(msgPosElemens, "MsgPos") > 0)
@@ -84,7 +89,7 @@ namespace WV_newDataProcessor
                                         posItem.Remove();
                                         exportedDataDocument.Save(FileFullName);
                                         saveMsgPos.ItemOperationSuccess = true;
-                                        _loger.Log(string.Format("SA Msg POS element with MSGPos_ItemNo = {0} succesfully saved", posItem.Element("MSGPos_ItemNo").Value  ?? "Unknown value"));
+                                        _loger.Log(string.Format("SA Msg POS element with MSGPos_ItemNo = {0} succesfully saved", posItem.Element("MSGPos_ItemNo").Value ?? "Unknown value"));
                                     }
                                     else
                                     {
@@ -102,10 +107,10 @@ namespace WV_newDataProcessor
 
                             report.Operations.Add(saveMsgHeaderResult);
 
-                           
 
 
-                           
+
+
                         }
 
                     }

@@ -38,6 +38,9 @@ namespace WV_newDataProcessor
                 case "SA":
                     dataExporter = new SAdataExporter(_ix4WebServiceConnector, new SqlTableCollaborator(_dbInterfaceDilosLMSConnection, new DataTableMapper[] { LoadMsgHeaderDataMapper(), LoadMsgPosDataMapper() }));
                         break;
+                case "GP":
+                    dataExporter = new GPdataExporter(_ix4WebServiceConnector, new SqlTableCollaborator(_dbInterfaceDilosLMSConnection, new DataTableMapper[] { LoadMsgHeaderDataMapper(), LoadMsgPosDataMapper() }));
+                    break;
                 default:
                     throw new NotImplementedException("Wasn't implement dataExporter for " + exportDataName);
 

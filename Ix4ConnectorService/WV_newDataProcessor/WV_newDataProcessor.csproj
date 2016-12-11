@@ -46,6 +46,7 @@
     <Compile Include="DataReportEventArgs.cs" />
     <Compile Include="DataTableMapper.cs" />
     <Compile Include="ExportDataBuilder.cs" />
+    <Compile Include="GPdataExporter.cs" />
     <Compile Include="IDataMapper.cs" />
     <Compile Include="IDataTargetCollaborator.cs" />
     <Compile Include="INVDBdataExported.cs" />

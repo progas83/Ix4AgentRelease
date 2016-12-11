@@ -59,7 +59,7 @@ namespace WV_newDataProcessor
         public string OperationItem
         {
             get { return _operationItem; }
-            set { _operationItem = value; }
+           private set { _operationItem = value; }
         }
 
         private bool _operationResult;
