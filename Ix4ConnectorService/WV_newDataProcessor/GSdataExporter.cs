@@ -119,8 +119,9 @@ namespace WV_newDataProcessor
         {
             if (NextExportOperation == null)
                 return;
-            if (!report.HasErrors && report.Operations.Count > 0)
-            {
+         //   if (!report.HasErrors && report.Operations.Count > 0)
+                if (!report.HasErrors)// && report.Operations.Count > 0)
+                {
                 NextExportOperation();
             }
         }

@@ -45,6 +45,10 @@ namespace WV_newDataProcessor
             StringBuilder sb = new StringBuilder();
             sb.Append(string.Format("Operation {0} was completed {1} {2}",OperationName,HasErrors ? "with errors" : "successfully",Environment.NewLine));
             sb.Append(string.Format("Items count = {0} , Errors count = {1} {2}",Operations.Count,Operations.Where(o=>!o.ItemOperationSuccess).ToList().Count,Environment.NewLine));
+            foreach(OperationResult oRes in Operations)
+            {
+                sb.Append(oRes.ToString());
+            }
             return sb.ToString();
         }
     }

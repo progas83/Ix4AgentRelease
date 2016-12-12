@@ -76,10 +76,10 @@ namespace WV_newDataProcessor
                                     }
 
                                     XElement resAmountElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_ResAmount"));
-                                    if (amountElement.Value != null)
+                                    if (resAmountElement.Value != null)
                                     {
-                                        double d = Double.Parse(amountElement.Value, CultureInfo.InvariantCulture);
-                                        amountElement.Value = Convert.ToInt32(d).ToString();
+                                        double d = Double.Parse(resAmountElement.Value, CultureInfo.InvariantCulture);
+                                        resAmountElement.Value = Convert.ToInt32(d).ToString();
                                     }
 
                                     OperationResult saveMsgPos = new OperationResult(string.Format("Save SA message MsgPos item {0} ", posItem.Element("MSGPos_ItemNo").Value));

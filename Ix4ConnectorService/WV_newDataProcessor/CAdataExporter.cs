@@ -35,13 +35,14 @@ namespace WV_newDataProcessor
                             {
                                 ShippingTypeElementConvert(message.Element("MSGPos_ShippingType"));
                             }
-                            OperationResult saveMsgHeaderResult = new OperationResult(string.Format("Save CA MsgHeader"));
+                          
                             int recordHeaderNumber = _storageCollaborator.SaveData(message.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGHeader")).ToList(), "MsgHeader");
+                            OperationResult saveMsgHeaderResult = new OperationResult(string.Format("Save CA MsgHeader record no {0}",recordHeaderNumber));
                             if (recordHeaderNumber > 0)
                             {
                                 saveMsgHeaderResult.ItemOperationSuccess = true;
                                 report.Operations.Add(saveMsgHeaderResult);
-                                OperationResult saveMsgPosResult = new OperationResult(string.Format("Save CA MsgPos"));
+                                OperationResult saveMsgPosResult = new OperationResult(string.Format("Save CA MsgPos WakopfID ={0} ", message.Element("MSGPos_WAKopfID")!=null ? message.Element("MSGPos_WAKopfID").Value : 0.ToString()));
 
                                 XElement headerIdElement = new XElement("MSGPos_HeaderID");
                                 headerIdElement.Value = recordHeaderNumber.ToString();
@@ -54,7 +55,7 @@ namespace WV_newDataProcessor
                                     message.Remove();
                                     exportedDataDocument.Save(FileFullName);
 
-                                    _loger.Log(string.Format("CA Msg POS element with MSGPos_WakopfID = {0} succesfully saved", message.Element("MSGPos_WAKopfID").Value ?? "Unknown value"));
+                                    _loger.Log(string.Format("CA Msg POS element with MSGPos_WakopfID = {0} succesfully saved", message.Element("MSGPos_WAKopfID") != null ? message.Element("MSGPos_WAKopfID").Value : 0.ToString()));
                                 }
                                 else
                                 {

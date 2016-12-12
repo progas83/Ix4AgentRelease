@@ -45,7 +45,7 @@ namespace WV_newDataProcessor
 
                                 IEnumerable<XElement> msgPosElemens = posItem.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos"));
                                 XElement storedInventurpositionenElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_Position"));
-                                OperationResult operationResult = new OperationResult(string.Format("MSGPos_Position = {0}", storedInventurpositionenElement.Value));
+                                OperationResult operationResult = new OperationResult(string.Format("Save MSG to MsgPos MSGPos_Position = {0}", storedInventurpositionenElement.Value));
 
                                 if (_storageCollaborator.SaveData(msgPosElemens, "Inventurpositionen") > -1)
                                 {
@@ -63,7 +63,7 @@ namespace WV_newDataProcessor
                             }
 
                             XElement storedInventurHeaderElement = msgHeaderElement.FirstOrDefault(x => x.Name.LocalName.Equals("MSGHeader_Inventurnummer"));
-                            OperationResult saveMsgHeaderResult = new OperationResult(string.Format("MSGPos_Position = {0}", storedInventurHeaderElement.Value));
+                            OperationResult saveMsgHeaderResult = new OperationResult(string.Format("Save MSG to MsgHeader MSGHeader_Inventurnummer = {0}", storedInventurHeaderElement.Value));
                             if (_storageCollaborator.SaveData(msgHeaderElement, "Inventuren") > -1)
                             {
                                 saveMsgHeaderResult.ItemOperationSuccess = true;
