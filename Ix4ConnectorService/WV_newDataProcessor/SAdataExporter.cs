@@ -38,8 +38,8 @@ namespace WV_newDataProcessor
                         var groups = from c in exportedDataDocument.Descendants("MSG").Where(x => x.Element("MSGPos_ItemNo") != null && x.Element("MSGPos_ItemNo").Value != null)
                                      group c by new
                                      {
-                                         p1 = c.Element("MSGHeader_Created").Value,
-                                         p2 = c.Element("MSGPos_ItemNo").Value,
+                                         MSGHeaderCreated = c.Element("MSGHeader_Created").Value,
+                                         MSGPosItemNo = c.Element("MSGPos_ItemNo").Value,
                                      } into g
                                      select g;
 
@@ -57,7 +57,7 @@ namespace WV_newDataProcessor
                             if (recordHeaderNumber > 0)
                             {
                                 saveMsgHeaderResult.ItemOperationSuccess = true;
-
+                                report.Operations.Add(saveMsgHeaderResult);
 
                                 foreach (var posItem in groupItem)
                                 {
@@ -103,16 +103,9 @@ namespace WV_newDataProcessor
                             {
                                 saveMsgHeaderResult.ItemOperationSuccess = false;
                                 saveMsgHeaderResult.ItemContent = msgHeaderElement.GetContent();
+                                report.Operations.Add(saveMsgHeaderResult);
                             }
-
-                            report.Operations.Add(saveMsgHeaderResult);
-
-
-
-
-
                         }
-
                     }
                 }
             }

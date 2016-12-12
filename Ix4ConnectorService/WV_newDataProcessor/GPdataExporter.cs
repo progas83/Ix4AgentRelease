@@ -94,52 +94,14 @@ namespace WV_newDataProcessor
             }
             catch (Exception ex)
             {
-                _loger.Log("Export SA messages error");
+                _loger.Log("Export GP messages error");
                 _loger.Log(ex);
             }
 
             return report;
         }
 
-        private void ShippingTypeElementConvert(XElement shipingTypeElement)
-        {
-            try
-            {
-                int mSGPos_ShippingTypeField = Convert.ToInt32(shipingTypeElement.Value);
-
-                int resultShippingType = 9;
-                switch (mSGPos_ShippingTypeField)
-                {
-                    case 100:
-                        resultShippingType = 9;
-                        break;
-                    case 900:
-                        resultShippingType = 1;
-                        break;
-                    case 200:
-                        resultShippingType = 5;
-                        break;
-                    case 800:
-                        resultShippingType = 6;
-                        break;
-                    case 130:
-                        resultShippingType = 13;
-                        break;
-                    case 0:
-                        resultShippingType = 19;
-                        break;
-                    default:
-                        break;
-
-                }
-                shipingTypeElement.Value = resultShippingType.ToString();
-            }
-            catch (Exception ex)
-            {
-                _loger.Log(ex);
-            }
-
-        }
+       
 
         private void CheckLastUpdateCorrectData(XElement lastUpdateElement)
         {

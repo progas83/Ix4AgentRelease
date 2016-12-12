@@ -54,12 +54,9 @@ namespace WV_newDataProcessor
 
                         foreach (var groupItem in groupsByWakopfID)
                         {
-
-                            //var resWakopfID = groupItem["WakopfID"];
                             OperationResult saveHeaderOperation = new OperationResult(string.Format("Save or find GS Msg Header"));
-                            //var test = groupItem.Key.WakopfID;
                             IEnumerable<XElement> msgHeaderElements = groupItem.FirstOrDefault().Descendants().Where(x => x.Name.LocalName.StartsWith("MSGHeader")).ToList();
-                            string wakopfID = groupItem.Key.WakopfID;// groupItem.FirstOrDefault().Element("MSGPos_WAKopfID").Value;
+                            string wakopfID = groupItem.Key.WakopfID;
                             int existedheaderID = _storageCollaborator.GetData<int>(string.Empty, SelectHeaderID, string.Format("SELECT HeaderID FROM MsgPos WHERE HeaderID IN(SELECT ID FROM MsgHeader WHERE TYPE = 'GS')  AND WAKopfID = {0}", wakopfID));
                             if (existedheaderID <= 0)
                             {
@@ -74,6 +71,11 @@ namespace WV_newDataProcessor
                                 HeaderID.Value = existedheaderID.ToString();
                                 foreach (var msgPosItem in groupItem)
                                 {
+                                    if (msgPosItem.Element("MSGPos_ShippingType") != null && !string.IsNullOrEmpty(msgPosItem.Element("MSGPos_ShippingType").Value))
+                                    {
+                                        ShippingTypeElementConvert(msgPosItem.Element("MSGPos_ShippingType"));
+                                    }
+
                                     OperationResult savePosOperation = new OperationResult(string.Format("Save MsgPos with HeaderID = {0} ", existedheaderID));
                                     List<XElement> msgPosElements = msgPosItem.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos")).ToList();
                                     msgPosElements.Add(HeaderID);
@@ -106,7 +108,7 @@ namespace WV_newDataProcessor
             }
             catch (Exception ex)
             {
-                _loger.Log("Export SA messages error");
+                _loger.Log("Export GS messages error");
                 _loger.Log(ex);
             }
 

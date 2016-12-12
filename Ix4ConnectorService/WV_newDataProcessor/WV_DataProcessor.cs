@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ix4Models.SettingsDataModel;
 using Ix4Connector;
+using SimplestLogger;
 
 namespace WV_newDataProcessor
 {
@@ -18,19 +19,21 @@ namespace WV_newDataProcessor
         {
 
         }
+
+        private static Logger _loger = Logger.GetLogger();
         public void ExportData()
         {
            
             ExportDataBuilder exportDataBuilder = new ExportDataBuilder(CustomerSettings.ExportDataSettings, _ix4WebServiceConnector);
 
-            //INVDBdataExporter invDbExporter =(INVDBdataExporter) exportDataBuilder.GetDataExporter("INVDB");
-            //invDbExporter.ReportEvent += OnProcessReportResult;
-            //invDbExporter.ExportData();
+            INVDBdataExporter invDbExporter = (INVDBdataExporter)exportDataBuilder.GetDataExporter("INVDB");
+            invDbExporter.ReportEvent += OnProcessReportResult;
+            invDbExporter.ExportData();
             //invDbExporter.ExportData();
 
-            //SAdataExporter saDataExporter = (SAdataExporter)exportDataBuilder.GetDataExporter("SA");
-            //saDataExporter.ReportEvent += OnProcessReportResult;
-            //saDataExporter.ExportData();
+            SAdataExporter saDataExporter = (SAdataExporter)exportDataBuilder.GetDataExporter("SA");
+            saDataExporter.ReportEvent += OnProcessReportResult;
+            saDataExporter.ExportData();
 
             CAdataExporter caDataExporter = (CAdataExporter)exportDataBuilder.GetDataExporter("CA");
             caDataExporter.ReportEvent += OnProcessReportResult;
@@ -56,7 +59,7 @@ namespace WV_newDataProcessor
 
         private void OnProcessReportResult(object sender, DataReportEventArgs e)
         {
-            
+            _loger.Log(e.Report.ToString());
         }
 
         public void ImportData()

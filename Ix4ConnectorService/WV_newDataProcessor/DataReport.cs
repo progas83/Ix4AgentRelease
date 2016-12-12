@@ -40,7 +40,13 @@ namespace WV_newDataProcessor
             set { _operations = value; }
         }
 
-
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(string.Format("Operation {0} was completed {1} {2}",OperationName,HasErrors ? "with errors" : "successfully",Environment.NewLine));
+            sb.Append(string.Format("Items count = {0} , Errors count = {1} {2}",Operations.Count,Operations.Where(o=>!o.ItemOperationSuccess).ToList().Count,Environment.NewLine));
+            return sb.ToString();
+        }
     }
 
     public class OperationResult
@@ -78,7 +84,17 @@ namespace WV_newDataProcessor
             set { _itemContent = value; }
         }
 
-
+        public override string ToString()
+        {
+            if(ItemOperationSuccess)
+            {
+              return  string.Format("Operation {0} was completed succesfully. {1}", OperationItem,Environment.NewLine);
+            }
+            else
+            {
+              return  string.Format("Operation {0} was completed with error. {1} Error item: {1}{2}", OperationItem, Environment.NewLine,ItemContent);
+            }
+        }
 
     }
 }
