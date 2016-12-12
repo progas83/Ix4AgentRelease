@@ -32,10 +32,26 @@ namespace WV_newDataProcessor
             //saDataExporter.ReportEvent += OnProcessReportResult;
             //saDataExporter.ExportData();
 
+            CAdataExporter caDataExporter = (CAdataExporter)exportDataBuilder.GetDataExporter("CA");
+            caDataExporter.ReportEvent += OnProcessReportResult;
+            caDataExporter.SettingAllowToStart = AllowToStart(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("CA")));
+
+            GSdataExporter gsDataExporter = (GSdataExporter)exportDataBuilder.GetDataExporter("GS");
+            gsDataExporter.ReportEvent += OnProcessReportResult;
+            gsDataExporter.NextExportOperation = new OnCompleteNextOperation(caDataExporter.ExportData);
+            gsDataExporter.SettingAllowToStart = AllowToStart(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GS")));
+
             GPdataExporter gpDataExporter = (GPdataExporter)exportDataBuilder.GetDataExporter("GP");
             gpDataExporter.ReportEvent += OnProcessReportResult;
+            gpDataExporter.NextExportOperation =new OnCompleteNextOperation(gsDataExporter.ExportData);
+            gpDataExporter.SettingAllowToStart = AllowToStart(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GP")));
             gpDataExporter.ExportData();
 
+        }
+
+        private bool AllowToStart(ExportDataItemSettings exportDataItemSettings)
+        {
+            return true;
         }
 
         private void OnProcessReportResult(object sender, DataReportEventArgs e)

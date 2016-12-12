@@ -11,10 +11,21 @@ namespace WV_newDataProcessor
 {
     public class GPdataExporter : DataExporter
     {
-        IDataTargetCollaborator _storageCollaborator;
+        private readonly DateTime _defaultDateTime = new DateTime(1970, 1, 1);
+        private IDataTargetCollaborator _storageCollaborator;
         public GPdataExporter(IProxyIx4WebService ix4InterfaceService, IDataTargetCollaborator storageCollaborator) : base(ix4InterfaceService, "GP")
         {
             _storageCollaborator = storageCollaborator;
+        }
+
+        protected override void AfterExportDataOperationComplete(DataReport report)
+        {
+            if (NextExportOperation == null)
+                return;
+            if (!report.HasErrors)
+            {
+                NextExportOperation();
+            }
         }
 
         protected override DataReport ProcessExportedData(XDocument exportedDataDocument)
@@ -24,9 +35,8 @@ namespace WV_newDataProcessor
             {
                 if (exportedDataDocument != null)
                 {
-                    // IEnumerable<XElement> gpMessages1 = exportedDataDocument.Descendants("MSG");
                     IEnumerable<XElement> gpMessages = exportedDataDocument.Descendants("MSG").ToList();
-                    int messagesCount = gpMessages.Count();// exportedDataDocument.Descendants("MSG").Count();
+                    int messagesCount = gpMessages.Count();
                     _loger.Log(string.Format("Have got {0} of {1} items", messagesCount, ExportDataName));
                     if (messagesCount > 0)
                     {
@@ -130,8 +140,6 @@ namespace WV_newDataProcessor
             }
 
         }
-
-        private readonly DateTime _defaultDateTime = new DateTime(1970, 1, 1);
 
         private void CheckLastUpdateCorrectData(XElement lastUpdateElement)
         {

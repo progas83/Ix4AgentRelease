@@ -11,6 +11,7 @@ using System.Xml.Linq;
 
 namespace WV_newDataProcessor
 {
+   public delegate void OnCompleteNextOperation();
     public abstract class DataExporter
     {
         private static readonly string _archiveFolder = string.Format("{0}\\{1}", System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "ArchiveData");
@@ -20,15 +21,18 @@ namespace WV_newDataProcessor
         public event EventHandler<DataReportEventArgs> ReportEvent;
         protected abstract DataReport ProcessExportedData(XDocument exportedData);
 
+        public bool SettingAllowToStart { get; set; }
 
         protected string ExportDataName
         { get; private set; }
 
-
-        public DataExporter(IProxyIx4WebService ix4InterfaceService, string exportDataName)
+        public OnCompleteNextOperation NextExportOperation { get; set; }
+       // protected DataExporter NextExporter { get; private set; }
+        public DataExporter(IProxyIx4WebService ix4InterfaceService, string exportDataName)//, DataExporter nextExporter = null)
         {
             ExportDataName = exportDataName;
             Ix4InterfaceService = ix4InterfaceService;
+            //NextExporter = nextExporter;
         }
 
 
@@ -68,18 +72,29 @@ namespace WV_newDataProcessor
         }
         public void ExportData()
         {
-            DataReport report = new DataReport();
-            if (HasStoredData())
+            DataReport report = new DataReport(string.Format("Start exporting {0} messages", ExportDataName));
+            if(SettingAllowToStart)
             {
-                XDocument docc = XDocument.Load(FileFullName);
-                //XmlDocument doc = new XmlDocument();
-               // doc.Load(FileFullName);
-                report = ProcessExportedData(docc);
-                OnOperationComplete(new DataReportEventArgs(report));
+                if (HasStoredData())
+                {
+                    XDocument docc = XDocument.Load(FileFullName);
+                    report = ProcessExportedData(docc);
+                    OnOperationComplete(new DataReportEventArgs(report));
+                }
+                report = ProcessExportedData(GetStoredExportedData());
             }
-            report = ProcessExportedData(GetStoredExportedData());
             OnOperationComplete(new DataReportEventArgs(report));
+            AfterExportDataOperationComplete(report);
+        }
 
+        protected virtual void AfterExportDataOperationComplete(DataReport report)
+        {
+            if (NextExportOperation == null)
+                return;
+            if(!report.HasErrors)
+            {
+                NextExportOperation();
+            }
         }
 
         protected virtual void OnOperationComplete(DataReportEventArgs e)
@@ -117,7 +132,7 @@ namespace WV_newDataProcessor
             XDocument doc = new XDocument();// null;
             if (!HasStoredData() )//(&& !ExportDataName.Equals("GP")))
             {
-                XmlNode invdbData = Ix4InterfaceService.ExportData(ExportDataName, null);
+                XmlNode invdbData = null;// Ix4InterfaceService.ExportData(ExportDataName, null);
                 if (SaveExportedDataToFile(invdbData))
                 {
                     doc = XDocument.Load(FileFullName);

@@ -9,11 +9,11 @@ using SimplestLogger;
 
 namespace WV_newDataProcessor
 {
-   public class ExportDataBuilder
+    public class ExportDataBuilder
     {
         private static string _dbInventurdatenConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Initial Catalog = Inventurdaten; Integrated Security=SSPI";
         private static string _dbInterfaceDilosLMSConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Initial Catalog = InterfaceDilosLMS; Integrated Security=SSPI";
-        
+
         private static Logger _loger = Logger.GetLogger();
         private ExportDataSettings _exportDataSettings;
         private IProxyIx4WebService _ix4WebServiceConnector;
@@ -25,21 +25,27 @@ namespace WV_newDataProcessor
             _exportDataSettings = exportDataSettings;
         }
 
-  
+
 
         public DataExporter GetDataExporter(string exportDataName)
         {
             DataExporter dataExporter = null;
             switch (exportDataName)
-                {
+            {
                 case "INVDB":
                     dataExporter = new INVDBdataExporter(_ix4WebServiceConnector, new SqlTableCollaborator(_dbInventurdatenConnection, new DataTableMapper[] { LoadInventurenDataMapper(), LoadInventurpositionenDataMapper() }));
-                        break;
+                    break;
                 case "SA":
                     dataExporter = new SAdataExporter(_ix4WebServiceConnector, new SqlTableCollaborator(_dbInterfaceDilosLMSConnection, new DataTableMapper[] { LoadMsgHeaderDataMapper(), LoadMsgPosDataMapper() }));
-                        break;
+                    break;
                 case "GP":
                     dataExporter = new GPdataExporter(_ix4WebServiceConnector, new SqlTableCollaborator(_dbInterfaceDilosLMSConnection, new DataTableMapper[] { LoadMsgHeaderDataMapper(), LoadMsgPosDataMapper() }));
+                    break;
+                case "GS":
+                    dataExporter = new GSdataExporter(_ix4WebServiceConnector, new SqlTableCollaborator(_dbInterfaceDilosLMSConnection, new DataTableMapper[] { LoadMsgHeaderDataMapper(), LoadMsgPosDataMapper() }));
+                    break;
+                case "CA":
+                    dataExporter = new CAdataExporter(_ix4WebServiceConnector, new SqlTableCollaborator(_dbInterfaceDilosLMSConnection, new DataTableMapper[] { LoadMsgHeaderDataMapper(), LoadMsgPosDataMapper() }));
                     break;
                 default:
                     throw new NotImplementedException("Wasn't implement dataExporter for " + exportDataName);
@@ -47,6 +53,8 @@ namespace WV_newDataProcessor
             }
             return dataExporter;
         }
+
+
 
         private DataTableMapper LoadMsgHeaderDataMapper()
         {
@@ -66,17 +74,17 @@ namespace WV_newDataProcessor
             List<TableFieldMapInfo> listOfFields = new List<TableFieldMapInfo>();
             listOfFields.Add(new TableFieldMapInfo("HeaderID", "System.Int32", "MSGPos_HeaderID"));
             listOfFields.Add(new TableFieldMapInfo("ItemNo", "System.String", "MSGPos_ItemNo", true));
-            listOfFields.Add(new TableFieldMapInfo("Amount", "System.Int32", "MSGPos_Amount",true));
-            listOfFields.Add(new TableFieldMapInfo("Storageplace", "System.String", "MSGPos_Storageplace",true));
-            listOfFields.Add(new TableFieldMapInfo("PurchaseOrder", "System.Int32", "MSGPos_PurchaseOrder",true));
+            listOfFields.Add(new TableFieldMapInfo("Amount", "System.Int32", "MSGPos_Amount", true));
+            listOfFields.Add(new TableFieldMapInfo("Storageplace", "System.String", "MSGPos_Storageplace", true));
+            listOfFields.Add(new TableFieldMapInfo("PurchaseOrder", "System.Int32", "MSGPos_PurchaseOrder", true));
             listOfFields.Add(new TableFieldMapInfo("DeliveryNo", "System.String", "MSGPos_DeliveryNo"));
             listOfFields.Add(new TableFieldMapInfo("Supplier", "System.String", "MSGPos_Supplier", true));
             listOfFields.Add(new TableFieldMapInfo("dilosProcessNo", "System.Int32", "MSGPos_dilosProcessNo"));
-            listOfFields.Add(new TableFieldMapInfo("dilosPos", "System.Int32", "MSGPos_dilosPos",true));
+            listOfFields.Add(new TableFieldMapInfo("dilosPos", "System.Int32", "MSGPos_dilosPos", true));
             listOfFields.Add(new TableFieldMapInfo("WAPosID", "System.Int32", "MSGPos_WAPosID", true));
             listOfFields.Add(new TableFieldMapInfo("WAKopfID", "System.Int32", "MSGPos_WAKopfID", true));
             listOfFields.Add(new TableFieldMapInfo("OrderType", "System.Int32", "MSGPos_OrderType", true));
-            listOfFields.Add(new TableFieldMapInfo("TrackingNo", "System.String", "MSGPos_TrackingNo",true));
+            listOfFields.Add(new TableFieldMapInfo("TrackingNo", "System.String", "MSGPos_TrackingNo", true));
             listOfFields.Add(new TableFieldMapInfo("ShippingType", "System.Int32", "MSGPos_ShippingType", true));
             listOfFields.Add(new TableFieldMapInfo("BinType", "System.String", "MSGPos_BinType", true));
             listOfFields.Add(new TableFieldMapInfo("ResAmount", "System.Int32", "MSGPos_ResAmount"));

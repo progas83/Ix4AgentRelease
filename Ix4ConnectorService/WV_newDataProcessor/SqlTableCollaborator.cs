@@ -1,6 +1,7 @@
 ﻿using SimplestLogger;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace WV_newDataProcessor
 {
     public class SqlTableCollaborator : IDataTargetCollaborator
     {
-      //  private string _dbConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Initial Catalog = Inventurdaten;Integrated Security=SSPI";
+        //  private string _dbConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Initial Catalog = Inventurdaten;Integrated Security=SSPI";
         private string _dbConnectionString;
         private IEnumerable<IDataMapper> _dataToTableMappers;
         public SqlTableCollaborator(string dbConnectionString, IEnumerable<IDataMapper> dataToTableMappers)
@@ -20,6 +21,7 @@ namespace WV_newDataProcessor
             _dataToTableMappers = dataToTableMappers;
         }
         protected static Logger _loger = Logger.GetLogger();
+
         public int SaveData(IEnumerable<XElement> exportedDataElements,string tableName)
         {
             int recordNumber = -1;
@@ -66,6 +68,38 @@ namespace WV_newDataProcessor
             }
            
             return recordNumber;
+        }
+
+        public T GetData<T>(string fromName, Func<DataTable, T> predicate, string cmdText = "") where T : new()
+        {
+            T result = (T) GetDefaultValue(typeof(T));
+            try
+            {
+                using (var dbConnection = new SqlConnection(_dbConnectionString))
+                {
+                    string commandText = string.IsNullOrEmpty(cmdText) ? string.Format("Select * from {0}", fromName) : cmdText;
+                    SqlCommand cmd = new SqlCommand(commandText, dbConnection);
+                    dbConnection.Open();
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    DataTable dt = new DataTable();
+                    dt.Load(reader);
+                    result = predicate(dt);
+                }
+            }
+            catch(Exception ex)
+            {
+                _loger.Log(ex);
+            }
+
+            return result;
+        }
+
+        private object GetDefaultValue(Type t)
+        {
+            if (t.IsValueType)
+                return Activator.CreateInstance(t);
+
+            return null;
         }
     }
 }

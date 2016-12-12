@@ -41,12 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CAdataExporter.cs" />
     <Compile Include="DataExporter.cs" />
     <Compile Include="DataReport.cs" />
     <Compile Include="DataReportEventArgs.cs" />
     <Compile Include="DataTableMapper.cs" />
     <Compile Include="ExportDataBuilder.cs" />
     <Compile Include="GPdataExporter.cs" />
+    <Compile Include="GSdataExporter.cs" />
     <Compile Include="IDataMapper.cs" />
     <Compile Include="IDataTargetCollaborator.cs" />
     <Compile Include="INVDBdataExported.cs" />
