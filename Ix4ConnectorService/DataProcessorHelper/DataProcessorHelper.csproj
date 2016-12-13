@@ -75,6 +75,10 @@
       <Name>SimplestLogger</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\WV_newDataProcessor\WV_newDataProcessor.csproj">
+      <Project>{9C0001FA-A703-4A96-BFCA-AD2FDCBA8BD7}</Project>
+      <Name>WV_newDataProcessor</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

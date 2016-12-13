@@ -54,8 +54,6 @@ namespace WV_newDataProcessor
             return dataExporter;
         }
 
-
-
         private DataTableMapper LoadMsgHeaderDataMapper()
         {
             List<TableFieldMapInfo> listOfFields = new List<TableFieldMapInfo>();
@@ -68,7 +66,6 @@ namespace WV_newDataProcessor
 
             return new DataTableMapper("MsgHeader", listOfFields);
         }
-
         private DataTableMapper LoadMsgPosDataMapper()
         {
             List<TableFieldMapInfo> listOfFields = new List<TableFieldMapInfo>();
@@ -144,6 +141,5 @@ namespace WV_newDataProcessor
 
             return new DataTableMapper("Inventurpositionen", listOfFields);
         }
-
     }
 }

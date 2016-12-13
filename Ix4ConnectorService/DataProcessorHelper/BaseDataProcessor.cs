@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using WV_newDataProcessor;
 
 namespace DataProcessorHelper
 {
@@ -36,7 +37,7 @@ namespace DataProcessorHelper
         private static object _o = new object();
 
         protected readonly int _articlesPerRequest = 20;
-
+        WV_DataProcessor _wv_dataProcessor;
         public void LoadSettings(CustomerInfo customerSettings)
         {
             _customerSettings = customerSettings;
@@ -45,6 +46,10 @@ namespace DataProcessorHelper
             _msSqlDataProvider = new MsSqlDataProvider();// _CustomerSettings.ImportDataSettings, _CustomerSettings.ExportDataSettings);
              _importDataProvider = new ImportDataSourcesBuilder(CustomerSettings.ImportDataSettings);
             _ensureData = new DataEnsure(CustomerSettings.UserName);
+
+            _wv_dataProcessor = new WV_DataProcessor();
+            _wv_dataProcessor.LoadSettings(customerSettings);
+
         }
 
         protected abstract void CheckArticles();

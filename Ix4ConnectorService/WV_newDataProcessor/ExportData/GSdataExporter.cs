@@ -115,15 +115,15 @@ namespace WV_newDataProcessor
             return report;
         }
 
-        protected override void AfterExportDataOperationComplete(DataReport report)
-        {
-            if (NextExportOperation == null)
-                return;
-         //   if (!report.HasErrors && report.Operations.Count > 0)
-                if (!report.HasErrors)// && report.Operations.Count > 0)
-                {
-                NextExportOperation();
-            }
-        }
+        //protected override void AfterExportDataOperationComplete(DataReport report)
+        //{
+        //    if (NextExportOperation == null)
+        //        return;
+        //    //   if (!report.HasErrors && report.Operations.Count > 0)
+        //    if (!report.HasErrors)// && report.Operations.Count > 0)
+        //    {
+        //        NextExportOperation();
+        //    }
+        //}
     }
 }

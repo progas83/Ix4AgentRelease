@@ -18,15 +18,15 @@ namespace WV_newDataProcessor
             _storageCollaborator = storageCollaborator;
         }
 
-        protected override void AfterExportDataOperationComplete(DataReport report)
-        {
-            if (NextExportOperation == null)
-                return;
-            if (!report.HasErrors)
-            {
-                NextExportOperation();
-            }
-        }
+        //protected override void AfterExportDataOperationComplete(DataReport report)
+        //{
+        //    if (NextExportOperation == null)
+        //        return;
+        //    if (!report.HasErrors)
+        //    {
+        //        NextExportOperation();
+        //    }
+        //}
 
         protected override DataReport ProcessExportedData(XDocument exportedDataDocument)
         {

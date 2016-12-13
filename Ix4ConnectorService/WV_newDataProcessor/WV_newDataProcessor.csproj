@@ -41,19 +41,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CAdataExporter.cs" />
-    <Compile Include="DataExporter.cs" />
-    <Compile Include="DataReport.cs" />
-    <Compile Include="DataReportEventArgs.cs" />
+    <Compile Include="ExportData\CAdataExporter.cs" />
+    <Compile Include="ExportData\DataExporter.cs" />
+    <Compile Include="Reports\DataReport.cs" />
+    <Compile Include="Reports\DataReportEventArgs.cs" />
     <Compile Include="DataTableMapper.cs" />
     <Compile Include="ExportDataBuilder.cs" />
-    <Compile Include="GPdataExporter.cs" />
-    <Compile Include="GSdataExporter.cs" />
+    <Compile Include="ExportData\GPdataExporter.cs" />
+    <Compile Include="ExportData\GSdataExporter.cs" />
     <Compile Include="IDataMapper.cs" />
     <Compile Include="IDataTargetCollaborator.cs" />
-    <Compile Include="INVDBdataExported.cs" />
+    <Compile Include="ExportData\INVDBdataExported.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SAdataExporter.cs" />
+    <Compile Include="ExportData\SAdataExporter.cs" />
     <Compile Include="SqlTableCollaborator.cs" />
     <Compile Include="TableFieldMapInfo.cs" />
     <Compile Include="WV_DataProcessor.cs" />
