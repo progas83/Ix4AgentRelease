@@ -11,8 +11,8 @@ using SimplestLogger;
 
 namespace WV_newDataProcessor
 {
-    [ExportDataProcessor("ilyatest1111")]
-    public class WV_DataProcessor : IDataProcessor
+   // [ExportDataProcessor("ilyatest1111")]
+    public class WV_DataProcessor //: IDataProcessor
     {
         CustomerInfo CustomerSettings;
         public WV_DataProcessor()

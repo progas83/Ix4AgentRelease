@@ -55,7 +55,7 @@ namespace DataProcessorHelper
         protected abstract void CheckArticles();
         protected abstract void CheckDeliveries();
         protected abstract void CheckOrders();
-        protected abstract void ProcessExportedData(ExportDataItemSettings settings);
+       // protected abstract void ProcessExportedData(ExportDataItemSettings settings);
         public void ImportData()
         {
             if (_customerSettings.ImportDataSettings.ArticleSettings.IsActivate && 
@@ -87,15 +87,16 @@ namespace DataProcessorHelper
 
         public void ExportData()
         {
-            foreach(ExportDataItemSettings itemExported in CustomerSettings.ExportDataSettings.ExportDataItemSettings)
-            {
-                if(itemExported.IsActive && itemExported.IsNowWorkingTime && _updateTimeWatcher.TimeToCheck(itemExported.ExportDataTypeName))
-                {
-                    ProcessExportedData(itemExported);
-                    _updateTimeWatcher.SetLastUpdateTimeProperty(itemExported.ExportDataTypeName);
-                }
-            }
-            _updateTimeWatcher.SaveLastUpdateValues();
+            _wv_dataProcessor.ExportData();
+            //foreach(ExportDataItemSettings itemExported in CustomerSettings.ExportDataSettings.ExportDataItemSettings)
+            //{
+            //    if(itemExported.IsActive && itemExported.IsNowWorkingTime && _updateTimeWatcher.TimeToCheck(itemExported.ExportDataTypeName))
+            //    {
+            //        ProcessExportedData(itemExported);
+            //        _updateTimeWatcher.SetLastUpdateTimeProperty(itemExported.ExportDataTypeName);
+            //    }
+            //}
+            //_updateTimeWatcher.SaveLastUpdateValues();
         }
       
         protected LICSResponse SendLicsRequestToIx4(LICSRequest request, string fileName)

@@ -46,7 +46,7 @@
             <TabItem Header="Recieve data from Ix4Interface" MaxWidth="800" DataContext="{Binding ExportDataViewModel}">
                 <DockPanel Height="400" Width="Auto">
                     <Button Content="{Binding Source={StaticResource Localization},Path=AddNewExportType}" Command="{Binding}" Height="30" DockPanel.Dock="Top" HorizontalAlignment="Left" MinWidth="50" Margin="10"/>
-                    <ListBox ItemsSource="{Binding ExportDataItems}">
+                    <ListBox ItemsSource="{Binding ExportDataItems}" ScrollViewer.CanContentScroll="False" >
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderThickness="2" BorderBrush="Gray">

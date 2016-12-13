@@ -421,9 +421,9 @@ namespace WWDataProcessor
             return result;
         }
 
-        protected override void ProcessExportedData(ExportDataItemSettings settings)
-        {
+        //protected override void ProcessExportedData(ExportDataItemSettings settings)
+        //{
 
-        }
+        //}
     }
 }

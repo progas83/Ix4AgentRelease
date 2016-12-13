@@ -283,312 +283,312 @@ namespace WVDataProcessor
         }
 
         ExportDataToSQL _dataExportetToSql;
-        protected override void ProcessExportedData(ExportDataItemSettings settings)
-        {
-            if (_dataExportetToSql == null)
-                _dataExportetToSql = new ExportDataToSQL(CustomerSettings.ExportDataSettings);
-            switch (settings.ExportDataTypeName)
-            {
-                case "GP":
-                    ProcessGPData();
-                    break;
-                case "SA":
-                    ProcessSAData();
-                    break;
-                case "BO":
-                    ProcessBOData();
-                    break;
-                case "GR":
-                    ProcessGRData();
-                    break;
-                default: break;
-            }
-        }
+        //protected override void ProcessExportedData(ExportDataItemSettings settings)
+        //{
+        //    if (_dataExportetToSql == null)
+        //        _dataExportetToSql = new ExportDataToSQL(CustomerSettings.ExportDataSettings);
+        //    switch (settings.ExportDataTypeName)
+        //    {
+        //        case "GP":
+        //            ProcessGPData();
+        //            break;
+        //        case "SA":
+        //            ProcessSAData();
+        //            break;
+        //        case "BO":
+        //            ProcessBOData();
+        //            break;
+        //        case "GR":
+        //            ProcessGRData();
+        //            break;
+        //        default: break;
+        //    }
+        //}
 
-        private void ProcessSAData()
-        {
-            StoragePlaces articelInventure = new StoragePlaces();// "SP", "WE", "LP");
-            try
-            {
-                foreach (string mark in new string[] { "SA" })
-                {
-                    _loger.Log("Starting export data " + mark);
-                    XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
-                    XmlDocument xmlDoc = new XmlDocument();
-                    xmlDoc.InnerXml = nodeResult.OuterXml;
+        //private void ProcessSAData()
+        //{
+        //    StoragePlaces articelInventure = new StoragePlaces();// "SP", "WE", "LP");
+        //    try
+        //    {
+        //        foreach (string mark in new string[] { "SA" })
+        //        {
+        //            _loger.Log("Starting export data " + mark);
+        //            XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
+        //            XmlDocument xmlDoc = new XmlDocument();
+        //            xmlDoc.InnerXml = nodeResult.OuterXml;
 
-                   // xmlDoc.Load(@"E:\ServiceProgram\Ix4AgentRelease\Clients\ArchiveData\wwinterface_SA1.xml");
-                 //   XmlNodeList msgNodes1 = xmlDoc.GetElementsByTagName("MSG");
-                    _ensureData.StoreExportedNodeList(xmlDoc.GetElementsByTagName("MSG"), mark, EnsureType.CollectData);
-                    XmlNodeList msgNodes = articelInventure.GetUpdatedStorageInformation(xmlDoc.GetElementsByTagName("MSG"));
+        //           // xmlDoc.Load(@"E:\ServiceProgram\Ix4AgentRelease\Clients\ArchiveData\wwinterface_SA1.xml");
+        //         //   XmlNodeList msgNodes1 = xmlDoc.GetElementsByTagName("MSG");
+        //            _ensureData.StoreExportedNodeList(xmlDoc.GetElementsByTagName("MSG"), mark, EnsureType.CollectData);
+        //            XmlNodeList msgNodes = articelInventure.GetUpdatedStorageInformation(xmlDoc.GetElementsByTagName("MSG"));
  
-                    if (msgNodes != null && msgNodes.Count > 0)
-                    {
-                        _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
-                        EnsureType ensureType = EnsureType.CollectData;
+        //            if (msgNodes != null && msgNodes.Count > 0)
+        //            {
+        //                _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
+        //                EnsureType ensureType = EnsureType.CollectData;
                        
-                        if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
-                        {
-                            _ensureData.RudeStoreExportedData(nodeResult, mark);
-                        }
-                        else
-                        {
-                            _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);
-                        }
-                        _loger.Log("End export data " + mark);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _loger.Log("Exception while export data");
-                _loger.Log(ex);
-            }
-        }
+        //                if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
+        //                {
+        //                    _ensureData.RudeStoreExportedData(nodeResult, mark);
+        //                }
+        //                else
+        //                {
+        //                    _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);
+        //                }
+        //                _loger.Log("End export data " + mark);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _loger.Log("Exception while export data");
+        //        _loger.Log(ex);
+        //    }
+        //}
 
-        private void ProcessGPData()
-        {
-            int countOfGSMessages = 0;
-            try
-            {
-                foreach (string mark in new string[] { "GP", "GS" , "CA" })
-                {
-                    if(mark.Equals("CA") && countOfGSMessages == 0)
-                    {
-                        _loger.Log("Count of GS messages = 0. Cant starting export CA data " + mark);
-                        return;
-                    }
-                    _loger.Log("Starting export data " + mark);
+        //private void ProcessGPData()
+        //{
+        //    int countOfGSMessages = 0;
+        //    try
+        //    {
+        //        foreach (string mark in new string[] { "GP", "GS" , "CA" })
+        //        {
+        //            if(mark.Equals("CA") && countOfGSMessages == 0)
+        //            {
+        //                _loger.Log("Count of GS messages = 0. Cant starting export CA data " + mark);
+        //                return;
+        //            }
+        //            _loger.Log("Starting export data " + mark);
 
-                    XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
+        //            XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
 
-                    XmlDocument xmlDoc = new XmlDocument();
-                    xmlDoc.InnerXml = nodeResult.OuterXml;
-                    var msgNodes = xmlDoc.GetElementsByTagName("MSG");
+        //            XmlDocument xmlDoc = new XmlDocument();
+        //            xmlDoc.InnerXml = nodeResult.OuterXml;
+        //            var msgNodes = xmlDoc.GetElementsByTagName("MSG");
 
-                    //  var msgNodes = nodeResult.LastChild.LastChild.SelectNodes("MSG");
-                    _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
+        //            //  var msgNodes = nodeResult.LastChild.LastChild.SelectNodes("MSG");
+        //            _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
                     
-                    if (msgNodes != null && msgNodes.Count > 0)
-                    {
-                        if (mark.Equals("GS"))
-                        {
-                            countOfGSMessages = msgNodes.Count;
-                        }
-                        EnsureType ensureType = EnsureType.CollectData;
+        //            if (msgNodes != null && msgNodes.Count > 0)
+        //            {
+        //                if (mark.Equals("GS"))
+        //                {
+        //                    countOfGSMessages = msgNodes.Count;
+        //                }
+        //                EnsureType ensureType = EnsureType.CollectData;
 
-                        if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
-                        {
-                            _ensureData.RudeStoreExportedData(nodeResult, mark);
-                        }
-                        else
-                        {
-                            _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
-                        }
-                        _loger.Log("End export data " + mark);
-                        //  System.Threading.Thread.Sleep(30000);
-                    }
+        //                if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
+        //                {
+        //                    _ensureData.RudeStoreExportedData(nodeResult, mark);
+        //                }
+        //                else
+        //                {
+        //                    _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
+        //                }
+        //                _loger.Log("End export data " + mark);
+        //                //  System.Threading.Thread.Sleep(30000);
+        //            }
 
-                }
-            }
-            catch (Exception ex)
-            {
-                _loger.Log("Exception while export data");
-                _loger.Log(ex);
-            }
-        }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _loger.Log("Exception while export data");
+        //        _loger.Log(ex);
+        //    }
+        //}
 
-        private void ProcessBOData()
-        {
-            try
-            {
-                foreach (string mark in new string[] { "BO" })
-                {
-                    _loger.Log("Starting export data " + mark);
-                    XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
+        //private void ProcessBOData()
+        //{
+        //    try
+        //    {
+        //        foreach (string mark in new string[] { "BO" })
+        //        {
+        //            _loger.Log("Starting export data " + mark);
+        //            XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
 
-                    XmlDocument xmlDoc = new XmlDocument();
-                    xmlDoc.InnerXml = nodeResult.OuterXml;
-                    var msgNodes = xmlDoc.GetElementsByTagName("MSG");
+        //            XmlDocument xmlDoc = new XmlDocument();
+        //            xmlDoc.InnerXml = nodeResult.OuterXml;
+        //            var msgNodes = xmlDoc.GetElementsByTagName("MSG");
 
-                    //  var msgNodes = nodeResult.LastChild.LastChild.SelectNodes("MSG");
-                    _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
-                    if (msgNodes != null && msgNodes.Count > 0)
-                    {
-                        EnsureType ensureType = EnsureType.CollectData;
-                        switch (mark)
-                        {
-                            case "SA":
-                                ensureType = EnsureType.UpdateStoredData;
-                                break;
-                            case "GP":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "GS":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "GR":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "CA":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "BO":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            default:
-                                ensureType = EnsureType.CollectData;
-                                break;
-                        }
+        //            //  var msgNodes = nodeResult.LastChild.LastChild.SelectNodes("MSG");
+        //            _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
+        //            if (msgNodes != null && msgNodes.Count > 0)
+        //            {
+        //                EnsureType ensureType = EnsureType.CollectData;
+        //                switch (mark)
+        //                {
+        //                    case "SA":
+        //                        ensureType = EnsureType.UpdateStoredData;
+        //                        break;
+        //                    case "GP":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    case "GS":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    case "GR":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    case "CA":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    case "BO":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    default:
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                }
 
-                        if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
-                        {
-                            _ensureData.RudeStoreExportedData(nodeResult, mark);
-                        }
-                        else
-                        {
-                            _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
-                        }
-                        _loger.Log("End export data " + mark);
-                        //System.Threading.Thread.Sleep(30000);
-                    }
+        //                if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
+        //                {
+        //                    _ensureData.RudeStoreExportedData(nodeResult, mark);
+        //                }
+        //                else
+        //                {
+        //                    _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
+        //                }
+        //                _loger.Log("End export data " + mark);
+        //                //System.Threading.Thread.Sleep(30000);
+        //            }
 
-                }
-            }
-            catch (Exception ex)
-            {
-                _loger.Log("Exception while export data");
-                _loger.Log(ex);
-            }
-        }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _loger.Log("Exception while export data");
+        //        _loger.Log(ex);
+        //    }
+        //}
 
-        private void ProcessCAData()
-        {
-            try
-            {
-                foreach (string mark in new string[] { "CA" })
-                {
-                    _loger.Log("Starting export data " + mark);
-                    XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
+        //private void ProcessCAData()
+        //{
+        //    try
+        //    {
+        //        foreach (string mark in new string[] { "CA" })
+        //        {
+        //            _loger.Log("Starting export data " + mark);
+        //            XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
 
-                    XmlDocument xmlDoc = new XmlDocument();
-                    xmlDoc.InnerXml = nodeResult.OuterXml;
-                    var msgNodes = xmlDoc.GetElementsByTagName("MSG");
+        //            XmlDocument xmlDoc = new XmlDocument();
+        //            xmlDoc.InnerXml = nodeResult.OuterXml;
+        //            var msgNodes = xmlDoc.GetElementsByTagName("MSG");
 
-                    //  var msgNodes = nodeResult.LastChild.LastChild.SelectNodes("MSG");
-                    _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
-                    if (msgNodes != null && msgNodes.Count > 0)
-                    {
-                        EnsureType ensureType = EnsureType.CollectData;
-                        switch (mark)
-                        {
-                            case "SA":
-                                ensureType = EnsureType.UpdateStoredData;
-                                break;
-                            case "GP":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "GS":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "GR":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "CA":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "BO":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            default:
-                                ensureType = EnsureType.CollectData;
-                                break;
-                        }
+        //            //  var msgNodes = nodeResult.LastChild.LastChild.SelectNodes("MSG");
+        //            _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
+        //            if (msgNodes != null && msgNodes.Count > 0)
+        //            {
+        //                EnsureType ensureType = EnsureType.CollectData;
+        //                switch (mark)
+        //                {
+        //                    case "SA":
+        //                        ensureType = EnsureType.UpdateStoredData;
+        //                        break;
+        //                    case "GP":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    case "GS":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    case "GR":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    case "CA":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    case "BO":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    default:
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                }
 
-                        if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
-                        {
-                            _ensureData.RudeStoreExportedData(nodeResult, mark);
-                        }
-                        else
-                        {
-                            _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
-                        }
-                        _loger.Log("End export data " + mark);
-                        //    System.Threading.Thread.Sleep(30000);
-                    }
+        //                if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
+        //                {
+        //                    _ensureData.RudeStoreExportedData(nodeResult, mark);
+        //                }
+        //                else
+        //                {
+        //                    _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
+        //                }
+        //                _loger.Log("End export data " + mark);
+        //                //    System.Threading.Thread.Sleep(30000);
+        //            }
 
-                }
-            }
-            catch (Exception ex)
-            {
-                _loger.Log("Exception while export data");
-                _loger.Log(ex);
-            }
-        }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _loger.Log("Exception while export data");
+        //        _loger.Log(ex);
+        //    }
+        //}
 
-        private void ProcessGRData()
-        {
-            try
-            {
-                foreach (string mark in new string[] { "GR" })
-                {
-                    _loger.Log("Starting export data " + mark);
-                    XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
+        //private void ProcessGRData()
+        //{
+        //    try
+        //    {
+        //        foreach (string mark in new string[] { "GR" })
+        //        {
+        //            _loger.Log("Starting export data " + mark);
+        //            XmlNode nodeResult = _ix4WebServiceConnector.ExportData(mark, null);
 
-                    XmlDocument xmlDoc = new XmlDocument();
-                    xmlDoc.InnerXml = nodeResult.OuterXml;
-                    var msgNodes = xmlDoc.GetElementsByTagName("MSG");
+        //            XmlDocument xmlDoc = new XmlDocument();
+        //            xmlDoc.InnerXml = nodeResult.OuterXml;
+        //            var msgNodes = xmlDoc.GetElementsByTagName("MSG");
 
-                    //  var msgNodes = nodeResult.LastChild.LastChild.SelectNodes("MSG");
-                    _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
-                    if (msgNodes != null && msgNodes.Count > 0)
-                    {
-                        EnsureType ensureType = EnsureType.CollectData;
-                        switch (mark)
-                        {
-                            case "SA":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "GP":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "GS":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "GR":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "CA":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            case "BO":
-                                ensureType = EnsureType.CollectData;
-                                break;
-                            default:
-                                ensureType = EnsureType.CollectData;
-                                break;
-                        }
+        //            //  var msgNodes = nodeResult.LastChild.LastChild.SelectNodes("MSG");
+        //            _loger.Log(string.Format("Got Exported {0} items count = {1}", mark, msgNodes.Count));
+        //            if (msgNodes != null && msgNodes.Count > 0)
+        //            {
+        //                EnsureType ensureType = EnsureType.CollectData;
+        //                switch (mark)
+        //                {
+        //                    case "SA":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    case "GP":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    case "GS":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    case "GR":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    case "CA":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    case "BO":
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                    default:
+        //                        ensureType = EnsureType.CollectData;
+        //                        break;
+        //                }
 
-                        if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
-                        {
-                            _ensureData.RudeStoreExportedData(nodeResult, mark);
-                        }
-                        else
-                        {
-                            _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
-                        }
-                        _loger.Log("End export data " + mark);
-                        //System.Threading.Thread.Sleep(30000);
-                    }
+        //                if (!_ensureData.StoreExportedNodeList(msgNodes, mark, ensureType))
+        //                {
+        //                    _ensureData.RudeStoreExportedData(nodeResult, mark);
+        //                }
+        //                else
+        //                {
+        //                    _ensureData.ProcessingStoredDataToClientStorage(mark, _dataExportetToSql.SaveDataToTable<MSG>);//.SaveDataToTable(. _dataCompositor.GetCustomerDataConnector(CustomDataSourceTypes.MsSql));
+        //                }
+        //                _loger.Log("End export data " + mark);
+        //                //System.Threading.Thread.Sleep(30000);
+        //            }
 
-                }
-            }
-            catch (Exception ex)
-            {
-                _loger.Log("Exception while export data");
-                _loger.Log(ex);
-            }
-        }
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _loger.Log("Exception while export data");
+        //        _loger.Log(ex);
+        //    }
+        //}
 
         private void SendToDB(string no, int status)
         {
