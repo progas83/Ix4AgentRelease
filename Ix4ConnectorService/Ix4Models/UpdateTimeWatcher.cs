@@ -1,5 +1,4 @@
-﻿using Ix4Models;
-using Ix4Models.SettingsDataModel;
+﻿using Ix4Models.SettingsDataModel;
 using SimplestLogger;
 using System;
 using System.Collections.Generic;
@@ -7,29 +6,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataProcessorHelper
+namespace Ix4Models
 {
     public class UpdateTimeWatcher
     {
         private static Logger _loger = Logger.GetLogger();
         ImportDataSettings _importTimerSettings;
         ExportDataSettings _exportTimeSettings;
-        public UpdateTimeWatcher(ImportDataSettings importTimerSettings, ExportDataSettings exportTimeSettings )
+        public UpdateTimeWatcher(ImportDataSettings importTimerSettings, ExportDataSettings exportTimeSettings)
         {
             _importTimerSettings = importTimerSettings;
             _exportTimeSettings = exportTimeSettings;
 
-            if(_articlesLastUpdate==0)
-            _articlesLastUpdate = Ix4Models.Properties.LastUpdate.Default.Articles;
-            if(_ordersLastUpdate==0)
-            _ordersLastUpdate = Ix4Models.Properties.LastUpdate.Default.Orders;
-            if(_deliveriesLastUpdate==0)
-            _deliveriesLastUpdate = Ix4Models.Properties.LastUpdate.Default.Deliveries;
-            if(_exportDataListUpdateInfo == null)
+            if (_articlesLastUpdate == 0)
+                _articlesLastUpdate = Properties.LastUpdate.Default.Articles;
+            if (_ordersLastUpdate == 0)
+                _ordersLastUpdate = Properties.LastUpdate.Default.Orders;
+            if (_deliveriesLastUpdate == 0)
+                _deliveriesLastUpdate = Properties.LastUpdate.Default.Deliveries;
+            if (_exportDataListUpdateInfo == null)
             {
-                if(Ix4Models.Properties.LastUpdate.Default.ExportData!=null)
+                if (Properties.LastUpdate.Default.ExportData != null)
                 {
-                    _exportDataListUpdateInfo = Ix4Models.Properties.LastUpdate.Default.ExportData;
+                  /////  _exportDataListUpdateInfo = Properties.LastUpdate.Default.ExportData;
                 }
                 else
                 {
@@ -37,18 +36,16 @@ namespace DataProcessorHelper
                 }
             }
 
-            _loger.Log(string.Format("Articles lust update TS = {0}; Orders lust update = {1}; Deliveries lust update = {2}", GetTimeFromTS(Ix4Models.Properties.LastUpdate.Default.Articles) ,GetTimeFromTS(Ix4Models.Properties.LastUpdate.Default.Orders), GetTimeFromTS(Ix4Models.Properties.LastUpdate.Default.Deliveries)));
-            SetLastUpdateTimeProperty(Ix4RequestProps.Articles);
-            SaveLastUpdateValues();
-          }
+            _loger.Log(string.Format("Articles lust update TS = {0}; Orders lust update = {1}; Deliveries lust update = {2}", GetTimeFromTS(Properties.LastUpdate.Default.Articles), GetTimeFromTS(Properties.LastUpdate.Default.Orders), GetTimeFromTS(Properties.LastUpdate.Default.Deliveries)));
+        }
 
         public void SaveLastUpdateValues()
         {
-            Ix4Models.Properties.LastUpdate.Default.Articles =  _articlesLastUpdate;
-            Ix4Models.Properties.LastUpdate.Default.Orders =  _ordersLastUpdate;
-            Ix4Models.Properties.LastUpdate.Default.Deliveries =  _deliveriesLastUpdate;
-            Ix4Models.Properties.LastUpdate.Default.ExportData = _exportDataListUpdateInfo;
-            Ix4Models.Properties.LastUpdate.Default.Save();
+            Properties.LastUpdate.Default.Articles = _articlesLastUpdate;
+            Properties.LastUpdate.Default.Orders = _ordersLastUpdate;
+            Properties.LastUpdate.Default.Deliveries = _deliveriesLastUpdate;
+ /////           Properties.LastUpdate.Default.ExportData = _exportDataListUpdateInfo;
+            Properties.LastUpdate.Default.Save();
         }
         private static long _articlesLastUpdate;// = 0;
         private static long _ordersLastUpdate;
@@ -57,17 +54,17 @@ namespace DataProcessorHelper
 
 
 
-     //   private static long _exportGPLastUpdate = 0;
-     //   private static long _exportGSLastUpdate = 0;
-     //   private static long _exportSALastUpdate = 1;
+        //   private static long _exportGPLastUpdate = 0;
+        //   private static long _exportGSLastUpdate = 0;
+        //   private static long _exportSALastUpdate = 1;
 
 
-         private string GetTimeFromTS(long seconds)
+        private string GetTimeFromTS(long seconds)
         {
             DateTime result = _startDT.AddSeconds(seconds);
             return result.ToString();
         }
-      private static  DateTime _startDT = new DateTime(1970, 1, 1);
+        private static DateTime _startDT = new DateTime(1970, 1, 1);
         private static long GetTimeStamp()
         {
             return (long)(DateTime.UtcNow.Subtract(_startDT)).TotalSeconds;
@@ -77,35 +74,35 @@ namespace DataProcessorHelper
         {
             bool isItTimeToCheck = false;
             ExportDataItemSettings item = null;
-            foreach(ExportDataItemSettings ds in _exportTimeSettings.ExportDataItemSettings)
+            foreach (ExportDataItemSettings ds in _exportTimeSettings.ExportDataItemSettings)
             {
-                if(ds.ExportDataTypeName.Equals(exportDataType))
+                if (ds.ExportDataTypeName.Equals(exportDataType))
                 {
                     item = ds;
                     break;
                 }
             }
 
-            if(item!=null)
+            if (item != null)
             {
-                if(item.IsNowWorkingTime && (_exportDataListUpdateInfo[exportDataType] == 0 || (GetTimeStamp()- _exportDataListUpdateInfo[exportDataType])>= item.Scheduler.TimeGap * (int)item.Scheduler.GapSign))
+                if (item.IsNowWorkingTime && (_exportDataListUpdateInfo[exportDataType] == 0 || (GetTimeStamp() - _exportDataListUpdateInfo[exportDataType]) >= item.Scheduler.TimeGap * (int)item.Scheduler.GapSign))
                 {
                     isItTimeToCheck = true;
                 }
             }
-           
+
             return isItTimeToCheck;
         }
 
         public bool TimeToCheck(Ix4RequestProps ix4Property)
         {
-           // var t = GetTimeStamp();
+            // var t = GetTimeStamp();
 
             bool result = false;
             switch (ix4Property)
             {
                 case Ix4RequestProps.Articles:
-                    if (_articlesLastUpdate  == 0 || (GetTimeStamp() - _articlesLastUpdate) >= _importTimerSettings.ArticleSettings.Scheduler.TimeGap *(int)_importTimerSettings.ArticleSettings.Scheduler.GapSign)
+                    if (_articlesLastUpdate == 0 || (GetTimeStamp() - _articlesLastUpdate) >= _importTimerSettings.ArticleSettings.Scheduler.TimeGap * (int)_importTimerSettings.ArticleSettings.Scheduler.GapSign)
                     {
                         result = true;
                     }
@@ -151,16 +148,16 @@ namespace DataProcessorHelper
         {
             try
             {
-                if(_exportDataListUpdateInfo!=null)
+                if (_exportDataListUpdateInfo != null)
                 {
                     _exportDataListUpdateInfo[exportDataType] = GetTimeStamp();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
 
             }
-            
+
         }
     }
 }

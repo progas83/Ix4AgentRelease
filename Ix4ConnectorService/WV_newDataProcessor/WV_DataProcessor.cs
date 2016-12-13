@@ -28,32 +28,32 @@ namespace WV_newDataProcessor
 
             INVDBdataExporter invDbExporter = (INVDBdataExporter)exportDataBuilder.GetDataExporter("INVDB");
             invDbExporter.ReportEvent += OnProcessReportResult;
-            invDbExporter.SettingAllowToStart = AllowToStart(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("INVDB")));
+            invDbExporter.SettingAllowToStart = AllowToExportData(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("INVDB")));
             invDbExporter.ExportData();
 
             SAdataExporter saDataExporter = (SAdataExporter)exportDataBuilder.GetDataExporter("SA");
             saDataExporter.ReportEvent += OnProcessReportResult;
-            saDataExporter.SettingAllowToStart = AllowToStart(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("SA")));
+            saDataExporter.SettingAllowToStart = AllowToExportData(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("SA")));
             saDataExporter.ExportData();
 
             CAdataExporter caDataExporter = (CAdataExporter)exportDataBuilder.GetDataExporter("CA");
             caDataExporter.ReportEvent += OnProcessReportResult;
-            caDataExporter.SettingAllowToStart = AllowToStart(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("CA")));
+            caDataExporter.SettingAllowToStart = AllowToExportData(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("CA")));
 
             GSdataExporter gsDataExporter = (GSdataExporter)exportDataBuilder.GetDataExporter("GS");
             gsDataExporter.ReportEvent += OnProcessReportResult;
             gsDataExporter.NextExportOperation = new OnCompleteNextOperation(caDataExporter.ExportData);
-            gsDataExporter.SettingAllowToStart = AllowToStart(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GS")));
+            gsDataExporter.SettingAllowToStart = AllowToExportData(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GS")));
 
             GPdataExporter gpDataExporter = (GPdataExporter)exportDataBuilder.GetDataExporter("GP");
             gpDataExporter.ReportEvent += OnProcessReportResult;
             gpDataExporter.NextExportOperation = new OnCompleteNextOperation(gsDataExporter.ExportData);
-            gpDataExporter.SettingAllowToStart = AllowToStart(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GP")));
+            gpDataExporter.SettingAllowToStart = AllowToExportData(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GP")));
             gpDataExporter.ExportData();
 
         }
 
-        private bool AllowToStart(ExportDataItemSettings exportDataItemSettings)
+        private bool AllowToExportData(ExportDataItemSettings exportDataItemSettings)
         {
             return exportDataItemSettings != null
                 && exportDataItemSettings.IsActive

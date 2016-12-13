@@ -21,7 +21,7 @@ namespace ConnectorWorkflowManager
         private CustomerInfo _customerSettings;
         protected Timer _timer;
         private static object _padlock = new object();
-        private static readonly long RElapsedEvery = 60 * 1 * 1000;
+        private static readonly long RElapsedEvery = 2 * 1 * 1000;
 
 
         private static Logger _loger = Logger.GetLogger();
@@ -113,10 +113,10 @@ namespace ConnectorWorkflowManager
                 _isBusy = true;
                 try
                 {
-                   if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
+                  // if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
                     {
                         _loger.Log("Start Import data");
-                        _currentDataProcessor.ImportData();
+                     //   _currentDataProcessor.ImportData();
                         _loger.Log("Finish Import data");
                         _loger.Log("Start Export data");
                         _currentDataProcessor.ExportData();

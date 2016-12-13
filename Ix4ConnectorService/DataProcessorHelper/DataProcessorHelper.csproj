@@ -44,20 +44,8 @@
     <Compile Include="BaseDataProcessor.cs" />
     <Compile Include="DataEnsure.cs" />
     <Compile Include="ImportDataSourcesBuilder.cs" />
-    <Compile Include="Properties\LustUpdateSettings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>LustUpdateSettings.settings</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UpdateTimeWatcher.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Properties\LustUpdateSettings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>LustUpdateSettings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ix4Connector\Ix4Connector.csproj">

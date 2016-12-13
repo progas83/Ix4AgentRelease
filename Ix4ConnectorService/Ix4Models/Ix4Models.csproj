@@ -11,6 +11,7 @@
     <AssemblyName>Ix4Models</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationFramework" />
@@ -45,7 +48,6 @@
   <ItemGroup>
     <Compile Include="Attributes\ExportDataProcessorAttribute.cs" />
     <Compile Include="BaseViewModel.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="CryptoModule\Cryptor.cs" />
     <Compile Include="CurrentServiceInformation.cs" />
     <Compile Include="CustomDataSourceTypes.cs" />
@@ -65,6 +67,11 @@
     <Compile Include="Interfaces\IPluginSettings.cs" />
     <Compile Include="Ix4ComplexModel.cs" />
     <Compile Include="Ix4RequestProps.cs" />
+    <Compile Include="Properties\LastUpdate.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>LastUpdate.settings</DependentUpon>
+    </Compile>
     <Compile Include="MappedItem.cs" />
     <Compile Include="Schema\LICSRequest.cs">
       <DependentUpon>LICSRequest.xsd</DependentUpon>
@@ -94,9 +101,15 @@
     </Compile>
     <Compile Include="SettingsManager\CustomerInfoSerializer.cs" />
     <Compile Include="SettingsManager\XmlConfigurationManager.cs" />
+    <Compile Include="UpdateTimeWatcher.cs" />
     <Compile Include="Utf8StringWriter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\LastUpdate.settings">
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
+      <LastGenOutput>LastUpdate.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Schema\LICSRequest.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -110,7 +123,6 @@
       <Name>SimplestLogger</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

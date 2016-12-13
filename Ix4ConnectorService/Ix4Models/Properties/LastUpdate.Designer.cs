@@ -8,30 +8,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DataProcessorHelper.Properties {
+namespace Ix4Models.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
-    internal sealed partial class LustUpdateSettings : global::System.Configuration.ApplicationSettingsBase {
+    public sealed partial class LastUpdate : global::System.Configuration.ApplicationSettingsBase {
         
-        private static LustUpdateSettings defaultInstance = ((LustUpdateSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new LustUpdateSettings())));
+        private static LastUpdate defaultInstance = ((LastUpdate)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new LastUpdate())));
         
-        public static LustUpdateSettings Default {
+        public static LastUpdate Default {
             get {
                 return defaultInstance;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public long Articles {
-            get {
-                return ((long)(this["Articles"]));
-            }
-            set {
-                this["Articles"] = value;
             }
         }
         
@@ -61,12 +49,25 @@ namespace DataProcessorHelper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        public global::Ix4Models.EDLastUpdate ExportData {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public Ix4Models.EDLastUpdate ExportData {
             get {
-                return ((global::Ix4Models.EDLastUpdate)(this["ExportData"]));
+                return ((Ix4Models.EDLastUpdate)(this["ExportData"]));
             }
             set {
                 this["ExportData"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1481621222")]
+        public long Articles {
+            get {
+                return ((long)(this["Articles"]));
+            }
+            set {
+                this["Articles"] = value;
             }
         }
     }
