@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Ix4Models.SettingsDataModel;
 using Ix4Connector;
 using SimplestLogger;
+using Ix4Models;
 
 namespace WV_newDataProcessor
 {
@@ -70,10 +71,12 @@ namespace WV_newDataProcessor
             throw new NotImplementedException();
         }
         IProxyIx4WebService _ix4WebServiceConnector;
+        UpdateTimeWatcher _updateTimeWatcher;
         public void LoadSettings(CustomerInfo customerSettings)
         {
             CustomerSettings = customerSettings;
            _ix4WebServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(CustomerSettings.ClientID, CustomerSettings.UserName, CustomerSettings.Password, CustomerSettings.ServiceEndpoint);
+            _updateTimeWatcher = new UpdateTimeWatcher(CustomerSettings.ImportDataSettings, CustomerSettings.ExportDataSettings);
         }
     }
 }

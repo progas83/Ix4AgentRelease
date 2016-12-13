@@ -32,7 +32,7 @@ namespace DataProcessorHelper
         }
         protected ImportDataSourcesBuilder _importDataProvider;
         protected List<LICSRequestArticle> _cachedArticles;
-        protected DataEnsure _ensureData;
+       // protected DataEnsure _ensureData;
         protected static Logger _loger = Logger.GetLogger();
         private static object _o = new object();
 
@@ -45,7 +45,7 @@ namespace DataProcessorHelper
             _updateTimeWatcher = new UpdateTimeWatcher(CustomerSettings.ImportDataSettings, CustomerSettings.ExportDataSettings);
             _msSqlDataProvider = new MsSqlDataProvider();// _CustomerSettings.ImportDataSettings, _CustomerSettings.ExportDataSettings);
              _importDataProvider = new ImportDataSourcesBuilder(CustomerSettings.ImportDataSettings);
-            _ensureData = new DataEnsure(CustomerSettings.UserName);
+            //_ensureData = new DataEnsure(CustomerSettings.UserName);
 
             _wv_dataProcessor = new WV_DataProcessor();
             _wv_dataProcessor.LoadSettings(customerSettings);

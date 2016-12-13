@@ -29,9 +29,17 @@ namespace WV_newDataProcessor
         {
             ExportDataName = exportDataName;
             Ix4InterfaceService = ix4InterfaceService;
+            CheckArchiveFolder();
         }
-
-        protected void ShippingTypeElementConvert(XElement shipingTypeElement)
+        private void CheckArchiveFolder()
+        {
+            if (!Directory.Exists(_archiveFolder))
+            {
+                Directory.CreateDirectory(_archiveFolder);
+            }
+        }
+        
+    protected void ShippingTypeElementConvert(XElement shipingTypeElement)
         {
             try
             {

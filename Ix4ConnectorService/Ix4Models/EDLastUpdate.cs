@@ -15,7 +15,7 @@ namespace Ix4Models
             _exportDataSettings = exportDataSettings;
             foreach (var item in exportDataSettings.ExportDataItemSettings)
             {
-                this.Add(item.ExportDataTypeName, 1000);
+                this.Add(item.ExportDataTypeName, 0);
             }
         }
     }
