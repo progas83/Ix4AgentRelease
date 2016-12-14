@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseDataProcessor.cs" />
-    <Compile Include="DataEnsure.cs" />
     <Compile Include="ImportDataSourcesBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

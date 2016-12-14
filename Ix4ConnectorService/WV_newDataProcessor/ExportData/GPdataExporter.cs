@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using Ix4Connector;
 using Ix4Models;
+using Ix4Models.Reports;
 
 namespace WV_newDataProcessor
 {
@@ -28,9 +29,10 @@ namespace WV_newDataProcessor
         //    }
         //}
 
-        protected override DataReport ProcessExportedData(XDocument exportedDataDocument)
+        protected override void ProcessExportedData(XDocument exportedDataDocument)
         {
-            DataReport report = new DataReport(string.Format("Export {0} items", ExportDataName));
+            Report = new ExportDataReport(ExportDataName);
+            List<FailureItem> failureItems = new List<FailureItem>();
             try
             {
                 if (exportedDataDocument != null)
@@ -40,8 +42,6 @@ namespace WV_newDataProcessor
                     _loger.Log(string.Format("Have got {0} of {1} items", messagesCount, ExportDataName));
                     if (messagesCount > 0)
                     {
-
-
                         foreach (var message in gpMessages)
                         {
                             if (message.Element("MSGHeader_LastUpdate") != null && !string.IsNullOrEmpty(message.Element("MSGHeader_LastUpdate").Value))
@@ -53,13 +53,13 @@ namespace WV_newDataProcessor
                             {
                                 ShippingTypeElementConvert(message.Element("MSGPos_ShippingType"));
                             }
-                            OperationResult saveMsgHeaderResult = new OperationResult(string.Format("Save GP MsgHeader"));
+                            //  OperationResult saveMsgHeaderResult = new OperationResult(string.Format("Save GP MsgHeader"));
                             int recordHeaderNumber = _storageCollaborator.SaveData(message.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGHeader")).ToList(), "MsgHeader");
                             if (recordHeaderNumber > 0)
                             {
-                                saveMsgHeaderResult.ItemOperationSuccess = true;
-                                report.Operations.Add(saveMsgHeaderResult);
-                                OperationResult saveMsgPosResult = new OperationResult(string.Format("Save GP MsgPos"));
+                                //  saveMsgHeaderResult.ItemOperationSuccess = true;
+                                //   report.Operations.Add(saveMsgHeaderResult);
+                                //      OperationResult saveMsgPosResult = new OperationResult(string.Format("Save GP MsgPos"));
 
                                 XElement headerIdElement = new XElement("MSGPos_HeaderID");
                                 headerIdElement.Value = recordHeaderNumber.ToString();
@@ -68,25 +68,34 @@ namespace WV_newDataProcessor
                                 List<XElement> msgPosElemens = message.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos")).ToList<XElement>();
                                 if (_storageCollaborator.SaveData(msgPosElemens, "MsgPos") > 0)
                                 {
-                                    saveMsgPosResult.ItemOperationSuccess = true;
+                                    // saveMsgPosResult.ItemOperationSuccess = true;
                                     message.Remove();
                                     exportedDataDocument.Save(FileFullName);
-
+                                    Report.SuccessfullHandledItems++;
                                     _loger.Log(string.Format("GP Msg POS element with MSGPos_ItemNo = {0} succesfully saved", message.Element("MSGPos_ItemNo").Value ?? "Unknown value"));
                                 }
                                 else
                                 {
-                                    saveMsgPosResult.ItemOperationSuccess = false;
-                                    saveMsgPosResult.ItemContent = msgPosElemens.GetContent();
+                                    string resultMessage = string.Format("Can't save MsgHeader. MSGPos_WAKopfID = {0}", message.Element("MSGPos_WAKopfID").Value ?? "Unknown WakopfID");
+                                    FailureItem fi = new FailureItem();
+                                    fi.ExceptionMessage = resultMessage;
+                                    fi.ItemContent = message.ToString();
+                                    failureItems.Add(fi);
+                                    Report.FailureHandledItems++;//= groupItem.Count();
+                                    _loger.Log(resultMessage);
                                 }
-                                report.Operations.Add(saveMsgPosResult);
+                                //  report.Operations.Add(saveMsgPosResult);
 
                             }
                             else
                             {
-                                saveMsgHeaderResult.ItemOperationSuccess = false;
-                                saveMsgHeaderResult.ItemContent = message.Descendants().GetContent();
-                                report.Operations.Add(saveMsgHeaderResult);
+                                string resultMessage = string.Format("Can't save MsgHeader. MSGPos_WAKopfID = {0}", message.Element("MSGPos_WAKopfID").Value ?? "Unknown WakopfID");
+                                FailureItem fi = new FailureItem();
+                                fi.ExceptionMessage = resultMessage;
+                                fi.ItemContent = message.ToString();
+                                failureItems.Add(fi);
+                                Report.FailureHandledItems++;//= groupItem.Count();
+                                _loger.Log(resultMessage);
                             }
                         }
                     }
@@ -96,12 +105,14 @@ namespace WV_newDataProcessor
             {
                 _loger.Log("Export GP messages error");
                 _loger.Log(ex);
+                Report.OperationInfo = ex.Message;
+                Report.Status = -1;
             }
 
-            return report;
+            Report.FailureItems = failureItems.ToArray();
         }
 
-       
+
 
         private void CheckLastUpdateCorrectData(XElement lastUpdateElement)
         {

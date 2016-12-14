@@ -9,12 +9,14 @@ using Ix4Models.SettingsDataModel;
 using Ix4Connector;
 using SimplestLogger;
 using Ix4Models;
+using Ix4Models.Reports;
 
 namespace WV_newDataProcessor
 {
    // [ExportDataProcessor("ilyatest1111")]
     public class WV_DataProcessor //: IDataProcessor
     {
+        public event EventHandler<DataReportEventArgs> OperationReportEvent;
         CustomerInfo CustomerSettings;
         public WV_DataProcessor()
         {
@@ -43,14 +45,15 @@ namespace WV_newDataProcessor
 
             GSdataExporter gsDataExporter = (GSdataExporter)exportDataBuilder.GetDataExporter("GS");
             gsDataExporter.ReportEvent += OnProcessReportResult;
-            gsDataExporter.NextExportOperation = new OnCompleteNextOperation(caDataExporter.ExportData);
+            gsDataExporter.NextExportOperation = new Action(caDataExporter.ExportData);
             gsDataExporter.SettingAllowToStart = AllowToExportData(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GS")));
 
             GPdataExporter gpDataExporter = (GPdataExporter)exportDataBuilder.GetDataExporter("GP");
             gpDataExporter.ReportEvent += OnProcessReportResult;
-            gpDataExporter.NextExportOperation = new OnCompleteNextOperation(gsDataExporter.ExportData);
+            gpDataExporter.NextExportOperation = new Action(gsDataExporter.ExportData);
             gpDataExporter.SettingAllowToStart = AllowToExportData(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GP")));
             gpDataExporter.ExportData();
+            _updateTimeWatcher.SaveLastUpdateValues();
 
         }
 
@@ -64,6 +67,11 @@ namespace WV_newDataProcessor
         private void OnProcessReportResult(object sender, DataReportEventArgs e)
         {
             _loger.Log(e.Report.ToString());
+            _updateTimeWatcher.SetLastUpdateTimeProperty(e.Report.ExportTypeName);
+            if(OperationReportEvent!=null)
+            {
+                OperationReportEvent(sender, e);
+            }
         }
 
         public void ImportData()

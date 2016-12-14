@@ -43,8 +43,6 @@
   <ItemGroup>
     <Compile Include="ExportData\CAdataExporter.cs" />
     <Compile Include="ExportData\DataExporter.cs" />
-    <Compile Include="Reports\DataReport.cs" />
-    <Compile Include="Reports\DataReportEventArgs.cs" />
     <Compile Include="DataTableMapper.cs" />
     <Compile Include="ExportDataBuilder.cs" />
     <Compile Include="ExportData\GPdataExporter.cs" />

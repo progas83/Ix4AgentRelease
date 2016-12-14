@@ -73,6 +73,8 @@
       <DependentUpon>LastUpdate.settings</DependentUpon>
     </Compile>
     <Compile Include="MappedItem.cs" />
+    <Compile Include="Reports\DataReportEventArgs.cs" />
+    <Compile Include="Reports\ExportDataReport.cs" />
     <Compile Include="Schema\LICSRequest.cs">
       <DependentUpon>LICSRequest.xsd</DependentUpon>
     </Compile>

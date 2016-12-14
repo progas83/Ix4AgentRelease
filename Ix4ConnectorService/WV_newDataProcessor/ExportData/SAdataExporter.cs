@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using Ix4Connector;
 using Ix4Models;
 using System.Globalization;
+using Ix4Models.Reports;
 
 namespace WV_newDataProcessor
 {
@@ -18,18 +19,20 @@ namespace WV_newDataProcessor
             _storageCollaborator = storageCollaborator;
         }
 
-        protected override DataReport ProcessExportedData(XDocument exportedDataDocument)
+        protected override void ProcessExportedData(XDocument exportedDataDocument)
         {
-            DataReport report = new DataReport(string.Format("Export {0} items", ExportDataName));
+            //  DataReport report = new DataReport(ExportDataName));
+            Report = new ExportDataReport(ExportDataName);
+            List<FailureItem> failureItems = new List<FailureItem>();
             try
             {
                 if (exportedDataDocument != null)
                 {
                     int messagesCount = exportedDataDocument.Descendants("MSG").Count();
+                    Report.CountOfImportedItems = messagesCount;
+                    _loger.Log(string.Format("Have got {0} of {1} items", messagesCount, ExportDataName));
                     if (messagesCount > 0)
                     {
-                        _loger.Log(string.Format("Have got {0} of {1} items", messagesCount, ExportDataName));
-
                         IEnumerable<XElement> elementsWIthErrors = exportedDataDocument.Descendants("MSG").Where(x => x.Element("MSGPos_ItemNo") == null || x.Element("MSGPos_ItemNo").Value == null);
                         elementsWIthErrors.Remove();
                         exportedDataDocument.Save(FileFullName);
@@ -51,13 +54,13 @@ namespace WV_newDataProcessor
                             }
                             IEnumerable<XElement> msgHeaderElement = groupItem.FirstOrDefault().Descendants().Where(x => x.Name.LocalName.StartsWith("MSGHeader")).ToList();
 
-                            OperationResult saveMsgHeaderResult = new OperationResult(string.Format("Save SA MsgHeader"));
+                            // OperationResult saveMsgHeaderResult = new OperationResult(string.Format("Save SA MsgHeader"));
                             int recordHeaderNumber = _storageCollaborator.SaveData(msgHeaderElement, "MsgHeader");
 
                             if (recordHeaderNumber > 0)
                             {
-                                saveMsgHeaderResult.ItemOperationSuccess = true;
-                                report.Operations.Add(saveMsgHeaderResult);
+                                //  saveMsgHeaderResult.ItemOperationSuccess = true;
+                                //  report.Operations.Add(saveMsgHeaderResult);
 
                                 foreach (var posItem in groupItem)
                                 {
@@ -82,28 +85,36 @@ namespace WV_newDataProcessor
                                         resAmountElement.Value = Convert.ToInt32(d).ToString();
                                     }
 
-                                    OperationResult saveMsgPos = new OperationResult(string.Format("Save SA message MsgPos item {0} ", posItem.Element("MSGPos_ItemNo").Value));
+                                    // OperationResult saveMsgPos = new OperationResult(string.Format("Save SA message MsgPos item {0} ", posItem.Element("MSGPos_ItemNo").Value));
 
                                     if (_storageCollaborator.SaveData(msgPosElemens, "MsgPos") > 0)
                                     {
                                         posItem.Remove();
                                         exportedDataDocument.Save(FileFullName);
-                                        saveMsgPos.ItemOperationSuccess = true;
+                                        Report.SuccessfullHandledItems++;
                                         _loger.Log(string.Format("SA Msg POS element with MSGPos_ItemNo = {0} succesfully saved", posItem.Element("MSGPos_ItemNo").Value ?? "Unknown value"));
                                     }
                                     else
                                     {
-                                        saveMsgPos.ItemOperationSuccess = false;
-                                        saveMsgPos.ItemContent = msgPosElemens.GetContent();
+                                        FailureItem fi = new FailureItem();
+                                        string resultMessage = string.Format("Can't save MsgPos. MSGPos_ItemNo = {0}. MSGPos_Storageplace = {1}", posItem.Element("MSGPos_ItemNo").Value ?? "Unknown value", posItem.Element("MSGPos_ItemNo").Value ?? "MSGPos_Storageplace");
+                                        Report.FailureHandledItems++;
+                                        fi.ExceptionMessage = resultMessage;
+                                        fi.ItemContent = posItem.ToString();
+                                        failureItems.Add(fi);
+                                        _loger.Log(resultMessage);
                                     }
-                                    report.Operations.Add(saveMsgPos);
                                 }
                             }
                             else
                             {
-                                saveMsgHeaderResult.ItemOperationSuccess = false;
-                                saveMsgHeaderResult.ItemContent = msgHeaderElement.GetContent();
-                                report.Operations.Add(saveMsgHeaderResult);
+                                string resultMessage = string.Format("Can't save MsgHeader.MSGHeaderCreated = {0}, MSGPosItemNo = {1} ", groupItem.Key.MSGHeaderCreated, groupItem.Key.MSGPosItemNo);
+                                FailureItem fi = new FailureItem();
+                                fi.ExceptionMessage = resultMessage;
+                                fi.ItemContent = groupItem.ToString();
+                                failureItems.Add(fi);
+                                Report.FailureHandledItems += groupItem.Count();
+                                _loger.Log(resultMessage);
                             }
                         }
                     }
@@ -113,9 +124,10 @@ namespace WV_newDataProcessor
             {
                 _loger.Log("Export SA messages error");
                 _loger.Log(ex);
+                Report.OperationInfo = ex.Message;
+                Report.Status = -1;
             }
-
-            return report;
+            Report.FailureItems = failureItems.ToArray();
         }
     }
 }

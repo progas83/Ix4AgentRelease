@@ -1,18 +1,19 @@
-﻿using System;
+﻿using Ix4Models.Reports;
+using System;
 
-namespace WV_newDataProcessor
+namespace Ix4Models.Reports
 {
     public class DataReportEventArgs : EventArgs
     {
-        private DataReport _dataReport;
+        private ExportDataReport _dataReport;
 
-        public DataReport Report
+        public ExportDataReport Report
         {
             get { return _dataReport; }
            private set { _dataReport = value; }
         }
 
-        public DataReportEventArgs(DataReport report)
+        public DataReportEventArgs(ExportDataReport report)
         {
             Report = report;
         }

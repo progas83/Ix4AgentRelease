@@ -12,6 +12,7 @@ using Ix4Models.Interfaces;
 using System.Reflection;
 using System.ComponentModel.Composition.Hosting;
 using SinplestLogger.Mailer;
+using Ix4Models.Reports;
 
 namespace ConnectorWorkflowManager
 {
@@ -32,6 +33,12 @@ namespace ConnectorWorkflowManager
             _customerSettings = XmlConfigurationManager.Instance.GetCustomerInformation();
             _currentDataProcessor = GetDataProcessor(_customerSettings.UserName + _customerSettings.ClientID); //("ilyatest1111");// 
             _currentDataProcessor.LoadSettings(_customerSettings);
+            _currentDataProcessor.OperationReportEvent += OnOperationReportEvent;
+        }
+
+        private void OnOperationReportEvent(object sender, DataReportEventArgs e)
+        {
+            e.Report.ClientID = _customerSettings.ClientID;
         }
 
         public static WorkflowManager Instance

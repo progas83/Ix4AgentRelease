@@ -1,4 +1,5 @@
 ﻿using Ix4Connector;
+using Ix4Models.Reports;
 using SimplestLogger;
 using System;
 using System.IO;
@@ -8,7 +9,7 @@ using System.Xml.Linq;
 
 namespace WV_newDataProcessor
 {
-    public delegate void OnCompleteNextOperation();
+    //public delegate void OnCompleteNextOperation();
     public abstract class DataExporter
     {
         private static readonly string _archiveFolder = string.Format("{0}\\{1}", System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "ArchiveData");
@@ -16,20 +17,21 @@ namespace WV_newDataProcessor
         protected string FileFullName { get { return string.Format("{0}\\{1}.xml", _archiveFolder, ExportDataName); } }
         private IProxyIx4WebService Ix4InterfaceService;
         public event EventHandler<DataReportEventArgs> ReportEvent;
-        protected abstract DataReport ProcessExportedData(XDocument exportedData);
+        protected abstract void ProcessExportedData(XDocument exportedData);
 
         public bool SettingAllowToStart { get; set; }
 
         protected string ExportDataName
         { get; private set; }
 
-        public OnCompleteNextOperation NextExportOperation { get; set; }
+        public Action NextExportOperation { get; set; }
 
         public DataExporter(IProxyIx4WebService ix4InterfaceService, string exportDataName)
         {
             ExportDataName = exportDataName;
             Ix4InterfaceService = ix4InterfaceService;
             CheckArchiveFolder();
+            
         }
         private void CheckArchiveFolder()
         {
@@ -38,8 +40,8 @@ namespace WV_newDataProcessor
                 Directory.CreateDirectory(_archiveFolder);
             }
         }
-        
-    protected void ShippingTypeElementConvert(XElement shipingTypeElement)
+        protected ExportDataReport Report { get; set; }
+        protected void ShippingTypeElementConvert(XElement shipingTypeElement)
         {
             try
             {
@@ -114,41 +116,44 @@ namespace WV_newDataProcessor
         }
         public void ExportData()
         {
-            DataReport report = new DataReport(string.Format("Start exporting {0} messages", ExportDataName));
-            if(SettingAllowToStart)
+            //ExportDataReport report = new ExportDataReport(ExportDataName);
+            if (SettingAllowToStart)
             {
                 if (HasStoredData())
                 {
                     XDocument docc = XDocument.Load(FileFullName);
-                    report = ProcessExportedData(docc);
-                    OnOperationComplete(new DataReportEventArgs(report));
+                    ProcessExportedData(docc);
+                    SendReportOmOperationComlete();
                 }
-                report = ProcessExportedData(GetStoredExportedData());
+                ProcessExportedData(GetStoredExportedData());
             }
-            OnOperationComplete(new DataReportEventArgs(report));
-            AfterExportDataOperationComplete(report);
+            SendReportOmOperationComlete();
+            AfterExportDataOperationComplete();
         }
 
-        protected virtual void AfterExportDataOperationComplete(DataReport report)
+        protected virtual void AfterExportDataOperationComplete()
         {
             if (NextExportOperation == null)
                 return;
-            if(!report.HasErrors && report.Operations.Count>0)
+            if (Report.Status>=0 && Report.FailureHandledItems==0 && Report.SuccessfullHandledItems>0)
             {
                 NextExportOperation();
             }
         }
 
-        protected virtual void OnOperationComplete(DataReportEventArgs e)
+        protected virtual void SendReportOmOperationComlete()
         {
-            EventHandler<DataReportEventArgs> reportEvent = ReportEvent;
-            if (reportEvent != null)
+            if(Report!=null)
             {
-                reportEvent(this, e);
+                EventHandler<DataReportEventArgs> reportEvent = ReportEvent;
+                if (reportEvent != null)
+                {
+                    reportEvent(this, new DataReportEventArgs(Report));
+                }
             }
         }
 
-       
+
 
         private bool HasStoredData()
         {
@@ -156,7 +161,7 @@ namespace WV_newDataProcessor
             if (System.IO.File.Exists(FileFullName))
             {
                 XDocument doc = XDocument.Load(FileFullName);
-                
+
                 if (doc.Descendants("MSG").Count() > 0)
                 {
                     result = true;
@@ -172,11 +177,11 @@ namespace WV_newDataProcessor
         private XDocument GetStoredExportedData()
         {
             XDocument doc = new XDocument();
-            if (!HasStoredData() )
+            if (!HasStoredData())
             {
                 try
                 {
-                    XmlNode invdbData = Ix4InterfaceService.ExportData(ExportDataName, null);
+                    XmlNode invdbData = null;// Ix4InterfaceService.ExportData(ExportDataName, null);
                     if (SaveExportedDataToFile(invdbData))
                     {
                         doc = XDocument.Load(FileFullName);
@@ -186,7 +191,7 @@ namespace WV_newDataProcessor
                 {
                     _loger.Log(ex);
                 }
-                
+
             }
             return doc;
         }

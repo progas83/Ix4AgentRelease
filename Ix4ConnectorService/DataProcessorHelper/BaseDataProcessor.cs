@@ -2,6 +2,7 @@
 using Ix4Connector;
 using Ix4Models;
 using Ix4Models.DataProviders.MsSqlDataProvider;
+using Ix4Models.Reports;
 using Ix4Models.SettingsDataModel;
 using SimplestLogger;
 using System;
@@ -17,6 +18,7 @@ namespace DataProcessorHelper
 {
     public abstract class BaseDataProcessor
     {
+        public event EventHandler<DataReportEventArgs> OperationReportEvent;
         private CustomerInfo _customerSettings;
         protected IProxyIx4WebService _ix4WebServiceConnector;
         protected UpdateTimeWatcher _updateTimeWatcher;
@@ -49,7 +51,16 @@ namespace DataProcessorHelper
 
             _wv_dataProcessor = new WV_DataProcessor();
             _wv_dataProcessor.LoadSettings(customerSettings);
+            _wv_dataProcessor.OperationReportEvent += _wv_dataProcessor_OperationReportEvent;
 
+        }
+
+        private void _wv_dataProcessor_OperationReportEvent(object sender, DataReportEventArgs e)
+        {
+            if (OperationReportEvent != null)
+            {
+                OperationReportEvent(sender, e);
+            }
         }
 
         protected abstract void CheckArticles();
