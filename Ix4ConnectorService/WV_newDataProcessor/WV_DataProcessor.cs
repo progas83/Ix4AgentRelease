@@ -29,15 +29,17 @@ namespace WV_newDataProcessor
            
             ExportDataBuilder exportDataBuilder = new ExportDataBuilder(CustomerSettings.ExportDataSettings, _ix4WebServiceConnector);
 
-            INVDBdataExporter invDbExporter = (INVDBdataExporter)exportDataBuilder.GetDataExporter("INVDB");
+            DataExporter invDbExporter = exportDataBuilder.GetDataExporter("INVDB");
             invDbExporter.ReportEvent += OnProcessReportResult;
             invDbExporter.SettingAllowToStart = AllowToExportData(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("INVDB")));
             invDbExporter.ExportData();
+            invDbExporter.ReportEvent -= OnProcessReportResult;
 
             SAdataExporter saDataExporter = (SAdataExporter)exportDataBuilder.GetDataExporter("SA");
             saDataExporter.ReportEvent += OnProcessReportResult;
             saDataExporter.SettingAllowToStart = AllowToExportData(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("SA")));
             saDataExporter.ExportData();
+            saDataExporter.ReportEvent -= OnProcessReportResult;
 
             CAdataExporter caDataExporter = (CAdataExporter)exportDataBuilder.GetDataExporter("CA");
             caDataExporter.ReportEvent += OnProcessReportResult;
@@ -54,6 +56,10 @@ namespace WV_newDataProcessor
             gpDataExporter.SettingAllowToStart = AllowToExportData(CustomerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GP")));
             gpDataExporter.ExportData();
             _updateTimeWatcher.SaveLastUpdateValues();
+
+            caDataExporter.ReportEvent -= OnProcessReportResult;
+            gsDataExporter.ReportEvent -= OnProcessReportResult;
+            gpDataExporter.ReportEvent -= OnProcessReportResult;
 
         }
 

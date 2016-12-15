@@ -39,6 +39,7 @@ namespace ConnectorWorkflowManager
         private void OnOperationReportEvent(object sender, DataReportEventArgs e)
         {
             e.Report.ClientID = _customerSettings.ClientID;
+            _loger.Log(string.Format("Export {0} messages has been completed", e.Report.ExportTypeName));
         }
 
         public static WorkflowManager Instance

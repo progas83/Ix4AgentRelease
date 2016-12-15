@@ -110,9 +110,36 @@ namespace WV_newDataProcessor
                     streamWriter.Close();
                     streamWriter.Dispose();
                 }
+                MakeReserveCopyFile(exportedData);
                 result = true;
             }
             return result;
+        }
+
+        private void MakeReserveCopyFile(XmlNode exportedData)
+        {
+            try
+            {
+                string dataFileName = string.Empty;
+                int attemptLookForFile = 0;
+                do
+                {
+                    attemptLookForFile++;
+                    dataFileName = string.Format("{0}{1}",FileFullName, attemptLookForFile);
+                }
+                while (File.Exists(dataFileName));
+                var streamWriter = new StreamWriter(new FileStream(dataFileName, FileMode.Create));
+                streamWriter.Write(exportedData.OuterXml);
+                streamWriter.Flush();
+                streamWriter.Close();
+                streamWriter.Dispose();
+            }
+            catch(Exception ex)
+            {
+                _loger.Log("Exception in MakeReserveCopyFile");
+                _loger.Log(ex);
+            }
+            
         }
         public void ExportData()
         {
@@ -123,12 +150,13 @@ namespace WV_newDataProcessor
                 {
                     XDocument docc = XDocument.Load(FileFullName);
                     ProcessExportedData(docc);
-                    SendReportOmOperationComlete();
+                    SendReportOnOperationComlete();
                 }
                 ProcessExportedData(GetStoredExportedData());
+                SendReportOnOperationComlete();
+                AfterExportDataOperationComplete();
             }
-            SendReportOmOperationComlete();
-            AfterExportDataOperationComplete();
+            
         }
 
         protected virtual void AfterExportDataOperationComplete()
@@ -141,10 +169,11 @@ namespace WV_newDataProcessor
             }
         }
 
-        protected virtual void SendReportOmOperationComlete()
+        protected virtual void SendReportOnOperationComlete()
         {
             if(Report!=null)
             {
+                Report.LastUpdate = DateTime.Now;
                 EventHandler<DataReportEventArgs> reportEvent = ReportEvent;
                 if (reportEvent != null)
                 {
