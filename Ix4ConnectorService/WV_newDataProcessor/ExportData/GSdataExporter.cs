@@ -75,10 +75,7 @@ namespace WV_newDataProcessor
                                 HeaderID.Value = existedheaderID.ToString();
                                 foreach (var msgPosItem in groupItem)
                                 {
-                                    if (msgPosItem.Element("MSGPos_ShippingType") != null && !string.IsNullOrEmpty(msgPosItem.Element("MSGPos_ShippingType").Value))
-                                    {
-                                        ShippingTypeElementConvert(msgPosItem.Element("MSGPos_ShippingType"));
-                                    }
+                                    ShippingTypeElementConvert(msgPosItem.Element("MSGPos_ShippingType"));
 
                                     //  OperationResult savePosOperation = new OperationResult(string.Format("Save MsgPos with HeaderID = {0} ", existedheaderID));
                                     msgPosItem.Add(HeaderID);

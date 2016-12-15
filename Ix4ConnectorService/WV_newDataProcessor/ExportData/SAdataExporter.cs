@@ -48,10 +48,10 @@ namespace WV_newDataProcessor
 
                         foreach (var groupItem in groups)
                         {
-                            if (groupItem.Descendants().FirstOrDefault(elem => elem.Name.LocalName.Equals("MSGPos_ItemNo")).Value == null)
-                            {
-                                continue;
-                            }
+                            //if (groupItem.Descendants().FirstOrDefault(elem => elem.Name.LocalName.Equals("MSGPos_ItemNo")).Value == null)
+                            //{
+                            //    continue;
+                            //}
                             IEnumerable<XElement> msgHeaderElement = groupItem.FirstOrDefault().Descendants().Where(x => x.Name.LocalName.StartsWith("MSGHeader")).ToList();
 
                             // OperationResult saveMsgHeaderResult = new OperationResult(string.Format("Save SA MsgHeader"));

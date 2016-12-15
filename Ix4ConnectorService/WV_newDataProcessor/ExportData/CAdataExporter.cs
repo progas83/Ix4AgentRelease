@@ -34,10 +34,8 @@ namespace WV_newDataProcessor
                     {
                         foreach (var message in caMessages)
                         {
-                            if (message.Element("MSGPos_ShippingType") != null && !string.IsNullOrEmpty(message.Element("MSGPos_ShippingType").Value))
-                            {
-                                ShippingTypeElementConvert(message.Element("MSGPos_ShippingType"));
-                            }
+                            ShippingTypeElementConvert(message.Element("MSGPos_ShippingType"));
+                           
 
                             int recordHeaderNumber = _storageCollaborator.SaveData(message.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGHeader")).ToList(), "MsgHeader");
                             //   OperationResult saveMsgHeaderResult = new OperationResult(string.Format("Save CA MsgHeader record no {0}",recordHeaderNumber));

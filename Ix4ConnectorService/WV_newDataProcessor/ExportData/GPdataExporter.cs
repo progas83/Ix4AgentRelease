@@ -49,10 +49,7 @@ namespace WV_newDataProcessor
                                 CheckLastUpdateCorrectData(message.Element("MSGHeader_LastUpdate"));
                             }
 
-                            if (message.Element("MSGPos_ShippingType") != null && !string.IsNullOrEmpty(message.Element("MSGPos_ShippingType").Value))
-                            {
-                                ShippingTypeElementConvert(message.Element("MSGPos_ShippingType"));
-                            }
+                            ShippingTypeElementConvert(message.Element("MSGPos_ShippingType"));
                             //  OperationResult saveMsgHeaderResult = new OperationResult(string.Format("Save GP MsgHeader"));
                             int recordHeaderNumber = _storageCollaborator.SaveData(message.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGHeader")).ToList(), "MsgHeader");
                             if (recordHeaderNumber > 0)

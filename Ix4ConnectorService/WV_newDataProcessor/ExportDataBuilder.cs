@@ -11,11 +11,12 @@ namespace WV_newDataProcessor
 {
     public class ExportDataBuilder
     {
-        private static string _dbInventurdatenConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Initial Catalog = Inventurdaten; Integrated Security=SSPI";
-        private static string _dbInterfaceDilosLMSConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Initial Catalog = InterfaceDilosLMS; Integrated Security=SSPI";
+        //private static string _dbInventurdatenConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Initial Catalog = Inventurdaten; Integrated Security=SSPI";
+       // private static string _dbInterfaceDilosLMSConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Initial Catalog = InterfaceDilosLMS; Integrated Security=SSPI";
 
-      //  private string _dbInterfaceDilosLMSConnection = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=InterfaceDilosLMS; User ID=sa;Password=sa";
-       // private string _dbInventurdatenConnection = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=Inventurdaten; User ID=sa;Password=sa";
+        private string _dbInventurdatenConnection = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=Inventurdaten_schuon; User ID=sa;Password=sa";
+        private string _dbInterfaceDilosLMSConnection = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=InterfaceDilosLMS; User ID=sa;Password=sa";
+        
 
         private static Logger _loger = Logger.GetLogger();
         private ExportDataSettings _exportDataSettings;

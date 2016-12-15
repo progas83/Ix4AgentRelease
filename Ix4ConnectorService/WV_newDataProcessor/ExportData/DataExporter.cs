@@ -43,7 +43,7 @@ namespace WV_newDataProcessor
         protected ExportDataReport Report { get; set; }
         protected void ShippingTypeElementConvert(XElement shipingTypeElement)
         {
-            try
+            if (shipingTypeElement != null )
             {
                 int mSGPos_ShippingTypeField = Convert.ToInt32(shipingTypeElement.Value);
 
@@ -74,11 +74,6 @@ namespace WV_newDataProcessor
                 }
                 shipingTypeElement.Value = resultShippingType.ToString();
             }
-            catch (Exception ex)
-            {
-                _loger.Log(ex);
-            }
-
         }
         private bool SaveExportedDataToFile(XmlNode exportedData)
         {
@@ -210,7 +205,7 @@ namespace WV_newDataProcessor
             {
                 try
                 {
-                    XmlNode invdbData = null;// Ix4InterfaceService.ExportData(ExportDataName, null);
+                    XmlNode invdbData = Ix4InterfaceService.ExportData(ExportDataName, null);
                     if (SaveExportedDataToFile(invdbData))
                     {
                         doc = XDocument.Load(FileFullName);
