@@ -22,7 +22,7 @@ namespace ConnectorWorkflowManager
         private CustomerInfo _customerSettings;
         protected Timer _timer;
         private static object _padlock = new object();
-        private static readonly long RElapsedEvery = 2 * 1 * 1000;
+        private static readonly long RElapsedEvery = 60 * 1 * 1000;
 
 
         private static Logger _loger = Logger.GetLogger();
