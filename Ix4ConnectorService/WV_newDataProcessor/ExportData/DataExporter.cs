@@ -205,7 +205,7 @@ namespace WV_newDataProcessor
             {
                 try
                 {
-                    XmlNode invdbData = Ix4InterfaceService.ExportData(ExportDataName, null);
+                    XmlNode invdbData = null;// Ix4InterfaceService.ExportData(ExportDataName, null);
                     if (SaveExportedDataToFile(invdbData))
                     {
                         doc = XDocument.Load(FileFullName);

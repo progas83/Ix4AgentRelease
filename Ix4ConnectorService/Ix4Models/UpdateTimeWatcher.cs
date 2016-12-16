@@ -26,9 +26,9 @@ namespace Ix4Models
                 _deliveriesLastUpdate = Properties.LastUpdate.Default.Deliveries;
             if (_exportDataListUpdateInfo == null)
             {
-                if (Properties.LastUpdate.Default.ExportData != null)
+                if (Properties.LastUpdate.Default.INVDB != null)
                 {
-                    _exportDataListUpdateInfo = Properties.LastUpdate.Default.ExportData;
+                    _exportDataListUpdateInfo = Properties.LastUpdate.Default.INVDB;
                 }
                 else
                 {
@@ -45,7 +45,7 @@ namespace Ix4Models
             Properties.LastUpdate.Default.Articles = _articlesLastUpdate;
             Properties.LastUpdate.Default.Orders = _ordersLastUpdate;
             Properties.LastUpdate.Default.Deliveries = _deliveriesLastUpdate;
-            Properties.LastUpdate.Default.ExportData = _exportDataListUpdateInfo;
+            Properties.LastUpdate.Default.INVDB = _exportDataListUpdateInfo;
             Properties.LastUpdate.Default.Save();
         }
         private static long _articlesLastUpdate;// = 0;

@@ -8,11 +8,23 @@
     <Setting Name="Deliveries" Type="System.Int64" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
-    <Setting Name="ExportData" Type="System.String" Scope="User">
+    <Setting Name="INVDB" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Articles" Type="System.Int64" Scope="User">
       <Value Profile="(Default)">1481621222</Value>
+    </Setting>
+    <Setting Name="GP" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="GS" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="CA" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SA" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>
