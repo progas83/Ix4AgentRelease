@@ -49,10 +49,10 @@ namespace Ix4Models.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string INVDB {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long INVDB {
             get {
-                return ((string)(this["INVDB"]));
+                return ((long)(this["INVDB"]));
             }
             set {
                 this["INVDB"] = value;
@@ -73,10 +73,10 @@ namespace Ix4Models.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string GP {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long GP {
             get {
-                return ((string)(this["GP"]));
+                return ((long)(this["GP"]));
             }
             set {
                 this["GP"] = value;
@@ -85,10 +85,10 @@ namespace Ix4Models.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string GS {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long GS {
             get {
-                return ((string)(this["GS"]));
+                return ((long)(this["GS"]));
             }
             set {
                 this["GS"] = value;
@@ -97,10 +97,10 @@ namespace Ix4Models.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string CA {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long CA {
             get {
-                return ((string)(this["CA"]));
+                return ((long)(this["CA"]));
             }
             set {
                 this["CA"] = value;
@@ -109,10 +109,10 @@ namespace Ix4Models.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SA {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long SA {
             get {
-                return ((string)(this["SA"]));
+                return ((long)(this["SA"]));
             }
             set {
                 this["SA"] = value;
