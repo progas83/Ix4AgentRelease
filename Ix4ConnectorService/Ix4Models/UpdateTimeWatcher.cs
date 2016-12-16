@@ -51,6 +51,11 @@ namespace Ix4Models
         private static long _articlesLastUpdate;// = 0;
         private static long _ordersLastUpdate;
         private static long _deliveriesLastUpdate;
+        private static long _saLastUpdate;
+        private static long _invdbLastUpdate;
+        private static long _gpLastUpdate;
+        private static long _gsLastUpdate;
+        private static long _caLastUpdate;
         private static Ix4Models.EDLastUpdate _exportDataListUpdateInfo;
 
 
