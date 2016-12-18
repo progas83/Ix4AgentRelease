@@ -49,13 +49,13 @@ namespace Ix4Models.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public Ix4Models.EDLastUpdate ExportData {
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long INVDB {
             get {
-                return ((Ix4Models.EDLastUpdate)(this["ExportData"]));
+                return ((long)(this["INVDB"]));
             }
             set {
-                this["ExportData"] = value;
+                this["INVDB"] = value;
             }
         }
         
@@ -68,6 +68,54 @@ namespace Ix4Models.Properties {
             }
             set {
                 this["Articles"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long GP {
+            get {
+                return ((long)(this["GP"]));
+            }
+            set {
+                this["GP"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long GS {
+            get {
+                return ((long)(this["GS"]));
+            }
+            set {
+                this["GS"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long CA {
+            get {
+                return ((long)(this["CA"]));
+            }
+            set {
+                this["CA"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long SA {
+            get {
+                return ((long)(this["SA"]));
+            }
+            set {
+                this["SA"] = value;
             }
         }
     }

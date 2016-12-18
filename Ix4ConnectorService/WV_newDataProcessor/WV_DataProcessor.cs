@@ -65,9 +65,10 @@ namespace WV_newDataProcessor
 
         private bool AllowToExportData(ExportDataItemSettings exportDataItemSettings)
         {
+            bool timeToCkeck = _updateTimeWatcher.TimeToCheck(exportDataItemSettings.ExportDataTypeName);
             return exportDataItemSettings != null
                 && exportDataItemSettings.IsActive
-                && exportDataItemSettings.IsNowWorkingTime;
+                && exportDataItemSettings.IsNowWorkingTime && timeToCkeck;
         }
 
         private void OnProcessReportResult(object sender, DataReportEventArgs e)
