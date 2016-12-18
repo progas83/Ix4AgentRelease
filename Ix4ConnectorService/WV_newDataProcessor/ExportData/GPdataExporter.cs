@@ -50,6 +50,11 @@ namespace WV_newDataProcessor
                             }
 
                             ShippingTypeElementConvert(message.Element("MSGPos_ShippingType"));
+
+                            //XElement amountElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_Amount"));
+                            ConvertElementValueDoubleToInt(message.Element("MSGPos_Amount"));
+
+                            ConvertElementValueDoubleToInt(message.Element("MSGPos_ResAmount"));
                             //  OperationResult saveMsgHeaderResult = new OperationResult(string.Format("Save GP MsgHeader"));
                             int recordHeaderNumber = _storageCollaborator.SaveData(message.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGHeader")).ToList(), "MsgHeader");
                             if (recordHeaderNumber > 0)
@@ -61,6 +66,7 @@ namespace WV_newDataProcessor
                                 XElement headerIdElement = new XElement("MSGPos_HeaderID");
                                 headerIdElement.Value = recordHeaderNumber.ToString();
                                 message.Add(headerIdElement);
+                                exportedDataDocument.Save(FileFullName);
 
                                 List<XElement> msgPosElemens = message.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos")).ToList<XElement>();
                                 if (_storageCollaborator.SaveData(msgPosElemens, "MsgPos") > 0)

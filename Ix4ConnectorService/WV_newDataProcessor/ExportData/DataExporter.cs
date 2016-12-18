@@ -2,6 +2,7 @@
 using Ix4Models.Reports;
 using SimplestLogger;
 using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -41,6 +42,16 @@ namespace WV_newDataProcessor
             }
         }
         protected ExportDataReport Report { get; set; }
+
+        protected void ConvertElementValueDoubleToInt(XElement element)
+        {
+            if (element != null)
+            {
+                double d = Double.Parse(element.Value, CultureInfo.InvariantCulture);
+                element.Value = Convert.ToInt32(d).ToString();
+            }
+        }
+
         protected void ShippingTypeElementConvert(XElement shipingTypeElement)
         {
             if (shipingTypeElement != null )

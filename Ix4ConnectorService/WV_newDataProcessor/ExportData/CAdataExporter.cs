@@ -44,10 +44,13 @@ namespace WV_newDataProcessor
                                 //  saveMsgHeaderResult.ItemOperationSuccess = true;
                                 //   report.Operations.Add(saveMsgHeaderResult);
                                 //   OperationResult saveMsgPosResult = new OperationResult(string.Format("Save CA MsgPos WakopfID ={0} ", message.Element("MSGPos_WAKopfID")!=null ? message.Element("MSGPos_WAKopfID").Value : 0.ToString()));
+                                ConvertElementValueDoubleToInt(message.Element("MSGPos_Amount"));
 
+                                ConvertElementValueDoubleToInt(message.Element("MSGPos_ResAmount"));
                                 XElement headerIdElement = new XElement("MSGPos_HeaderID");
                                 headerIdElement.Value = recordHeaderNumber.ToString();
                                 message.Add(headerIdElement);
+                                exportedDataDocument.Save(FileFullName);
 
                                 List<XElement> msgPosElemens = message.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos")).ToList<XElement>();
                                 if (_storageCollaborator.SaveData(msgPosElemens, "MsgPos") > 0)

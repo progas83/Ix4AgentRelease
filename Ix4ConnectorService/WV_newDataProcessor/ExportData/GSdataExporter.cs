@@ -76,9 +76,12 @@ namespace WV_newDataProcessor
                                 foreach (var msgPosItem in groupItem)
                                 {
                                     ShippingTypeElementConvert(msgPosItem.Element("MSGPos_ShippingType"));
+                                    ConvertElementValueDoubleToInt(msgPosItem.Element("MSGPos_Amount"));
 
+                                    ConvertElementValueDoubleToInt(msgPosItem.Element("MSGPos_ResAmount"));
                                     //  OperationResult savePosOperation = new OperationResult(string.Format("Save MsgPos with HeaderID = {0} ", existedheaderID));
                                     msgPosItem.Add(HeaderID);
+                                    exportedData.Save(FileFullName);
                                     List<XElement> msgPosElements = msgPosItem.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos")).ToList();
                                     //msgPosItem.Add(HeaderID);
                                     if (_storageCollaborator.SaveData(msgPosElements, "MsgPos") > 0)

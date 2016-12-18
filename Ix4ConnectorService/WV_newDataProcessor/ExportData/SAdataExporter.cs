@@ -72,18 +72,20 @@ namespace WV_newDataProcessor
 
 
                                     XElement amountElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_Amount"));
-                                    if (amountElement.Value != null)
-                                    {
-                                        double d = Double.Parse(amountElement.Value, CultureInfo.InvariantCulture);
-                                        amountElement.Value = Convert.ToInt32(d).ToString();
-                                    }
+                                    ConvertElementValueDoubleToInt(amountElement);
+                                    //if (amountElement.Value != null)
+                                    //{
+                                    //    double d = Double.Parse(amountElement.Value, CultureInfo.InvariantCulture);
+                                    //    amountElement.Value = Convert.ToInt32(d).ToString();
+                                    //}
 
                                     XElement resAmountElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_ResAmount"));
-                                    if (resAmountElement.Value != null)
-                                    {
-                                        double d = Double.Parse(resAmountElement.Value, CultureInfo.InvariantCulture);
-                                        resAmountElement.Value = Convert.ToInt32(d).ToString();
-                                    }
+                                    ConvertElementValueDoubleToInt(amountElement);
+                                    //if (resAmountElement.Value != null)
+                                    //{
+                                    //    double d = Double.Parse(resAmountElement.Value, CultureInfo.InvariantCulture);
+                                    //    resAmountElement.Value = Convert.ToInt32(d).ToString();
+                                    //}
 
                                     // OperationResult saveMsgPos = new OperationResult(string.Format("Save SA message MsgPos item {0} ", posItem.Element("MSGPos_ItemNo").Value));
 
