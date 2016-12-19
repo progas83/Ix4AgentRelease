@@ -53,7 +53,6 @@
     <Compile Include="CustomDataSourceTypes.cs" />
     <Compile Include="DataProviders\MsSqlDataProvider\MsSqlDataProvider.cs" />
     <Compile Include="DataProviders\XmlDataProvider\XmlDataProvider.cs" />
-    <Compile Include="DataSourceInfo.cs" />
     <Compile Include="DbConnectionStringBuilder.cs" />
     <Compile Include="EDLastUpdate.cs" />
     <Compile Include="Enums\MailLogLevel.cs" />
@@ -65,14 +64,12 @@
     <Compile Include="Interfaces\IDataProvider.cs" />
     <Compile Include="Interfaces\INameMetadata.cs" />
     <Compile Include="Interfaces\IPluginSettings.cs" />
-    <Compile Include="Ix4ComplexModel.cs" />
     <Compile Include="Ix4RequestProps.cs" />
     <Compile Include="Properties\LastUpdate.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>LastUpdate.settings</DependentUpon>
     </Compile>
-    <Compile Include="MappedItem.cs" />
     <Compile Include="Reports\DataReportEventArgs.cs" />
     <Compile Include="Reports\ExportDataReport.cs" />
     <Compile Include="Schema\LICSRequest.cs">
