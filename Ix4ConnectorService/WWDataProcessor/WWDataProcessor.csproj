@@ -49,11 +49,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataProcessorHelper\DataProcessorHelper.csproj">
-      <Project>{c270cd3d-165d-4379-a9f7-2cf569a1aca1}</Project>
-      <Name>DataProcessorHelper</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\Ix4Connector\Ix4Connector.csproj">
       <Project>{4D524A01-B026-4EDE-9BC9-28A83C160A34}</Project>
       <Name>Ix4Connector</Name>

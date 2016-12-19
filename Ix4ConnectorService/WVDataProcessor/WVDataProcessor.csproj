@@ -44,17 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArtikelInStoragesInfo.cs" />
-    <Compile Include="DataProcessor.cs" />
     <Compile Include="ExportDataToSQL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoragePlaces.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DataProcessorHelper\DataProcessorHelper.csproj">
-      <Project>{C270CD3D-165D-4379-A9F7-2CF569A1ACA1}</Project>
-      <Name>DataProcessorHelper</Name>
-      <Private>False</Private>
-    </ProjectReference>
     <ProjectReference Include="..\Ix4Connector\Ix4Connector.csproj">
       <Project>{4D524A01-B026-4EDE-9BC9-28A83C160A34}</Project>
       <Name>Ix4Connector</Name>
