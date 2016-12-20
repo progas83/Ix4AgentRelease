@@ -140,7 +140,7 @@ namespace WV_newDataProcessor
             listOfFields.Add(new TableFieldMapInfo("Zaehlliste", "System.Int32", "MSGPos_Zaehlliste"));
             listOfFields.Add(new TableFieldMapInfo("Einheit", "System.String", "MSGPos_Einheit"));
             listOfFields.Add(new TableFieldMapInfo("BearbeitungsNr", "System.Int32", "MSGPos_BearbeitungsNr"));
-            listOfFields.Add(new TableFieldMapInfo("Jahresverbrauch", "System.Double", "MSGPos_Differenz", true));
+            //listOfFields.Add(new TableFieldMapInfo("Jahresverbrauch", "System.Double", "MSGPos_Differenz", true));
             listOfFields.Add(new TableFieldMapInfo("geprueft", "System.String", "MSGPos_geprueft", true));
 
             return new DataTableMapper("Inventurpositionen", listOfFields);

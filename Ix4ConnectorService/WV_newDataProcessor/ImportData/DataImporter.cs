@@ -29,39 +29,15 @@ namespace WV_newDataProcessor.ImportData
             _updateTimeWatcher = updateTimeWatcher;// new UpdateTimeWatcher(CustomerSettings.ImportDataSettings, CustomerSettings.ExportDataSettings);
         }
 
-        //public void ImportData()
-        //{
-        //    if (_importDataSettings.ArticleSettings.IsActivate &&
-        //       _importDataSettings.ArticleSettings.IsNowWorkingTime &&
-        //       _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Articles))
-        //    {
-
-        //        CheckArticles();
-
-        //    }
-
-        //    if (_customerSettings.ImportDataSettings.DeliverySettings.IsActivate &&
-        //        _customerSettings.ImportDataSettings.DeliverySettings.IsNowWorkingTime &&
-        //        _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Deliveries))
-        //    {
-        //        CheckDeliveries();
-
-        //    }
-
-        //    if (_customerSettings.ImportDataSettings.OrderSettings.IsActivate &&
-        //        _customerSettings.ImportDataSettings.OrderSettings.IsNowWorkingTime &&
-        //        _updateTimeWatcher.TimeToCheck(Ix4RequestProps.Orders))
-        //    {
-        //        CheckOrders();
-
-        //    }
-        //    _updateTimeWatcher.SaveLastUpdateValues();
-        //}
+  
 
         private readonly int _articlesPerRequest = 20;
         protected List<LICSRequestArticle> _cachedArticles;
         private static Logger _loger = Logger.GetLogger();
         private static object _o = new object();
+
+        public int ClientID { get; internal set; }
+
         public void ImportArticles()
         {
             ExportDataReport report = new ExportDataReport("Articles");
@@ -69,10 +45,10 @@ namespace WV_newDataProcessor.ImportData
             try
             {
 
-                int currentClientID = CustomerSettings.ClientID;
+             //   int currentClientID = CustomerSettings.ClientID;
 
                 LICSRequest request = new LICSRequest();
-                request.ClientId = currentClientID;
+                request.ClientId = ClientID;
                 List<LICSRequestArticle> articles = _importDataProvider.GetArticles();
                 _cachedArticles = articles;
                 _loger.Log(string.Format("Got ARTICLES {0}", articles != null ? articles.Count : 0));
@@ -88,7 +64,7 @@ namespace WV_newDataProcessor.ImportData
 
                 for (int i = 0; i < articles.Count; i++)
                 {
-                    articles[i].ClientNo = currentClientID;
+                    articles[i].ClientNo = ClientID;
                     tempAtricles.Add(articles[i]);
                     if (tempAtricles.Count >= _articlesPerRequest || i == articles.Count - 1)
                     {
@@ -121,9 +97,9 @@ namespace WV_newDataProcessor.ImportData
             try
             {
 
-                int currentClientID = CustomerSettings.ClientID;
+               // int currentClientID = CustomerSettings.ClientID;
                 LICSRequest request = new LICSRequest();
-                request.ClientId = currentClientID;
+                request.ClientId = ClientID;
                 List<LICSRequestOrder> orders = _importDataProvider.GetOrders();// _msSqlDataProvider.GetOrders(CustomerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as MsSqlDeliveriesSettings);
                 if (!OrdersHasPositions(orders))
                 {
@@ -148,7 +124,7 @@ namespace WV_newDataProcessor.ImportData
                     List<LICSRequestArticle> articlesByOrders = new List<LICSRequestArticle>();
                     foreach (LICSRequestOrder order in orders)
                     {
-                        order.ClientNo = currentClientID;
+                        order.ClientNo = ClientID;
                         foreach (var position in order.Positions)
                         {
                             LICSRequestArticle findArticle = GetArticleByNumber(position.ArticleNo);
@@ -170,7 +146,7 @@ namespace WV_newDataProcessor.ImportData
                 {
                     foreach (LICSRequestOrder order in orders)
                     {
-                        order.ClientNo = currentClientID;
+                        order.ClientNo = ClientID;
                     }
                     request.OrderImport = orders.ToArray<LICSRequestOrder>();
                 }
@@ -191,9 +167,9 @@ namespace WV_newDataProcessor.ImportData
             try
             {
 
-                int currentClientID = CustomerSettings.ClientID;
+               // int currentClientID = CustomerSettings.ClientID;
                 LICSRequest request = new LICSRequest();
-                request.ClientId = currentClientID;
+                request.ClientId = ClientID;
                 List<LICSRequestDelivery> deliveries = _importDataProvider.GetDeliveries();//.GetArticles(); _msSqlDataProvider.GetDeliveries(CustomerSettings.ImportDataSettings.DeliverySettings.DataSourceSettings as MsSqlDeliveriesSettings);
                 if (_importDataSettings.DeliverySettings.IncludeArticlesToRequest)
                 {
@@ -211,7 +187,7 @@ namespace WV_newDataProcessor.ImportData
                     List<LICSRequestArticle> articlesByDelliveries = new List<LICSRequestArticle>();
                     foreach (LICSRequestDelivery delivery in deliveries)
                     {
-                        delivery.ClientNo = currentClientID;
+                        delivery.ClientNo = ClientID;
                         foreach (var position in delivery.Positions)
                         {
                             LICSRequestArticle findArticle = GetArticleByNumber(position.ArticleNo);
@@ -233,7 +209,7 @@ namespace WV_newDataProcessor.ImportData
                 {
                     foreach (LICSRequestDelivery delivery in deliveries)
                     {
-                        delivery.ClientNo = currentClientID;
+                        delivery.ClientNo = ClientID;
                     }
                 }
 

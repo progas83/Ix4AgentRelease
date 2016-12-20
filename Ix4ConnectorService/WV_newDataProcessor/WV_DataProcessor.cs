@@ -20,50 +20,53 @@ namespace WV_newDataProcessor
         public event EventHandler<DataReportEventArgs> OperationReportEvent;
         private CustomerInfo _customerSettings;
         private DataImporter _dataImporter;
-       // private ImportDataSourcesBuilder _importDataProvider;
+        private ExportDataBuilder _exportDataBuilder;
+        private static Logger _loger = Logger.GetLogger();
+        IProxyIx4WebService _ix4WebServiceConnector;
+        UpdateTimeWatcher _updateTimeWatcher;
+        // private ImportDataSourcesBuilder _importDataProvider;
         public WV_DataProcessor()
         {
 
         }
 
-        private static Logger _loger = Logger.GetLogger();
+        
         public void ExportData()
         {
-           
-            ExportDataBuilder exportDataBuilder = new ExportDataBuilder(_customerSettings.ExportDataSettings, _ix4WebServiceConnector);
+            if(_exportDataBuilder!=null)
+            {
+                DataExporter invDbExporter = _exportDataBuilder.GetDataExporter("INVDB");
+                invDbExporter.ReportEvent += OnProcessReportResult;
+                invDbExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("INVDB")));
+                invDbExporter.ExportData();
+                invDbExporter.ReportEvent -= OnProcessReportResult;
 
-            DataExporter invDbExporter = exportDataBuilder.GetDataExporter("INVDB");
-            invDbExporter.ReportEvent += OnProcessReportResult;
-            invDbExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("INVDB")));
-            invDbExporter.ExportData();
-            invDbExporter.ReportEvent -= OnProcessReportResult;
+                DataExporter saDataExporter = _exportDataBuilder.GetDataExporter("SA");
+                saDataExporter.ReportEvent += OnProcessReportResult;
+                saDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("SA")));
+                saDataExporter.ExportData();
+                saDataExporter.ReportEvent -= OnProcessReportResult;
 
-            SAdataExporter saDataExporter = (SAdataExporter)exportDataBuilder.GetDataExporter("SA");
-            saDataExporter.ReportEvent += OnProcessReportResult;
-            saDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("SA")));
-            saDataExporter.ExportData();
-            saDataExporter.ReportEvent -= OnProcessReportResult;
+                DataExporter caDataExporter = _exportDataBuilder.GetDataExporter("CA");
+                caDataExporter.ReportEvent += OnProcessReportResult;
+                caDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("CA")));
 
-            CAdataExporter caDataExporter = (CAdataExporter)exportDataBuilder.GetDataExporter("CA");
-            caDataExporter.ReportEvent += OnProcessReportResult;
-            caDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("CA")));
+                DataExporter gsDataExporter = _exportDataBuilder.GetDataExporter("GS");
+                gsDataExporter.ReportEvent += OnProcessReportResult;
+                gsDataExporter.NextExportOperation = new Action(caDataExporter.ExportData);
+                gsDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GS")));
 
-            GSdataExporter gsDataExporter = (GSdataExporter)exportDataBuilder.GetDataExporter("GS");
-            gsDataExporter.ReportEvent += OnProcessReportResult;
-            gsDataExporter.NextExportOperation = new Action(caDataExporter.ExportData);
-            gsDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GS")));
+                DataExporter gpDataExporter = _exportDataBuilder.GetDataExporter("GP");
+                gpDataExporter.ReportEvent += OnProcessReportResult;
+                gpDataExporter.NextExportOperation = new Action(gsDataExporter.ExportData);
+                gpDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GP")));
+                gpDataExporter.ExportData();
+                _updateTimeWatcher.SaveLastUpdateValues();
 
-            GPdataExporter gpDataExporter = (GPdataExporter)exportDataBuilder.GetDataExporter("GP");
-            gpDataExporter.ReportEvent += OnProcessReportResult;
-            gpDataExporter.NextExportOperation = new Action(gsDataExporter.ExportData);
-            gpDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GP")));
-            gpDataExporter.ExportData();
-            _updateTimeWatcher.SaveLastUpdateValues();
-
-            caDataExporter.ReportEvent -= OnProcessReportResult;
-            gsDataExporter.ReportEvent -= OnProcessReportResult;
-            gpDataExporter.ReportEvent -= OnProcessReportResult;
-
+                caDataExporter.ReportEvent -= OnProcessReportResult;
+                gsDataExporter.ReportEvent -= OnProcessReportResult;
+                gpDataExporter.ReportEvent -= OnProcessReportResult;
+            }
         }
 
         private bool AllowToExportData(ExportDataItemSettings exportDataItemSettings)
@@ -138,14 +141,15 @@ namespace WV_newDataProcessor
             
            
         }
-        IProxyIx4WebService _ix4WebServiceConnector;
-        UpdateTimeWatcher _updateTimeWatcher;
+
         public void LoadSettings(CustomerInfo customerSettings)
         {
             _customerSettings = customerSettings;
            _ix4WebServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(_customerSettings.ClientID, _customerSettings.UserName, _customerSettings.Password, _customerSettings.ServiceEndpoint);
             _updateTimeWatcher = new UpdateTimeWatcher(_customerSettings.ImportDataSettings, _customerSettings.ExportDataSettings);
             _dataImporter = new DataImporter(_customerSettings.ImportDataSettings, _ix4WebServiceConnector, _updateTimeWatcher);
+            _dataImporter.ClientID = _customerSettings.ClientID;
+            _exportDataBuilder = new ExportDataBuilder(_customerSettings.ExportDataSettings, _ix4WebServiceConnector);
         }
     }
 }
