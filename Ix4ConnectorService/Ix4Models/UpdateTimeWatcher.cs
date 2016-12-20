@@ -35,6 +35,8 @@ namespace Ix4Models
                 _gsLastUpdate = Properties.LastUpdate.Default.GS;
             if (_caLastUpdate == 0)
                 _caLastUpdate = Properties.LastUpdate.Default.CA;
+            if (_grLastUpdate == 0)
+                _grLastUpdate = Properties.LastUpdate.Default.GR;
             //if (_deliveriesLastUpdate == 0)
             //    _deliveriesLastUpdate = Properties.LastUpdate.Default.Deliveries;
             //if (_exportDataListUpdateInfo == null)
@@ -49,7 +51,7 @@ namespace Ix4Models
             //    }
             //}
 
-           // _loger.Log(string.Format("Articles lust update TS = {0}; Orders lust update = {1}; Deliveries lust update = {2}", GetTimeFromTS(Properties.LastUpdate.Default.Articles), GetTimeFromTS(Properties.LastUpdate.Default.Orders), GetTimeFromTS(Properties.LastUpdate.Default.Deliveries)));
+            // _loger.Log(string.Format("Articles lust update TS = {0}; Orders lust update = {1}; Deliveries lust update = {2}", GetTimeFromTS(Properties.LastUpdate.Default.Articles), GetTimeFromTS(Properties.LastUpdate.Default.Orders), GetTimeFromTS(Properties.LastUpdate.Default.Deliveries)));
             _loger.Log(string.Format("Articles were updated at = {0}; Orders were updated at = {1}; Deliveries were updated at = {2}", GetTimeFromTS(Properties.LastUpdate.Default.Articles), GetTimeFromTS(Properties.LastUpdate.Default.Orders), GetTimeFromTS(Properties.LastUpdate.Default.Deliveries)));
         }
 
@@ -63,6 +65,7 @@ namespace Ix4Models
             Properties.LastUpdate.Default.GP = _gpLastUpdate;
             Properties.LastUpdate.Default.GS = _gsLastUpdate;
             Properties.LastUpdate.Default.CA = _caLastUpdate;
+            Properties.LastUpdate.Default.GR = _grLastUpdate;
 
             Properties.LastUpdate.Default.Save();
         }
@@ -74,6 +77,7 @@ namespace Ix4Models
         private static long _gpLastUpdate;
         private static long _gsLastUpdate;
         private static long _caLastUpdate;
+        private static long _grLastUpdate;
         //  private static Ix4Models.EDLastUpdate _exportDataListUpdateInfo;
 
 
@@ -127,6 +131,9 @@ namespace Ix4Models
                         break;
                     case "CA":
                         currentTypeLastUpdate = _caLastUpdate;
+                        break;
+                    case "GR":
+                        currentTypeLastUpdate = _grLastUpdate;
                         break;
                     default:
                         break;
@@ -210,6 +217,9 @@ namespace Ix4Models
                         break;
                     case "CA":
                         _caLastUpdate = GetTimeStamp();
+                        break;
+                    case "GR":
+                        _grLastUpdate = GetTimeStamp();
                         break;
                     default:
                         break;

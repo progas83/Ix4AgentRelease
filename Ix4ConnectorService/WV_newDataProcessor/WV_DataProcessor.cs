@@ -41,6 +41,13 @@ namespace WV_newDataProcessor
                 invDbExporter.ExportData();
                 invDbExporter.ReportEvent -= OnProcessReportResult;
 
+               
+                DataExporter grDataExporter = _exportDataBuilder.GetDataExporter("GR");
+                grDataExporter.ReportEvent += OnProcessReportResult;
+                grDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GR")));
+                grDataExporter.ExportData(); 
+                grDataExporter.ReportEvent -= OnProcessReportResult;
+                
                 DataExporter saDataExporter = _exportDataBuilder.GetDataExporter("SA");
                 saDataExporter.ReportEvent += OnProcessReportResult;
                 saDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("SA")));
@@ -71,10 +78,16 @@ namespace WV_newDataProcessor
 
         private bool AllowToExportData(ExportDataItemSettings exportDataItemSettings)
         {
-            bool timeToCkeck = _updateTimeWatcher.TimeToCheck(exportDataItemSettings.ExportDataTypeName);
-            return exportDataItemSettings != null
+            bool result = false;
+            if(exportDataItemSettings!=null)
+            {
+                bool timeToCkeck = _updateTimeWatcher.TimeToCheck(exportDataItemSettings.ExportDataTypeName);
+                result = exportDataItemSettings != null
                 && exportDataItemSettings.IsActive
                 && exportDataItemSettings.IsNowWorkingTime && timeToCkeck;
+            }
+
+            return result;
         }
 
 

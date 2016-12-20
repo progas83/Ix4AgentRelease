@@ -46,6 +46,7 @@
     <Compile Include="DataTableMapper.cs" />
     <Compile Include="ExportDataBuilder.cs" />
     <Compile Include="ExportData\GPdataExporter.cs" />
+    <Compile Include="ExportData\GRdataExporter.cs" />
     <Compile Include="ExportData\GSdataExporter.cs" />
     <Compile Include="IDataMapper.cs" />
     <Compile Include="IDataTargetCollaborator.cs" />

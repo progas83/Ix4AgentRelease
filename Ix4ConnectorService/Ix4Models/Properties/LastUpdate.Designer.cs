@@ -118,5 +118,17 @@ namespace Ix4Models.Properties {
                 this["SA"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public long GR {
+            get {
+                return ((long)(this["GR"]));
+            }
+            set {
+                this["GR"] = value;
+            }
+        }
     }
 }

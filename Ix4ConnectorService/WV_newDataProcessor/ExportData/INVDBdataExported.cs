@@ -54,7 +54,7 @@ namespace WV_newDataProcessor
                                 {
 
                                     IEnumerable<XElement> msgPosElemens = posItem.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos"));
-                                    XElement storedInventurpositionenElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_Position"));
+                                //    XElement storedInventurpositionenElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_Position"));
                                     //  OperationResult operationResult = new OperationResult(string.Format("Save MSG to MsgPos MSGPos_Position = {0}", storedInventurpositionenElement.Value));
 
                                     if (_storageCollaborator.SaveData(msgPosElemens, "Inventurpositionen") > -1)
@@ -63,12 +63,12 @@ namespace WV_newDataProcessor
                                         exportedDataDocument.Save(FileFullName);
                                         //  operationResult.ItemOperationSuccess = true;
                                         Report.SuccessfullHandledItems++;
-                                        _loger.Log(string.Format("Inventurpositionen element with MSGPos_Position = {0} succesfully saved", storedInventurpositionenElement.Value ?? "Unknown value"));
+                                        _loger.Log(string.Format("Can't save MsgPos. MSGPos_Position = {0}. MSGPos_Inventurnummer = {1}", (posItem.Element("MSGPos_Position")!=null && !string.IsNullOrEmpty(posItem.Element("MSGPos_Position").Value)) ? posItem.Element("MSGPos_Position").Value : "Unknown value", posItem.Element("MSGPos_Inventurnummer").Value ?? "Unknown value"));
                                     }
                                     else
                                     {
                                         FailureItem fi = new FailureItem();
-                                        string resultMessage = string.Format("Can't save MsgPos. MSGPos_Position = {0}. MSGPos_Inventurnummer = {1}", posItem.Element("MSGPos_Position").Value ?? "Unknown value", posItem.Element("MSGPos_Inventurnummer").Value ?? "MSGPos_Storageplace");
+                                        string resultMessage = string.Format("Can't save MsgPos. MSGPos_Position = {0}. MSGPos_Inventurnummer = {1}", (posItem.Element("MSGPos_Position") != null && !string.IsNullOrEmpty(posItem.Element("MSGPos_Position").Value)) ? posItem.Element("MSGPos_Position").Value : "Unknown value", posItem.Element("MSGPos_Inventurnummer").Value ?? "Unknown value");
                                         Report.FailureHandledItems++;
                                         fi.ExceptionMessage = resultMessage;
                                         fi.ItemContent = posItem.ToString();
