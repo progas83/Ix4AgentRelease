@@ -80,7 +80,7 @@ namespace WV_newDataProcessor
                                     //}
 
                                     XElement resAmountElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_ResAmount"));
-                                    ConvertElementValueDoubleToInt(amountElement);
+                                    ConvertElementValueDoubleToInt(resAmountElement);
                                     //if (resAmountElement.Value != null)
                                     //{
                                     //    double d = Double.Parse(resAmountElement.Value, CultureInfo.InvariantCulture);
@@ -99,7 +99,7 @@ namespace WV_newDataProcessor
                                     else
                                     {
                                         FailureItem fi = new FailureItem();
-                                        string resultMessage = string.Format("Can't save MsgPos. MSGPos_ItemNo = {0}. MSGPos_Storageplace = {1}", posItem.Element("MSGPos_ItemNo").Value ?? "Unknown value", posItem.Element("MSGPos_ItemNo").Value ?? "MSGPos_Storageplace");
+                                        string resultMessage = string.Format("Can't save MsgPos. MSGPos_ItemNo = {0}. MSGPos_Storageplace = {1}", posItem.Element("MSGPos_ItemNo").Value ?? "Unknown value", posItem.Element("MSGPos_Storageplace").Value ?? "Unknown value");
                                         Report.FailureHandledItems++;
                                         fi.ExceptionMessage = resultMessage;
                                         fi.ItemContent = posItem.ToString();
