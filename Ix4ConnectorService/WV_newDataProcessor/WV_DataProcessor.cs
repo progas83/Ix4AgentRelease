@@ -102,11 +102,11 @@ namespace WV_newDataProcessor
                         result = _customerSettings.ImportDataSettings.ArticleSettings.IsActivate &&
                                     _customerSettings.ImportDataSettings.ArticleSettings.IsNowWorkingTime;
                         break;
-                    case Ix4RequestProps.Orders:
+                    case Ix4RequestProps.Deliveries:
                         result = _customerSettings.ImportDataSettings.DeliverySettings.IsActivate &&
                                  _customerSettings.ImportDataSettings.DeliverySettings.IsNowWorkingTime;
                         break;
-                    case Ix4RequestProps.Deliveries:
+                    case Ix4RequestProps.Orders:
                         result = _customerSettings.ImportDataSettings.OrderSettings.IsActivate &&
                                     _customerSettings.ImportDataSettings.OrderSettings.IsNowWorkingTime;
                         break;
@@ -140,7 +140,7 @@ namespace WV_newDataProcessor
 
                 if (AllowToImportData(Ix4RequestProps.Deliveries))
                 {
-                    _dataImporter.ImportDeliveries();
+                   // _dataImporter.ImportDeliveries();
 
                 }
 
