@@ -31,8 +31,10 @@ namespace WV_newDataProcessor
                     _loger.Log(string.Format("Have got {0} of {1} items", messagesCount, ExportDataName));
                     if (messagesCount > 0)
                     {
-                        foreach (var message in grMessages)
-                        {
+
+                        // foreach (var message in grMessages)
+                        var message = grMessages.FirstOrDefault(m => m.Element("MSGPos_Supplier") != null);
+                            {
                             if (message.Element("MSGHeader_LastUpdate") != null && !string.IsNullOrEmpty(message.Element("MSGHeader_LastUpdate").Value))
                             {
                                 CheckLastUpdateCorrectData(message.Element("MSGHeader_LastUpdate"));
