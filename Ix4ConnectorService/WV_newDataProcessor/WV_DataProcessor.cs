@@ -54,13 +54,12 @@ namespace WV_newDataProcessor
                 saDataExporter.ExportData();
                 saDataExporter.ReportEvent -= OnProcessReportResult;
 
-                DataExporter caDataExporter = _exportDataBuilder.GetDataExporter("CA");
-                caDataExporter.ReportEvent += OnProcessReportResult;
-                caDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("CA")));
+               
+              //  caDataExporter.ReportEvent -= OnProcessReportResult;
 
                 DataExporter gsDataExporter = _exportDataBuilder.GetDataExporter("GS");
                 gsDataExporter.ReportEvent += OnProcessReportResult;
-                gsDataExporter.NextExportOperation = new Action(caDataExporter.ExportData);
+               // gsDataExporter.NextExportOperation = new Action(caDataExporter.ExportData);
                 gsDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GS")));
 
                 DataExporter gpDataExporter = _exportDataBuilder.GetDataExporter("GP");
@@ -68,9 +67,16 @@ namespace WV_newDataProcessor
                 gpDataExporter.NextExportOperation = new Action(gsDataExporter.ExportData);
                 gpDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GP")));
                 gpDataExporter.ExportData();
+
+
+                DataExporter caDataExporter = _exportDataBuilder.GetDataExporter("CA");
+                caDataExporter.ReportEvent += OnProcessReportResult;
+                caDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("CA")));
+                caDataExporter.ExportData();
+                caDataExporter.ReportEvent -= OnProcessReportResult;
                 _updateTimeWatcher.SaveLastUpdateValues();
 
-                caDataExporter.ReportEvent -= OnProcessReportResult;
+               
                 gsDataExporter.ReportEvent -= OnProcessReportResult;
                 gpDataExporter.ReportEvent -= OnProcessReportResult;
             }

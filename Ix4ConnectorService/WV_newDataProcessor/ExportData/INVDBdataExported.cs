@@ -63,7 +63,7 @@ namespace WV_newDataProcessor
                                         exportedDataDocument.Save(FileFullName);
                                         //  operationResult.ItemOperationSuccess = true;
                                         Report.SuccessfullHandledItems++;
-                                        _loger.Log(string.Format("Can't save MsgPos. MSGPos_Position = {0}. MSGPos_Inventurnummer = {1}", (posItem.Element("MSGPos_Position")!=null && !string.IsNullOrEmpty(posItem.Element("MSGPos_Position").Value)) ? posItem.Element("MSGPos_Position").Value : "Unknown value", posItem.Element("MSGPos_Inventurnummer").Value ?? "Unknown value"));
+                                        _loger.Log(string.Format("MsgPos was succesfully saved. MSGPos_Position = {0}. MSGPos_Inventurnummer = {1}", (posItem.Element("MSGPos_Position")!=null && !string.IsNullOrEmpty(posItem.Element("MSGPos_Position").Value)) ? posItem.Element("MSGPos_Position").Value : "Unknown value", posItem.Element("MSGPos_Inventurnummer").Value ?? "Unknown value"));
                                     }
                                     else
                                     {
