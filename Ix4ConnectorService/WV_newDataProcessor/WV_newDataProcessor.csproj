@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExportData\BOdataExporter.cs" />
     <Compile Include="ExportData\CAdataExporter.cs" />
     <Compile Include="ExportData\DataExporter.cs" />
     <Compile Include="DataTableMapper.cs" />

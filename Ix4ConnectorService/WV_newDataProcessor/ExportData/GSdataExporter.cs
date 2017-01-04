@@ -75,7 +75,14 @@ namespace WV_newDataProcessor
                                 HeaderID.Value = existedheaderID.ToString();
                                 foreach (var msgPosItem in groupItem)
                                 {
-                                    ShippingTypeElementConvert(msgPosItem.Element("MSGPos_ShippingType"));
+                                    XElement shippingTypeElement = msgPosItem.Element("MSGPos_ShippingType");
+                                    if(shippingTypeElement==null)
+                                    {
+                                        shippingTypeElement = new XElement("MSGPos_ShippingType");
+                                        shippingTypeElement.Value = 0.ToString();
+                                        msgPosItem.Add(shippingTypeElement);
+                                    }
+                                    ShippingTypeElementConvert(shippingTypeElement);
                                     ConvertElementValueDoubleToInt(msgPosItem.Element("MSGPos_Amount"));
 
                                     ConvertElementValueDoubleToInt(msgPosItem.Element("MSGPos_ResAmount"));
