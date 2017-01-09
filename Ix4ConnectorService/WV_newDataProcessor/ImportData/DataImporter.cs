@@ -147,6 +147,12 @@ namespace WV_newDataProcessor.ImportData
                     foreach (LICSRequestOrder order in orders)
                     {
                         order.ClientNo = ClientID;
+                        if (order.OrderNo.Equals("1700654"))
+                        {
+                          _loger.Log("Have found order with no " + order.OrderNo);
+                          order.Recipient.Name = "Württembergische";
+                          order.Recipient.AdditionalName = "Galster und Kollegen";
+                        }
                     }
                     request.OrderImport = orders.ToArray<LICSRequestOrder>();
                 }
