@@ -147,11 +147,11 @@ namespace WV_newDataProcessor.ImportData
                     foreach (LICSRequestOrder order in orders)
                     {
                         order.ClientNo = ClientID;
-                        if (order.OrderNo.Equals("1700654"))
+                        if (order.OrderNo.Equals("1701047"))
                         {
                           _loger.Log("Have found order with no " + order.OrderNo);
-                          order.Recipient.Name = "Württembergische";
-                          order.Recipient.AdditionalName = "Galster und Kollegen";
+                          order.Recipient.Name = "Württ. Vers. AG M.Kaczamrek/F.Stüt";
+                            order.Recipient.AdditionalName = string.Empty;// "Galster und Kollegen";
                         }
                     }
                     request.OrderImport = orders.ToArray<LICSRequestOrder>();
@@ -267,13 +267,14 @@ namespace WV_newDataProcessor.ImportData
                         if (ord.State == 1)
                         {
                             status = 5;
+                            SendToDB(ord.OrderNo, status);
                         }
                         else
                         {
                             status = 3;
                             MailLogger.Instance.LogMail(new ContentDescription(string.Format("Order {0} was not imported", ord.OrderNo), string.Format("Message: {0}", ord.Message)));
                         }
-                        SendToDB(ord.OrderNo, status);
+                     //   SendToDB(ord.OrderNo, status);
                         _loger.Log(string.Format("Has updated order with NO = {0}  new status = {1}", ord.OrderNo, status));
                     }
             }

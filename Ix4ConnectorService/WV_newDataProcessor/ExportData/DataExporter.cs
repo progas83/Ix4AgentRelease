@@ -61,25 +61,33 @@ namespace WV_newDataProcessor
                 int resultShippingType = 9;
                 switch (mSGPos_ShippingTypeField)
                 {
-                    case 100:
-                        resultShippingType = 9;
-                        break;
                     case 900:
-                        resultShippingType = 1;
+                        resultShippingType = 6;
                         break;
+
                     case 200:
                         resultShippingType = 5;
                         break;
                     case 800:
-                        resultShippingType = 6;
+                    case 801:
+                        resultShippingType = 1;
                         break;
                     case 130:
                         resultShippingType = 13;
                         break;
+
                     case 0:
                         resultShippingType = 19;
                         break;
+
+                    case 100:
+                        resultShippingType = 9;
+                        break;
+                    case 110:
+                        resultShippingType = 20;
+                        break;
                     default:
+                        resultShippingType = 9;
                         break;
 
                 }
