@@ -64,7 +64,7 @@
     <Compile Include="Interfaces\IDataProvider.cs" />
     <Compile Include="Interfaces\INameMetadata.cs" />
     <Compile Include="Interfaces\IPluginSettings.cs" />
-    <Compile Include="Ix4RequestProps.cs" />
+    <Compile Include="Enums\Ix4ImportDataTypes.cs" />
     <Compile Include="Properties\LastUpdate.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

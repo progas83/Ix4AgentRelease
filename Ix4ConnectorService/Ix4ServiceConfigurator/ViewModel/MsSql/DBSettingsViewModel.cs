@@ -21,15 +21,15 @@ namespace Ix4ServiceConfigurator.ViewModel.MsSql
             {
                 switch (sqlSourceSettings.SettingsName)
                 {
-                    case Ix4RequestProps.Articles:
+                    case Ix4ImportDataTypes.Articles:
                         
                         DBImportDataSettings = new MsSqlArticleSettingsView(sqlSourceSettings.DataSourceSettings as MsSqlArticlesSettings);
                         break;
-                    case Ix4RequestProps.Deliveries:
+                    case Ix4ImportDataTypes.Deliveries:
                        
                         DBImportDataSettings = new MsSqlDeliveriesSettingsView(sqlSourceSettings.DataSourceSettings as MsSqlDeliveriesSettings);
                         break;
-                    case Ix4RequestProps.Orders:
+                    case Ix4ImportDataTypes.Orders:
                         
                         DBImportDataSettings = new MsSqlOrdersSettingsView(sqlSourceSettings.DataSourceSettings as MsSqlOrdersSettings);
                         break;
@@ -42,15 +42,15 @@ namespace Ix4ServiceConfigurator.ViewModel.MsSql
             {
                 switch (sqlSourceSettings.SettingsName)
                 {
-                    case Ix4RequestProps.Articles:
+                    case Ix4ImportDataTypes.Articles:
                         sqlSourceSettings.DataSourceSettings = new MsSqlArticlesSettings();
                         DBImportDataSettings = new MsSqlArticleSettingsView(sqlSourceSettings.DataSourceSettings as MsSqlArticlesSettings);
                         break;
-                    case Ix4RequestProps.Deliveries:
+                    case Ix4ImportDataTypes.Deliveries:
                         sqlSourceSettings.DataSourceSettings = new MsSqlDeliveriesSettings();
                         DBImportDataSettings = new MsSqlDeliveriesSettingsView(sqlSourceSettings.DataSourceSettings as MsSqlDeliveriesSettings);
                         break;
-                    case Ix4RequestProps.Orders:
+                    case Ix4ImportDataTypes.Orders:
                         sqlSourceSettings.DataSourceSettings = new MsSqlOrdersSettings();
                         DBImportDataSettings = new MsSqlOrdersSettingsView(sqlSourceSettings.DataSourceSettings as MsSqlOrdersSettings);
                         break;

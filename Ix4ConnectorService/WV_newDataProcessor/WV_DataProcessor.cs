@@ -36,92 +36,92 @@ namespace WV_newDataProcessor
             if(_exportDataBuilder!=null)
             {
                 DataExporter invDbExporter = _exportDataBuilder.GetDataExporter("INVDB");
-                invDbExporter.ReportEvent += OnProcessReportResult;
-                invDbExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("INVDB")));
+                invDbExporter.ExportOperationReportEvent += OnProcessReportResult;
+                invDbExporter.SettingAllowToStart = _updateTimeWatcher.TimeToCheck("INVDB");
                 invDbExporter.ExportData();
-                invDbExporter.ReportEvent -= OnProcessReportResult;
+                invDbExporter.ExportOperationReportEvent -= OnProcessReportResult;
 
                
                 DataExporter grDataExporter = _exportDataBuilder.GetDataExporter("GR");
-                grDataExporter.ReportEvent += OnProcessReportResult;
-                grDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GR")));
+                grDataExporter.ExportOperationReportEvent += OnProcessReportResult;
+                grDataExporter.SettingAllowToStart = _updateTimeWatcher.TimeToCheck("GR");
                 grDataExporter.ExportData(); 
-                grDataExporter.ReportEvent -= OnProcessReportResult;
+                grDataExporter.ExportOperationReportEvent -= OnProcessReportResult;
                 
                 DataExporter saDataExporter = _exportDataBuilder.GetDataExporter("SA");
-                saDataExporter.ReportEvent += OnProcessReportResult;
-                saDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("SA")));
+                saDataExporter.ExportOperationReportEvent += OnProcessReportResult;
+                saDataExporter.SettingAllowToStart = _updateTimeWatcher.TimeToCheck("SA"); ;
                 saDataExporter.ExportData();
-                saDataExporter.ReportEvent -= OnProcessReportResult;
+                saDataExporter.ExportOperationReportEvent -= OnProcessReportResult;
 
                
               //  caDataExporter.ReportEvent -= OnProcessReportResult;
 
                 DataExporter gsDataExporter = _exportDataBuilder.GetDataExporter("GS");
-                gsDataExporter.ReportEvent += OnProcessReportResult;
+                gsDataExporter.ExportOperationReportEvent += OnProcessReportResult;
                // gsDataExporter.NextExportOperation = new Action(caDataExporter.ExportData);
-                gsDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GS")));
+                gsDataExporter.SettingAllowToStart = _updateTimeWatcher.TimeToCheck("GS");
 
                 DataExporter gpDataExporter = _exportDataBuilder.GetDataExporter("GP");
-                gpDataExporter.ReportEvent += OnProcessReportResult;
+                gpDataExporter.ExportOperationReportEvent += OnProcessReportResult;
                 gpDataExporter.NextExportOperation = new Action(gsDataExporter.ExportData);
-                gpDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("GP")));
+                gpDataExporter.SettingAllowToStart = _updateTimeWatcher.TimeToCheck("GP");
                 gpDataExporter.ExportData();
 
 
                 DataExporter caDataExporter = _exportDataBuilder.GetDataExporter("CA");
-                caDataExporter.ReportEvent += OnProcessReportResult;
-                caDataExporter.SettingAllowToStart = AllowToExportData(_customerSettings.ExportDataSettings.ExportDataItemSettings.FirstOrDefault(s => s.ExportDataTypeName.Equals("CA")));
+                caDataExporter.ExportOperationReportEvent += OnProcessReportResult;
+                caDataExporter.SettingAllowToStart = _updateTimeWatcher.TimeToCheck("CA");
                 caDataExporter.ExportData();
-                caDataExporter.ReportEvent -= OnProcessReportResult;
+                caDataExporter.ExportOperationReportEvent -= OnProcessReportResult;
                 _updateTimeWatcher.SaveLastUpdateValues();
 
                
-                gsDataExporter.ReportEvent -= OnProcessReportResult;
-                gpDataExporter.ReportEvent -= OnProcessReportResult;
+                gsDataExporter.ExportOperationReportEvent -= OnProcessReportResult;
+                gpDataExporter.ExportOperationReportEvent -= OnProcessReportResult;
             }
         }
 
-        private bool AllowToExportData(ExportDataItemSettings exportDataItemSettings)
-        {
-            bool result = false;
-            if(exportDataItemSettings!=null)
-            {
-                bool timeToCkeck = _updateTimeWatcher.TimeToCheck(exportDataItemSettings.ExportDataTypeName);
-                result = exportDataItemSettings != null
-                && exportDataItemSettings.IsActive
-                && exportDataItemSettings.IsNowWorkingTime && timeToCkeck;
-            }
+        //private bool AllowToExportData(ExportDataItemSettings exportDataItemSettings)
+        //{
+        //    bool result = false;
+        //    if(exportDataItemSettings!=null)
+        //    {
+        //        bool timeToCkeck = _updateTimeWatcher.TimeToCheck(exportDataItemSettings.ExportDataTypeName);
+        //        result = exportDataItemSettings != null
+        //        && exportDataItemSettings.IsActive
+        //        && exportDataItemSettings.IsNowWorkingTime && timeToCkeck;
+        //    }
 
-            return result;
-        }
+        //    return result;
+        //}
 
 
-        private bool AllowToImportData(Ix4RequestProps importDataType)
-        {
-            bool result = false;
-            if(_updateTimeWatcher.TimeToCheck(importDataType))
-            {
-                switch (importDataType)
-                {
-                    case Ix4RequestProps.Articles:
-                        result = _customerSettings.ImportDataSettings.ArticleSettings.IsActivate &&
-                                    _customerSettings.ImportDataSettings.ArticleSettings.IsNowWorkingTime;
-                        break;
-                    case Ix4RequestProps.Deliveries:
-                        result = _customerSettings.ImportDataSettings.DeliverySettings.IsActivate &&
-                                 _customerSettings.ImportDataSettings.DeliverySettings.IsNowWorkingTime;
-                        break;
-                    case Ix4RequestProps.Orders:
-                        result = _customerSettings.ImportDataSettings.OrderSettings.IsActivate &&
-                                    _customerSettings.ImportDataSettings.OrderSettings.IsNowWorkingTime;
-                        break;
-                    default:
-                        break;
-                }
-            }
-            return result;
-        }
+        //private bool AllowToImportData(Ix4ImportDataTypes importDataType)
+        //{
+        //    bool result = false;
+        //    if(_updateTimeWatcher.TimeToCheck(importDataType.ToString()))
+        //    {
+        //        switch (importDataType)
+        //        {
+        //            case Ix4ImportDataTypes.Articles:
+        //                result = _customerSettings.ImportDataSettings.ArticleSettings.IsActivate &&
+        //                            _customerSettings.ImportDataSettings.ArticleSettings.IsNowWorkingTime;
+        //                break;
+        //            case Ix4ImportDataTypes.Deliveries:
+        //                result = _customerSettings.ImportDataSettings.DeliverySettings.IsActivate &&
+        //                         _customerSettings.ImportDataSettings.DeliverySettings.IsNowWorkingTime;
+        //                break;
+        //            case Ix4ImportDataTypes.Orders:
+        //                result = _customerSettings.ImportDataSettings.OrderSettings.IsActivate &&
+        //                            _customerSettings.ImportDataSettings.OrderSettings.IsNowWorkingTime;
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //    }
+        //    return result;
+        //}
 
         private void OnProcessReportResult(object sender, DataReportEventArgs e)
         {
@@ -137,20 +137,20 @@ namespace WV_newDataProcessor
         {
             if(_dataImporter != null)
             {
-                if (AllowToImportData(Ix4RequestProps.Articles))
+                if (_updateTimeWatcher.TimeToCheck(Ix4ImportDataTypes.Articles.ToString()))
                 {
 
                     _dataImporter.ImportArticles();
 
                 }
 
-                if (AllowToImportData(Ix4RequestProps.Deliveries))
+                if (_updateTimeWatcher.TimeToCheck(Ix4ImportDataTypes.Deliveries.ToString()))
                 {
                    // _dataImporter.ImportDeliveries();
 
                 }
 
-                if (AllowToImportData(Ix4RequestProps.Orders))
+                if (_updateTimeWatcher.TimeToCheck(Ix4ImportDataTypes.Orders.ToString())) 
                 {
                     _dataImporter.ImportOrders();
 
@@ -165,9 +165,10 @@ namespace WV_newDataProcessor
         {
             _customerSettings = customerSettings;
            _ix4WebServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(_customerSettings.ClientID, _customerSettings.UserName, _customerSettings.Password, _customerSettings.ServiceEndpoint);
-            _updateTimeWatcher = new UpdateTimeWatcher(_customerSettings.ImportDataSettings, _customerSettings.ExportDataSettings);
-            _dataImporter = new DataImporter(_customerSettings.ImportDataSettings, _ix4WebServiceConnector, _updateTimeWatcher);
+           _updateTimeWatcher = new UpdateTimeWatcher(_customerSettings.ImportDataSettings, _customerSettings.ExportDataSettings);
+            _dataImporter = new DataImporter(_customerSettings.ImportDataSettings, _ix4WebServiceConnector);//, _updateTimeWatcher);
             _dataImporter.ClientID = _customerSettings.ClientID;
+            _dataImporter.ImportOperationReportEvent += OnProcessReportResult;
             _exportDataBuilder = new ExportDataBuilder(_customerSettings.ExportDataSettings, _ix4WebServiceConnector);
         }
     }

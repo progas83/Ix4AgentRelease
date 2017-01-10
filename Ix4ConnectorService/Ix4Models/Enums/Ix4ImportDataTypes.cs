@@ -3,7 +3,7 @@ using System.Xml.Serialization;
 
 namespace Ix4Models
 {
-    public enum Ix4RequestProps
+    public enum Ix4ImportDataTypes
     {
         [XmlEnum(Name = "Articles")]
         Articles =0,

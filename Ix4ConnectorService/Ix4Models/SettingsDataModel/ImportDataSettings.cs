@@ -31,7 +31,7 @@ namespace Ix4Models.SettingsDataModel
             Scheduler = new SchedulerSettings();
         }
 
-        public virtual Ix4RequestProps SettingsName { get; }
+        public virtual Ix4ImportDataTypes SettingsName { get; }
         public bool IsActivate { get; set; }
 
         public bool IncludeArticlesToRequest { get; set; }
@@ -55,11 +55,11 @@ namespace Ix4Models.SettingsDataModel
     [Serializable]
     public class ArticleSettings : BaseLicsRequestSettings
     {
-        public override Ix4RequestProps SettingsName
+        public override Ix4ImportDataTypes SettingsName
         {
             get
             {
-                return Ix4RequestProps.Articles;
+                return Ix4ImportDataTypes.Articles;
             }
         }
         public ArticleSettings() : base()
@@ -71,11 +71,11 @@ namespace Ix4Models.SettingsDataModel
     [Serializable]
     public class DeliverySettings : BaseLicsRequestSettings
     {
-        public override Ix4RequestProps SettingsName
+        public override Ix4ImportDataTypes SettingsName
         {
             get
             {
-                return Ix4RequestProps.Deliveries;
+                return Ix4ImportDataTypes.Deliveries;
             }
         }
         public DeliverySettings() : base()
@@ -88,11 +88,11 @@ namespace Ix4Models.SettingsDataModel
     [Serializable]
     public class OrderSettings : BaseLicsRequestSettings
     {
-        public override Ix4RequestProps SettingsName
+        public override Ix4ImportDataTypes SettingsName
         {
             get
             {
-                return Ix4RequestProps.Orders;
+                return Ix4ImportDataTypes.Orders;
             }
         }
         public OrderSettings() : base()

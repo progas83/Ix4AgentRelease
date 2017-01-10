@@ -11,12 +11,12 @@ namespace Ix4Models
     public class UpdateTimeWatcher
     {
         private static Logger _loger = Logger.GetLogger();
-        ImportDataSettings _importTimerSettings;
-        ExportDataSettings _exportTimeSettings;
+        ImportDataSettings _importDataTimeSettings;
+        ExportDataSettings _exportDataTimeSettings;
         public UpdateTimeWatcher(ImportDataSettings importTimerSettings, ExportDataSettings exportTimeSettings)
         {
-            _importTimerSettings = importTimerSettings;
-            _exportTimeSettings = exportTimeSettings;
+            _importDataTimeSettings = importTimerSettings;
+            _exportDataTimeSettings = exportTimeSettings;
 
             if (_articlesLastUpdate == 0)
                 _articlesLastUpdate = Properties.LastUpdate.Default.Articles;
@@ -98,13 +98,40 @@ namespace Ix4Models
             return (long)(DateTime.UtcNow.Subtract(_startDT)).TotalSeconds;
         }
 
-        public bool TimeToCheck(string exportDataType)
+        public bool TimeToCheck(string ix4DataTypeName)
         {
             bool isItTimeToCheck = false;
-            ExportDataItemSettings item = null;
-            foreach (ExportDataItemSettings ds in _exportTimeSettings.ExportDataItemSettings)
+
+            Ix4ImportDataTypes importedData = Ix4ImportDataTypes.Articles;
+            try
             {
-                if (ds.ExportDataTypeName.Equals(exportDataType))
+                if (Enum.TryParse<Ix4ImportDataTypes>(ix4DataTypeName, out importedData))
+                {
+                    TimeToCheckImportedData(importedData);
+                    /// SetLastUpdateTimePropertyForImportedData(importedData);
+                }
+                else
+                {
+                    TimeToCheckExportedData(ix4DataTypeName);
+                    //SetLastUpdateTimePropertyForExportedData(exportDataType);
+                }
+            }
+            catch (Exception ex)
+            {
+                _loger.Log(ex);
+            }
+
+
+            return isItTimeToCheck;
+        }
+
+        private bool TimeToCheckExportedData(string exportedDataName)
+        {
+            bool result = false;
+            ExportDataItemSettings item = null;
+            foreach (ExportDataItemSettings ds in _exportDataTimeSettings.ExportDataItemSettings)
+            {
+                if (ds.ExportDataTypeName.Equals(exportedDataName))
                 {
                     item = ds;
                     break;
@@ -114,7 +141,7 @@ namespace Ix4Models
             if (item != null)
             {
                 long currentTypeLastUpdate = 0;
-                switch (exportDataType)
+                switch (exportedDataName)
                 {
 
                     case "INVDB":
@@ -138,36 +165,42 @@ namespace Ix4Models
                     default:
                         break;
                 }
-                if (item.IsNowWorkingTime && (currentTypeLastUpdate == 0 || (GetTimeStamp() - currentTypeLastUpdate) >= item.Scheduler.TimeGap * (int)item.Scheduler.GapSign))
+                if (item.IsActive && item.IsNowWorkingTime &&
+                    (currentTypeLastUpdate == 0 || (GetTimeStamp() - currentTypeLastUpdate) >= item.Scheduler.TimeGap * (int)item.Scheduler.GapSign))
                 {
-                    isItTimeToCheck = true;
+                    result = true;
                 }
             }
 
-            return isItTimeToCheck;
+            return result;
         }
 
-        public bool TimeToCheck(Ix4RequestProps ix4Property)
+        private bool TimeToCheckImportedData(Ix4ImportDataTypes ix4Property)
         {
             // var t = GetTimeStamp();
 
             bool result = false;
             switch (ix4Property)
             {
-                case Ix4RequestProps.Articles:
-                    if (_articlesLastUpdate == 0 || (GetTimeStamp() - _articlesLastUpdate) >= _importTimerSettings.ArticleSettings.Scheduler.TimeGap * (int)_importTimerSettings.ArticleSettings.Scheduler.GapSign)
+                case Ix4ImportDataTypes.Articles:
+                    if (_importDataTimeSettings.ArticleSettings.IsActivate && _importDataTimeSettings.ArticleSettings.IsNowWorkingTime
+                        && (_articlesLastUpdate == 0 || (GetTimeStamp() - _articlesLastUpdate) >= _importDataTimeSettings.ArticleSettings.Scheduler.TimeGap * (int)_importDataTimeSettings.ArticleSettings.Scheduler.GapSign))
                     {
                         result = true;
                     }
                     break;
-                case Ix4RequestProps.Deliveries:
-                    if (_deliveriesLastUpdate == 0 || (GetTimeStamp() - _deliveriesLastUpdate) > _importTimerSettings.DeliverySettings.Scheduler.TimeGap * (int)_importTimerSettings.DeliverySettings.Scheduler.GapSign)
+                case Ix4ImportDataTypes.Deliveries:
+                    if (_importDataTimeSettings.DeliverySettings.IsActivate && _importDataTimeSettings.DeliverySettings.IsNowWorkingTime
+
+
+                        && (_deliveriesLastUpdate == 0 || (GetTimeStamp() - _deliveriesLastUpdate) > _importDataTimeSettings.DeliverySettings.Scheduler.TimeGap * (int)_importDataTimeSettings.DeliverySettings.Scheduler.GapSign))
                     {
                         result = true;
                     }
                     break;
-                case Ix4RequestProps.Orders:
-                    if (_ordersLastUpdate == 0 || (GetTimeStamp() - _ordersLastUpdate) > _importTimerSettings.OrderSettings.Scheduler.TimeGap * (int)_importTimerSettings.OrderSettings.Scheduler.GapSign)
+                case Ix4ImportDataTypes.Orders:
+                    if (_importDataTimeSettings.OrderSettings.IsActivate && _importDataTimeSettings.OrderSettings.IsNowWorkingTime
+                        && (_ordersLastUpdate == 0 || (GetTimeStamp() - _ordersLastUpdate) > _importDataTimeSettings.OrderSettings.Scheduler.TimeGap * (int)_importDataTimeSettings.OrderSettings.Scheduler.GapSign))
                     {
                         result = true;
                     }
@@ -179,18 +212,45 @@ namespace Ix4Models
             return result;
         }
 
-        public void SetLastUpdateTimeProperty(Ix4RequestProps ix4Property)
+        private void SetLastUpdateTimePropertyForImportedData(Ix4ImportDataTypes ix4Property)
         {
             switch (ix4Property)
             {
-                case Ix4RequestProps.Articles:
+                case Ix4ImportDataTypes.Articles:
                     _articlesLastUpdate = GetTimeStamp();
                     break;
-                case Ix4RequestProps.Deliveries:
+                case Ix4ImportDataTypes.Deliveries:
                     _deliveriesLastUpdate = GetTimeStamp();
                     break;
-                case Ix4RequestProps.Orders:
+                case Ix4ImportDataTypes.Orders:
                     _ordersLastUpdate = GetTimeStamp();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void SetLastUpdateTimePropertyForExportedData(string ix4ExportTypeName)
+        {
+            switch (ix4ExportTypeName)
+            {
+                case "INVDB":
+                    _invdbLastUpdate = GetTimeStamp();
+                    break;
+                case "SA":
+                    _saLastUpdate = GetTimeStamp();
+                    break;
+                case "GP":
+                    _gpLastUpdate = GetTimeStamp();
+                    break;
+                case "GS":
+                    _gsLastUpdate = GetTimeStamp();
+                    break;
+                case "CA":
+                    _caLastUpdate = GetTimeStamp();
+                    break;
+                case "GR":
+                    _grLastUpdate = GetTimeStamp();
                     break;
                 default:
                     break;
@@ -199,35 +259,21 @@ namespace Ix4Models
 
         public void SetLastUpdateTimeProperty(string exportDataType)
         {
+            Ix4ImportDataTypes importedData = Ix4ImportDataTypes.Articles;
             try
             {
-                switch (exportDataType)
+                if (Enum.TryParse<Ix4ImportDataTypes>(exportDataType, out importedData))
                 {
-                    case "INVDB":
-                        _invdbLastUpdate = GetTimeStamp();
-                        break;
-                    case "SA":
-                        _saLastUpdate = GetTimeStamp();
-                        break;
-                    case "GP":
-                        _gpLastUpdate = GetTimeStamp();
-                        break;
-                    case "GS":
-                        _gsLastUpdate = GetTimeStamp();
-                        break;
-                    case "CA":
-                        _caLastUpdate = GetTimeStamp();
-                        break;
-                    case "GR":
-                        _grLastUpdate = GetTimeStamp();
-                        break;
-                    default:
-                        break;
+                    SetLastUpdateTimePropertyForImportedData(importedData);
+                }
+                else
+                {
+                    SetLastUpdateTimePropertyForExportedData(exportDataType);
                 }
             }
             catch (Exception ex)
             {
-
+                _loger.Log(ex);
             }
 
         }

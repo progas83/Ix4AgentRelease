@@ -17,7 +17,7 @@ namespace WV_newDataProcessor
         protected static Logger _loger = Logger.GetLogger();
         protected string FileFullName { get { return string.Format("{0}\\{1}.xml", _archiveFolder, ExportDataName); } }
         private IProxyIx4WebService Ix4InterfaceService;
-        public event EventHandler<DataReportEventArgs> ReportEvent;
+        public event EventHandler<DataReportEventArgs> ExportOperationReportEvent;
         protected abstract void ProcessExportedData(XDocument exportedData);
 
         public bool SettingAllowToStart { get; set; }
@@ -183,12 +183,12 @@ namespace WV_newDataProcessor
             }
         }
 
-        protected virtual void SendReportOnOperationComlete()
+        private void SendReportOnOperationComlete()
         {
             if(Report!=null)
             {
                 Report.LastUpdate = DateTime.Now;
-                EventHandler<DataReportEventArgs> reportEvent = ReportEvent;
+                EventHandler<DataReportEventArgs> reportEvent = ExportOperationReportEvent;
                 if (reportEvent != null)
                 {
                     reportEvent(this, new DataReportEventArgs(Report));

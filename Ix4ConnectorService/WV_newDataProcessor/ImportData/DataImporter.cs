@@ -19,17 +19,29 @@ namespace WV_newDataProcessor.ImportData
     {
         private ImportDataSettings _importDataSettings;
         private ImportDataSourcesBuilder _importDataProvider;
-        private UpdateTimeWatcher _updateTimeWatcher;
+        public event EventHandler<DataReportEventArgs> ImportOperationReportEvent;
+        // private UpdateTimeWatcher _updateTimeWatcher;
         protected IProxyIx4WebService _ix4WebServiceConnector;
-        public DataImporter(ImportDataSettings importDataSettings,IProxyIx4WebService ix4WebServiceConnector, UpdateTimeWatcher updateTimeWatcher)
+        public DataImporter(ImportDataSettings importDataSettings,IProxyIx4WebService ix4WebServiceConnector)//, UpdateTimeWatcher updateTimeWatcher)
         {
             _importDataSettings = importDataSettings;
             _ix4WebServiceConnector = ix4WebServiceConnector;
             _importDataProvider = new ImportDataSourcesBuilder(importDataSettings);
-            _updateTimeWatcher = updateTimeWatcher;// new UpdateTimeWatcher(CustomerSettings.ImportDataSettings, CustomerSettings.ExportDataSettings);
+           // _updateTimeWatcher = updateTimeWatcher;// new UpdateTimeWatcher(CustomerSettings.ImportDataSettings, CustomerSettings.ExportDataSettings);
         }
-
-  
+       
+        private void SendReportOnOperationComlete(ExportDataReport report)
+        {
+            if (report != null)
+            {
+                report.LastUpdate = DateTime.Now;
+                EventHandler<DataReportEventArgs> reportEvent = ImportOperationReportEvent;
+                if (reportEvent != null)
+                {
+                    reportEvent(this, new DataReportEventArgs(report));
+                }
+            }
+        }
 
         private readonly int _articlesPerRequest = 20;
         protected List<LICSRequestArticle> _cachedArticles;
@@ -40,7 +52,7 @@ namespace WV_newDataProcessor.ImportData
 
         public void ImportArticles()
         {
-            ExportDataReport report = new ExportDataReport("Articles");
+            ExportDataReport report = new ExportDataReport(Ix4ImportDataTypes.Articles.ToString());
             int countA = 0;
             try
             {
@@ -82,29 +94,31 @@ namespace WV_newDataProcessor.ImportData
                         tempAtricles = new List<LICSRequestArticle>();
                     }
                 }
-
-                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Articles);
+                SendReportOnOperationComlete(report);
+               // _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4ImportDataTypes.Articles);
             }
             catch (Exception ex)
             {
                 _loger.Log(ex);
                 _loger.Log("Inner excep " + ex.InnerException);
             }
+
         }
 
         public void ImportOrders()
         {
             try
             {
-
-               // int currentClientID = CustomerSettings.ClientID;
+                ExportDataReport report = new ExportDataReport(Ix4ImportDataTypes.Orders.ToString());
+                // int currentClientID = CustomerSettings.ClientID;
                 LICSRequest request = new LICSRequest();
                 request.ClientId = ClientID;
                 List<LICSRequestOrder> orders = _importDataProvider.GetOrders();// _msSqlDataProvider.GetOrders(CustomerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as MsSqlDeliveriesSettings);
                 if (!OrdersHasPositions(orders))
                 {
                     _loger.Log("There is no orders for importing");
-                    _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Orders);
+                    SendReportOnOperationComlete(report);
+                    //_updateTimeWatcher.SetLastUpdateTimeProperty(Ix4ImportDataTypes.Orders);
                     return;
                 }
 
@@ -160,7 +174,8 @@ namespace WV_newDataProcessor.ImportData
                 LICSResponse response = SendLicsRequestToIx4(request, "ordersFile.xml");
                 _loger.Log("Orders result: " + response);
                 SimplestParcerLicsRequest(response);
-                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Orders);
+                SendReportOnOperationComlete(report);
+                //_updateTimeWatcher.SetLastUpdateTimeProperty(Ix4ImportDataTypes.Orders);
             }
             catch (Exception ex)
             {
@@ -172,8 +187,8 @@ namespace WV_newDataProcessor.ImportData
         {
             try
             {
-
-               // int currentClientID = CustomerSettings.ClientID;
+                ExportDataReport report = new ExportDataReport(Ix4ImportDataTypes.Deliveries.ToString());
+                // int currentClientID = CustomerSettings.ClientID;
                 LICSRequest request = new LICSRequest();
                 request.ClientId = ClientID;
                 List<LICSRequestDelivery> deliveries = _importDataProvider.GetDeliveries();//.GetArticles(); _msSqlDataProvider.GetDeliveries(CustomerSettings.ImportDataSettings.DeliverySettings.DataSourceSettings as MsSqlDeliveriesSettings);
@@ -221,7 +236,8 @@ namespace WV_newDataProcessor.ImportData
 
                 var res = SendLicsRequestToIx4(request, "deliveryFile.xml");
                 _loger.Log("Delivery result: " + res);
-                _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4RequestProps.Deliveries);
+                SendReportOnOperationComlete(report);
+                // _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4ImportDataTypes.Deliveries);
             }
             catch (Exception ex)
             {

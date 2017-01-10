@@ -37,7 +37,7 @@ namespace Ix4ServiceConfigurator.ViewModel
         }
 
 
-        public Ix4RequestProps Ix4PartItemName
+        public Ix4ImportDataTypes Ix4PartItemName
         {
             get { return BaseSettings.SettingsName; }
         }

@@ -19,7 +19,7 @@
         </ObjectDataProvider>
         <ObjectDataProvider x:Key="Ix4InterfaceProperties" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
             <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="dataModels:Ix4RequestProps"/>
+                <x:Type TypeName="dataModels:Ix4ImportDataTypes"/>
             </ObjectDataProvider.MethodParameters>
 
         </ObjectDataProvider>
