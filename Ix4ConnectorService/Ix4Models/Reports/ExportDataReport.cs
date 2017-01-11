@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,8 +10,8 @@ namespace Ix4Models.Reports
     {
         private int _clientID;
 
-        [JsonProperty("LVSClientID")]
-        public int ClientID
+      ///  [JsonProperty("LVSClientID")]
+        public int LVSClientID
         {
             get { return _clientID; }
             set { _clientID = value; }

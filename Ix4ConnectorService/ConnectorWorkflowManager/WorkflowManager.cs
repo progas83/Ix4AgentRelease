@@ -42,13 +42,15 @@ namespace ConnectorWorkflowManager
         {
             try
             {
-                e.Report.ClientID = _customerSettings.ClientID;
-                _ix4StatisticClient.PostReport(e.Report);
+                e.Report.LVSClientID = _customerSettings.ClientID;
+                e.Report.OperationDate = DateTime.Now;
                 _loger.Log(string.Format(" {0} messages has been completed", e.Report.DataTypeName));
+                _ix4StatisticClient.PostReport(e.Report);
+                _loger.Log(string.Format("Report has been sent"));
             }
             catch(Exception ex)
             {
-
+                _loger.Log(ex);
             }
         }
 
@@ -123,6 +125,24 @@ namespace ConnectorWorkflowManager
             }
         }
         private bool _isBusy = false;
+
+        public ExportDataReport GetTestData()
+        {
+            ExportDataReport dataReport = new ExportDataReport("Test");
+            dataReport.LVSClientID = 15151212;
+            dataReport.CountOfHandled = 100;
+            dataReport.CountOfFailures = 2;
+            dataReport.FailureItems = new List<FailureItem> { new FailureItem() {  ExceptionMessage= "TestException 1", ItemContent = "Item Content 1"},
+                                                                new FailureItem() {  ExceptionMessage= "TestException 2", ItemContent = "Item Content 3"}}.ToArray();
+
+            dataReport.OperationDate = DateTime.Now;
+            dataReport.OperationInfo = "Test operation";
+            dataReport.Status = -100;
+            dataReport.CountOfSuccess = 98;
+
+            return dataReport;
+        }
+
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             if (!_isBusy && _currentDataProcessor != null)
@@ -131,7 +151,7 @@ namespace ConnectorWorkflowManager
                 _isBusy = true;
                 try
                 {
-                   if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
+                    if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
                     {
                         _loger.Log("Start Import data");
                         _currentDataProcessor.ImportData();
