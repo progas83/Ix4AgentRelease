@@ -44,7 +44,7 @@ namespace WV_newDataProcessor
                 if (exportedData != null)
                 {
                     int messagesCount = exportedData.Descendants("MSG").Count();
-                    Report.CountOfImportedItems = messagesCount;
+                    Report.CountOfHandled = messagesCount;
                     _loger.Log(string.Format("Have got {0} of {1} items", exportedData.Descendants("MSG").Count(), ExportDataName));
                     if (messagesCount > 0)
                     {
@@ -94,7 +94,7 @@ namespace WV_newDataProcessor
                                     if (_storageCollaborator.SaveData(msgPosElements, "MsgPos") > 0)
                                     {
                                         // savePosOperation.ItemOperationSuccess = true;
-                                        Report.SuccessfullHandledItems++;
+                                        Report.CountOfSuccess++;
                                         msgPosItem.Remove();
                                         exportedData.Save(FileFullName);
                                     }
@@ -105,7 +105,7 @@ namespace WV_newDataProcessor
                                         fi.ExceptionMessage = resultMessage;
                                         fi.ItemContent = msgPosItem.ToString();
                                         failureItems.Add(fi);
-                                        Report.FailureHandledItems++;//= groupItem.Count();
+                                        Report.CountOfFailures++;//= groupItem.Count();
                                         _loger.Log(resultMessage);
                                     }
 
@@ -119,7 +119,7 @@ namespace WV_newDataProcessor
                                 fi.ExceptionMessage = resultMessage;
                                 fi.ItemContent = groupItem.ToString();
                                 failureItems.Add(fi);
-                                Report.FailureHandledItems += groupItem.Count();
+                                Report.CountOfFailures += groupItem.Count();
                                 _loger.Log(resultMessage);
                             }
                         }

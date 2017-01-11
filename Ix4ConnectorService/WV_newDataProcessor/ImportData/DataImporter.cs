@@ -34,7 +34,7 @@ namespace WV_newDataProcessor.ImportData
         {
             if (report != null)
             {
-                report.LastUpdate = DateTime.Now;
+                report.OperationDate = DateTime.Now;
                 EventHandler<DataReportEventArgs> reportEvent = ImportOperationReportEvent;
                 if (reportEvent != null)
                 {

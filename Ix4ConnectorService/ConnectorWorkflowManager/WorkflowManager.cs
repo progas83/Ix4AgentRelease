@@ -13,6 +13,7 @@ using System.Reflection;
 using System.ComponentModel.Composition.Hosting;
 using SinplestLogger.Mailer;
 using Ix4Models.Reports;
+using WebStatisticsClient;
 
 namespace ConnectorWorkflowManager
 {
@@ -26,6 +27,7 @@ namespace ConnectorWorkflowManager
 
 
         private static Logger _loger = Logger.GetLogger();
+        private Ix4StatisticClient _ix4StatisticClient = new Ix4StatisticClient("http://93.77.219.73/");
 
         private WorkflowManager()
         {
@@ -38,8 +40,16 @@ namespace ConnectorWorkflowManager
 
         private void OnOperationReportEvent(object sender, DataReportEventArgs e)
         {
-            e.Report.ClientID = _customerSettings.ClientID;
-            _loger.Log(string.Format(" {0} messages has been completed", e.Report.ExportTypeName));
+            try
+            {
+                e.Report.ClientID = _customerSettings.ClientID;
+                _ix4StatisticClient.PostReport(e.Report);
+                _loger.Log(string.Format(" {0} messages has been completed", e.Report.DataTypeName));
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
         public static WorkflowManager Instance

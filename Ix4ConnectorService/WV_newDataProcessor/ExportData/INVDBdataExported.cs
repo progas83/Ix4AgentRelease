@@ -26,7 +26,7 @@ namespace WV_newDataProcessor
                 if (exportedDataDocument != null)
                 {
                     int messagesCount = exportedDataDocument.Descendants("MSG").Count();
-                    Report.CountOfImportedItems = messagesCount;
+                    Report.CountOfHandled = messagesCount;
                     _loger.Log(string.Format("Have got {0} of {1} items", exportedDataDocument.Descendants("MSG").Count(), ExportDataName));
                     if (messagesCount > 0)
                     {
@@ -62,14 +62,14 @@ namespace WV_newDataProcessor
                                         posItem.Remove();
                                         exportedDataDocument.Save(FileFullName);
                                         //  operationResult.ItemOperationSuccess = true;
-                                        Report.SuccessfullHandledItems++;
+                                        Report.CountOfSuccess++;
                                         _loger.Log(string.Format("MsgPos was succesfully saved. MSGPos_Position = {0}. MSGPos_Inventurnummer = {1}", (posItem.Element("MSGPos_Position")!=null && !string.IsNullOrEmpty(posItem.Element("MSGPos_Position").Value)) ? posItem.Element("MSGPos_Position").Value : "Unknown value", posItem.Element("MSGPos_Inventurnummer").Value ?? "Unknown value"));
                                     }
                                     else
                                     {
                                         FailureItem fi = new FailureItem();
                                         string resultMessage = string.Format("Can't save MsgPos. MSGPos_Position = {0}. MSGPos_Inventurnummer = {1}", (posItem.Element("MSGPos_Position") != null && !string.IsNullOrEmpty(posItem.Element("MSGPos_Position").Value)) ? posItem.Element("MSGPos_Position").Value : "Unknown value", posItem.Element("MSGPos_Inventurnummer").Value ?? "Unknown value");
-                                        Report.FailureHandledItems++;
+                                        Report.CountOfFailures++;
                                         fi.ExceptionMessage = resultMessage;
                                         fi.ItemContent = posItem.ToString();
                                         failureItems.Add(fi);
@@ -86,7 +86,7 @@ namespace WV_newDataProcessor
                                 fi.ExceptionMessage = resultMessage;
                                 fi.ItemContent = groupItem.ToString();
                                 failureItems.Add(fi);
-                                Report.FailureHandledItems += groupItem.Count();
+                                Report.CountOfFailures += groupItem.Count();
                                 _loger.Log(resultMessage);
                             }
                         }

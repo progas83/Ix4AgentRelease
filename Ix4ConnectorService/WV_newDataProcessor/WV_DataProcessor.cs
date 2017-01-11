@@ -126,7 +126,7 @@ namespace WV_newDataProcessor
         private void OnProcessReportResult(object sender, DataReportEventArgs e)
         {
             _loger.Log(e.Report.ToString());
-            _updateTimeWatcher.SetLastUpdateTimeProperty(e.Report.ExportTypeName);
+            _updateTimeWatcher.SetLastUpdateTimeProperty(e.Report.DataTypeName);
             if(OperationReportEvent!=null)
             {
                 OperationReportEvent(sender, e);

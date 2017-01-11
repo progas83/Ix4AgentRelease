@@ -65,7 +65,7 @@ namespace WV_newDataProcessor
                                     // saveMsgPosResult.ItemOperationSuccess = true;
                                     message.Remove();
                                     exportedDataDocument.Save(FileFullName);
-                                    Report.SuccessfullHandledItems++;
+                                    Report.CountOfSuccess++;
                                     _loger.Log(string.Format("GR Msg POS element with MSGPos_ItemNo = {0} succesfully saved", message.Element("MSGPos_ItemNo").Value ?? "Unknown value"));
                                 }
                                 else
@@ -75,7 +75,7 @@ namespace WV_newDataProcessor
                                     fi.ExceptionMessage = resultMessage;
                                     fi.ItemContent = message.ToString();
                                     failureItems.Add(fi);
-                                    Report.FailureHandledItems++;//= groupItem.Count();
+                                    Report.CountOfFailures++;//= groupItem.Count();
                                     _loger.Log(resultMessage);
                                 }
                                 //  report.Operations.Add(saveMsgPosResult);
@@ -88,7 +88,7 @@ namespace WV_newDataProcessor
                                 fi.ExceptionMessage = resultMessage;
                                 fi.ItemContent = message.ToString();
                                 failureItems.Add(fi);
-                                Report.FailureHandledItems++;//= groupItem.Count();
+                                Report.CountOfFailures++;//= groupItem.Count();
                                 _loger.Log(resultMessage);
                             }
                         }

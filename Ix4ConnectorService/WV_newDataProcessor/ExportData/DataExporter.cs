@@ -177,7 +177,7 @@ namespace WV_newDataProcessor
         {
             if (NextExportOperation == null)
                 return;
-            if (Report.Status>=0 && Report.FailureHandledItems==0 )//&& Report.SuccessfullHandledItems>0)
+            if (Report.Status>=0 && Report.CountOfFailures==0 )//&& Report.SuccessfullHandledItems>0)
             {
                 NextExportOperation();
             }
@@ -187,7 +187,7 @@ namespace WV_newDataProcessor
         {
             if(Report!=null)
             {
-                Report.LastUpdate = DateTime.Now;
+                Report.OperationDate = DateTime.Now;
                 EventHandler<DataReportEventArgs> reportEvent = ExportOperationReportEvent;
                 if (reportEvent != null)
                 {

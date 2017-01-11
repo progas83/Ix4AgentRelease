@@ -107,12 +107,12 @@ namespace Ix4Models
             {
                 if (Enum.TryParse<Ix4ImportDataTypes>(ix4DataTypeName, out importedData))
                 {
-                    TimeToCheckImportedData(importedData);
+                    isItTimeToCheck = TimeToCheckImportedData(importedData);
                     /// SetLastUpdateTimePropertyForImportedData(importedData);
                 }
                 else
                 {
-                    TimeToCheckExportedData(ix4DataTypeName);
+                    isItTimeToCheck = TimeToCheckExportedData(ix4DataTypeName);
                     //SetLastUpdateTimePropertyForExportedData(exportDataType);
                 }
             }

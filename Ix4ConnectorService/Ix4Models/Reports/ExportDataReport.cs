@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,7 @@ namespace Ix4Models.Reports
     {
         private int _clientID;
 
+        [JsonProperty("LVSClientID")]
         public int ClientID
         {
             get { return _clientID; }
@@ -18,11 +20,12 @@ namespace Ix4Models.Reports
 
         public ExportDataReport(string exportTypeName)
         {
-            ExportTypeName = exportTypeName;
+            DataTypeName = exportTypeName;
         }
         private string _exportTypeName;
 
-        public string ExportTypeName
+        
+        public string DataTypeName
         {
             get { return _exportTypeName; }
             set { _exportTypeName = value; }
@@ -37,7 +40,7 @@ namespace Ix4Models.Reports
         }
 
 
-        public DateTime LastUpdate
+        public DateTime OperationDate
         {
             get;set;
         }
@@ -51,7 +54,7 @@ namespace Ix4Models.Reports
 
         private int _importedCount;
 
-        public int CountOfImportedItems
+        public int CountOfHandled
         {
             get { return _importedCount; }
             set { _importedCount = value; }
@@ -59,7 +62,7 @@ namespace Ix4Models.Reports
 
         private int _successufulHadledItems;
 
-        public int SuccessfullHandledItems
+        public int CountOfSuccess
         {
             get { return _successufulHadledItems; }
             set { _successufulHadledItems = value; }
@@ -67,7 +70,7 @@ namespace Ix4Models.Reports
 
         private int _failureHandledItems;
 
-        public int FailureHandledItems
+        public int CountOfFailures
         {
             get { return _failureHandledItems; }
             set { _failureHandledItems = value; }
