@@ -49,7 +49,7 @@ namespace WV_newDataProcessor.ImportData
         private static object _o = new object();
 
         public int ClientID { get; internal set; }
-
+        private static readonly int _articleSuccessCode = 1002;
         public void ImportArticles()
         {
             ExportDataReport report = new ExportDataReport(Ix4ImportDataTypes.Articles.ToString());
@@ -70,10 +70,10 @@ namespace WV_newDataProcessor.ImportData
                     _loger.Log("There is no available articles");
                     return;
                 }
-
+                report.CountOfHandled = articles.Count();
 
                 List<LICSRequestArticle> tempAtricles = new List<LICSRequestArticle>();
-
+                List<FailureItem> failureArticles = new List<FailureItem>();
                 for (int i = 0; i < articles.Count; i++)
                 {
                     articles[i].ClientNo = ClientID;
@@ -82,8 +82,23 @@ namespace WV_newDataProcessor.ImportData
                     {
                         request.ArticleImport = tempAtricles.ToArray();
                         LICSResponse resSent = SendLicsRequestToIx4(request, "articleFile.xml");
+
+
                         if (resSent != null && resSent.ArticleImport != null)
                         {
+                            report.CountOfSuccess = report.CountOfSuccess + resSent.ArticleImport.CountOfSuccessful;
+                            report.CountOfFailures = report.CountOfFailures + resSent.ArticleImport.CountOfFailed;
+                            if(resSent.ArticleImport.CountOfFailed>0)
+                            {
+                             foreach(var faultArticleResult in resSent.ArticleImport.Article.Where(a => a.State != _articleSuccessCode).ToList())
+                                {
+                                  LICSRequestArticle faultArticle =  tempAtricles.FirstOrDefault(ta => ta.ArticleNo.Equals(faultArticleResult.ArticleNo));
+                                    FailureItem item = new FailureItem();
+                                    item.ExceptionMessage = faultArticleResult.Message;
+                                    item.ItemContent = faultArticle.SerializeObjectToString();
+                                    failureArticles.Add(item);
+                                }
+                            }
                             countA++;
                             _loger.Log(string.Format("Was sent {0} request with {1} articles.Count of CountOfSuccessful = {2}.Count of failed = {3}", countA, tempAtricles.Count, resSent.ArticleImport.CountOfSuccessful, resSent.ArticleImport.CountOfFailed));
                         }
@@ -91,9 +106,12 @@ namespace WV_newDataProcessor.ImportData
                         {
                             _loger.Log(string.Format("Error import Articles : State = {0} ; Message = {1}", resSent.State, resSent.Message));
                         }
+                        
+
                         tempAtricles = new List<LICSRequestArticle>();
                     }
                 }
+                report.FailureItems = failureArticles.ToArray();
                 SendReportOnOperationComlete(report);
                // _updateTimeWatcher.SetLastUpdateTimeProperty(Ix4ImportDataTypes.Articles);
             }
@@ -170,12 +188,25 @@ namespace WV_newDataProcessor.ImportData
                     }
                     request.OrderImport = orders.ToArray<LICSRequestOrder>();
                 }
-
+                report.CountOfHandled = orders.Count();
                 LICSResponse response = SendLicsRequestToIx4(request, "ordersFile.xml");
-                _loger.Log("Orders result: " + response);
-                SimplestParcerLicsRequest(response);
+                if(response!=null)
+                {
+
+                    _loger.Log("Orders result: " + response);
+                    SimplestParcerLicsRequest(response,report);
+
+                }
+                if(report.CountOfFailures >0)
+                {
+                    foreach(FailureItem fi in report.FailureItems)
+                    {
+                        string failOrderNumber = fi.ItemContent;
+                        var failOrderContent = orders.FirstOrDefault(o => o.OrderNo.Equals(failOrderNumber));
+                        fi.ItemContent = failOrderContent.SerializeObjectToString();
+                    }
+                }
                 SendReportOnOperationComlete(report);
-                //_updateTimeWatcher.SetLastUpdateTimeProperty(Ix4ImportDataTypes.Orders);
             }
             catch (Exception ex)
             {
@@ -245,7 +276,7 @@ namespace WV_newDataProcessor.ImportData
             }
         }
 
-        private void SimplestParcerLicsRequest(LICSResponse objResponse)
+        private void SimplestParcerLicsRequest(LICSResponse objResponse,ExportDataReport exportDataReport)
         {
             try
             {
@@ -277,6 +308,12 @@ namespace WV_newDataProcessor.ImportData
                 }
 
                 if (objResponse.OrderImport != null)
+                {
+                    exportDataReport.CountOfSuccess = objResponse.OrderImport.CountOfSuccessful;
+                    exportDataReport.CountOfFailures = objResponse.OrderImport.CountOfFailed;
+                    exportDataReport.OperationInfo = objResponse.Message;
+
+                    List<FailureItem> failureItems = new List<FailureItem>();
                     foreach (var ord in objResponse.OrderImport.Order)
                     {
                         int status = 2;
@@ -287,12 +324,21 @@ namespace WV_newDataProcessor.ImportData
                         }
                         else
                         {
+                            FailureItem failureItem = new FailureItem();
+                            failureItem.ExceptionMessage = ord.Message;
+                            failureItem.ItemContent = ord.OrderNo;
+
+                            failureItems.Add(failureItem);
                             status = 3;
                             MailLogger.Instance.LogMail(new ContentDescription(string.Format("Order {0} was not imported", ord.OrderNo), string.Format("Message: {0}", ord.Message)));
                         }
-                     //   SendToDB(ord.OrderNo, status);
+                       
                         _loger.Log(string.Format("Has updated order with NO = {0}  new status = {1}", ord.OrderNo, status));
                     }
+
+                    exportDataReport.FailureItems = failureItems.ToArray();
+                }
+                    
             }
             catch (Exception ex)
             {

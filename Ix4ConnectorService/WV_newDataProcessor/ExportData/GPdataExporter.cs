@@ -39,6 +39,7 @@ namespace WV_newDataProcessor
                 {
                     IEnumerable<XElement> gpMessages = exportedDataDocument.Descendants("MSG").ToList();
                     int messagesCount = gpMessages.Count();
+                    Report.CountOfHandled = messagesCount;
                     _loger.Log(string.Format("Have got {0} of {1} items", messagesCount, ExportDataName));
                     if (messagesCount > 0)
                     {

@@ -52,7 +52,7 @@ namespace SimplestLogger
                 try
                 {
                     _streamWriterFile = new StreamWriter(new FileStream(_logFileName, System.IO.FileMode.Append));
-                    _streamWriterFile.WriteLine(string.Format("{0}      {1}", message, string.Format(_newLine, _currentDate, DateTime.Now.ToShortTimeString())));
+                    _streamWriterFile.WriteLine(string.Format("{0}      {1}", message, string.Format(_newLine, _currentDate, DateTime.Now.ToLongTimeString())));
                     _streamWriterFile.Flush();
 
                 }
