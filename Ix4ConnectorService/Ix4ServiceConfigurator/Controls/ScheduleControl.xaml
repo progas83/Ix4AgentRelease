@@ -40,8 +40,8 @@
             <Label Content="{Binding Source={StaticResource Localization},Path=To}" DockPanel.Dock="Left" VerticalAlignment="Top"/>
             <xceed:TimePicker Kind="Local" TimeInterval="1" Value="{Binding EndTime}" Width="100" Height="20" HorizontalAlignment="Left" DockPanel.Dock="Left" VerticalAlignment="Top" />
         </DockPanel>
-        <CheckBox IsChecked="{Binding UseSaturday}" Grid.Column="0" Grid.Row="2" Margin="5" Content="{Binding Source={StaticResource Localization}, Path=UseSat}" DockPanel.Dock="Left"/>
-        <CheckBox IsChecked="{Binding UseSunday}" Grid.Column="1" Grid.Row="2" Margin="5" Content="{Binding Source={StaticResource Localization}, Path=UseSun}" DockPanel.Dock="Left"/>
+        <!--<CheckBox IsChecked="{Binding UseSaturday}" Grid.Column="0" Grid.Row="2" Margin="5" Content="{Binding Source={StaticResource Localization}, Path=UseSat}" DockPanel.Dock="Left"/>
+        <CheckBox IsChecked="{Binding UseSunday}" Grid.Column="1" Grid.Row="2" Margin="5" Content="{Binding Source={StaticResource Localization}, Path=UseSun}" DockPanel.Dock="Left"/>-->
         <DockPanel DockPanel.Dock="Top"  Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="2" Margin="5">
             <Label Content="{Binding Source={StaticResource Localization}, Path=CheckDataEvery}" DockPanel.Dock="Left" VerticalAlignment="Top" VerticalContentAlignment="Center"/>
             <TextBox Text="{Binding TimeGap}" Width="50" Height="20" DockPanel.Dock="Left" VerticalAlignment="Top" VerticalContentAlignment="Center"/>

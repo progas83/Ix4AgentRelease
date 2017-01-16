@@ -114,10 +114,11 @@ namespace ConnectorWorkflowManager
                     _timer.AutoReset = true;
 
                     _timer.Elapsed += OnTimedEvent;
+                    
                 }
 
                 _loger.Log("Service has been started at");
-                _timer.Enabled = true;
+                EnableTimerPrecisely();
             }
             catch (Exception ex)
             {
@@ -126,22 +127,22 @@ namespace ConnectorWorkflowManager
         }
         private bool _isBusy = false;
 
-        public ExportDataReport GetTestData()
-        {
-            ExportDataReport dataReport = new ExportDataReport("Test");
-            dataReport.LVSClientID = 15151212;
-            dataReport.CountOfHandled = 100;
-            dataReport.CountOfFailures = 2;
-            dataReport.FailureItems = new List<FailureItem> { new FailureItem() {  ExceptionMessage= "TestException 1", ItemContent = "Item Content 1"},
-                                                                new FailureItem() {  ExceptionMessage= "TestException 2", ItemContent = "Item Content 3"}}.ToArray();
+        //public ExportDataReport GetTestData()
+        //{
+        //    ExportDataReport dataReport = new ExportDataReport("Test");
+        //    dataReport.LVSClientID = 15151212;
+        //    dataReport.CountOfHandled = 100;
+        //    dataReport.CountOfFailures = 2;
+        //    dataReport.FailureItems = new List<FailureItem> { new FailureItem() {  ExceptionMessage= "TestException 1", ItemContent = "Item Content 1"},
+        //                                                        new FailureItem() {  ExceptionMessage= "TestException 2", ItemContent = "Item Content 3"}}.ToArray();
 
-            dataReport.OperationDate = DateTime.Now;
-            dataReport.OperationInfo = "Test operation";
-            dataReport.Status = -100;
-            dataReport.CountOfSuccess = 98;
+        //    dataReport.OperationDate = DateTime.Now;
+        //    dataReport.OperationInfo = "Test operation";
+        //    dataReport.Status = -100;
+        //    dataReport.CountOfSuccess = 98;
 
-            return dataReport;
-        }
+        //    return dataReport;
+        //}
 
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
@@ -169,8 +170,7 @@ namespace ConnectorWorkflowManager
                 {
                     _isBusy = false;
                     MailLogger.Instance.SendMailReport();
-                    _timer.Enabled = true;
-
+                    EnableTimerPrecisely();
                 }
             }
         }
@@ -188,9 +188,19 @@ namespace ConnectorWorkflowManager
         {
             if (_timer != null && !_timer.Enabled)
             {
-                _timer.Enabled = true;
+                EnableTimerPrecisely();
                 _loger.Log("Service resumed");
             }
+        }
+
+        private void EnableTimerPrecisely()
+        {
+            if (DateTime.Now.Second != 0)
+            {
+                System.Threading.Thread.Sleep((60 - DateTime.Now.Second) * 1000);
+            }
+            _timer.Enabled = true;
+            _loger.Log("Timer enabled at " + DateTime.Now.ToLongTimeString());
         }
 
         public void Stop()

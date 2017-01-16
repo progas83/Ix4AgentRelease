@@ -31,21 +31,21 @@ namespace Ix4Models.SettingsDataModel
             set { _endTime = value; }
         }
 
-        private bool _useSat;
+        //private bool _useSat;
 
-        public bool UseSaturday
-        {
-            get { return _useSat; }
-            set { _useSat = value; }
-        }
+        //public bool UseSaturday
+        //{
+        //    get { return _useSat; }
+        //    set { _useSat = value; }
+        //}
 
-        private bool  _useSun;
+        //private bool  _useSun;
 
-        public bool  UseSunday
-        {
-            get { return _useSun; }
-            set { _useSun = value; }
-        }
+        //public bool  UseSunday
+        //{
+        //    get { return _useSun; }
+        //    set { _useSun = value; }
+        //}
 
         private int _timeGap;
 

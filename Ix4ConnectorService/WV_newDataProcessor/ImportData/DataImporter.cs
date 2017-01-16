@@ -179,11 +179,11 @@ namespace WV_newDataProcessor.ImportData
                     foreach (LICSRequestOrder order in orders)
                     {
                         order.ClientNo = ClientID;
-                        if (order.OrderNo.Equals("1701047"))
+
+                        if (order.OrderNo.Equals("1702190"))
                         {
                           _loger.Log("Have found order with no " + order.OrderNo);
-                          order.Recipient.Name = "Württ. Vers. AG M.Kaczamrek/F.Stüt";
-                            order.Recipient.AdditionalName = string.Empty;// "Galster und Kollegen";
+                          order.Recipient.FirstName = "Württ.";
                         }
                     }
                     request.OrderImport = orders.ToArray<LICSRequestOrder>();
