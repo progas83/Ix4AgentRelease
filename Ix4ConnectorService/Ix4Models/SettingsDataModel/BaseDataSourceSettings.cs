@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ix4Models.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,12 +14,16 @@ namespace Ix4Models.SettingsDataModel
         XmlInclude(typeof(MsSqlOrdersSettings)),
         XmlInclude(typeof(MsSqlDeliveriesSettings))]
     [Serializable]
-    public class BaseDataSourceSettings
+    public abstract class BaseDataSourceSettings: ICryptor
     {
       
         public BaseDataSourceSettings()
         {
 
         }
+
+        public abstract void Decrypt();
+
+        public abstract void Encrypt();
     }
 }

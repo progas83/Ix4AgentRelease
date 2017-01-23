@@ -11,7 +11,10 @@ namespace Ix4Models.SettingsDataModel
         {
             ImportDataSettings = new ImportDataSettings();
             ExportDataSettings = new ExportDataSettings();
+            MailSettings = new MailNotificationSettings();
         }
+
+        public MailNotificationSettings MailSettings { get; set; }
         public ExportDataSettings ExportDataSettings { get; set; }
         public ImportDataSettings ImportDataSettings { get; set; }
         public string LanguageCulture { get; set; }
@@ -36,7 +39,8 @@ namespace Ix4Models.SettingsDataModel
             using (var cryptor = new Cryptor())
             {
                 _password = cryptor.Decrypt(_password);
-             //   PluginSettings.MsSqlSettings.DbSettings.Decrypt();
+                MailSettings.Decrypt();
+                ImportDataSettings.Decrypt();
             }
         }
 
@@ -45,7 +49,8 @@ namespace Ix4Models.SettingsDataModel
             using (var cryptor = new Cryptor())
             {
                 _password = cryptor.Encrypt(_password);
-               // PluginSettings.MsSqlSettings.DbSettings.Encrypt();
+                MailSettings.Encrypt();
+                ImportDataSettings.Encrypt();
             }
             
         }

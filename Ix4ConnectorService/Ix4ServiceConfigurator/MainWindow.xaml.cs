@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.ComponentModel;
 
 namespace Ix4ServiceConfigurator
 {
@@ -18,10 +19,18 @@ namespace Ix4ServiceConfigurator
             InitializeComponent();
 
             _viewModel = new MainWindowViewModel();
-
+            _viewModel.PropertyChanged += OnViewModelPropertyChanged;
             UIMainCustomerInfo.PasswordSet(_viewModel.Customer.Password);
             this.DataContext = _viewModel;
             InitLanguages();
+        }
+
+        private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if(e.PropertyName.Equals("Customer"))
+            {
+                UIMainCustomerInfo.PasswordSet(_viewModel.Customer.Password);
+            }
         }
 
         private void InitLanguages()
@@ -69,6 +78,7 @@ namespace Ix4ServiceConfigurator
         {
             if (_viewModel != null)
             {
+                _viewModel.PropertyChanged -= OnViewModelPropertyChanged;
                 _viewModel.Dispose();
             }
             Properties.Settings.Default.Save();

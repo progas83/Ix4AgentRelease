@@ -5,7 +5,7 @@ using System;
 namespace Ix4Models.SettingsDataModel
 {
     [Serializable]
-    public class MsSqlSettings : BaseDataSourceSettings, ICryptor
+    public class MsSqlSettings : BaseDataSourceSettings 
     {
 
         private string _dbPassword;
@@ -48,7 +48,7 @@ namespace Ix4Models.SettingsDataModel
             set { _serverAdress = value; }
         }
 
-        public void Decrypt()
+        public override void Decrypt()
         {
             using (var cryptor = new Cryptor())
             {
@@ -60,7 +60,7 @@ namespace Ix4Models.SettingsDataModel
             }
         }
 
-        public void Encrypt()
+        public override void Encrypt()
         {
             using (var cryptor = new Cryptor())
             {
@@ -69,7 +69,6 @@ namespace Ix4Models.SettingsDataModel
                 if (!string.IsNullOrEmpty(_dbUserName))
                     _dbUserName = cryptor.Encrypt(_dbUserName);
             }
-
         }
     }
 }

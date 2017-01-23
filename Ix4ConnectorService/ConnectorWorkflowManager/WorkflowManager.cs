@@ -48,7 +48,7 @@ namespace ConnectorWorkflowManager
                 _ix4StatisticClient.PostReport(e.Report);
                 _loger.Log(string.Format("Report has been sent"));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _loger.Log(ex);
             }
@@ -114,7 +114,7 @@ namespace ConnectorWorkflowManager
                     _timer.AutoReset = true;
 
                     _timer.Elapsed += OnTimedEvent;
-                    
+
                 }
 
                 _loger.Log("Service has been started at");
@@ -148,29 +148,31 @@ namespace ConnectorWorkflowManager
         {
             if (!_isBusy && _currentDataProcessor != null)
             {
-                _timer.Enabled = false;
-                _isBusy = true;
-                try
+                if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
                 {
-                    if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
+                    _timer.Enabled = false;
+                    _isBusy = true;
+                    try
                     {
+
                         _loger.Log("Start Import data");
                         _currentDataProcessor.ImportData();
                         _loger.Log("Finish Import data");
                         _loger.Log("Start Export data");
                         _currentDataProcessor.ExportData();
                         _loger.Log("Finish Export data");
+
                     }
-                }
-                catch (Exception ex)
-                {
-                    _loger.Log(ex);
-                }
-                finally
-                {
-                    _isBusy = false;
-                    MailLogger.Instance.SendMailReport();
-                    EnableTimerPrecisely();
+                    catch (Exception ex)
+                    {
+                        _loger.Log(ex);
+                    }
+                    finally
+                    {
+                        _isBusy = false;
+                        MailLogger.Instance.SendMailReport();
+                        EnableTimerPrecisely();
+                    }
                 }
             }
         }

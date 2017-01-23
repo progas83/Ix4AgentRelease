@@ -6,6 +6,8 @@ using System;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -63,7 +65,7 @@ namespace Ix4ServiceConfigurator.ViewModel.MsSql
             DbNames = new ObservableCollection<string>();
             if(!string.IsNullOrEmpty(_msSqlSettings.ServerAdress))
             {
-                CheckMsSqlConnection();
+               CheckMsSqlConnection(); 
             }
             
             DbConnectionStatus = _testConnectionButton;
@@ -104,29 +106,58 @@ namespace Ix4ServiceConfigurator.ViewModel.MsSql
               //  CheckMsSqlConnection();
             }
         }
-
+        private static object _lock = new object();
         public void CheckMsSqlConnection()
         {
+            lock(_lock)
+            {
+                CheckMsSqlConnection1();
+            }
+        }
+
+        private CancellationTokenSource _openDbCancellationTokenSource = new CancellationTokenSource();
+        private bool _busy = false;
+        public async void CheckMsSqlConnection1()
+        {
+            if(_busy)
+            {
+                _openDbCancellationTokenSource.Cancel();
+                _openDbCancellationTokenSource = new CancellationTokenSource();
+            }
             string connectionString = _msSqlSettings.BuilDBConnection();
             try
             {
+                _busy = true;
                 using (var con = new SqlConnection(connectionString))
                 {
-                    con.Open();
-                    DbConnectionStatus = string.Format("Connection Success. Server version is {0}", con.ServerVersion);
-                    DataTable databases = con.GetSchema("Databases");
-                    DbNames.Clear();
-                    foreach (DataRow database in databases.Rows)
+                    await con.OpenAsync(_openDbCancellationTokenSource.Token);
+                    if(con.State== ConnectionState.Open)
                     {
-                        DbNames.Add(database.Field<String>("database_name"));
+                        DbConnectionStatus = string.Format("Connection Success. Server version is {0}", con.ServerVersion);
+                        DataTable databases = con.GetSchema("Databases");
+                        DbNames.Clear();
+                        foreach (DataRow database in databases.Rows)
+                        {
+                            DbNames.Add(database.Field<String>("database_name"));
+                        }
+                        ConnectionStatusError = "Connection opened";
                     }
                 }
+            }
+            catch(TaskCanceledException taskCancelled)
+            {
+
             }
             catch (Exception ex)
             {
                 DbConnectionStatus = "Failed connection";
+                var t = ex.GetType();
                 ConnectionStatusError = ex.Message;
                 _msSqlSettings.DataBaseName = string.Empty;
+            }
+            finally
+            {
+                _busy = false;
             }
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ix4Models.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Xml.Serialization;
 namespace Ix4Models.SettingsDataModel
 {
     [Serializable]
-    public class ImportDataSettings
+    public class ImportDataSettings : ICryptor
     {
         public ImportDataSettings()
         {
@@ -20,6 +21,38 @@ namespace Ix4Models.SettingsDataModel
         public BaseLicsRequestSettings OrderSettings { get; set; }
         public BaseLicsRequestSettings DeliverySettings { get; set; }
 
+        public void Decrypt()
+        {
+            if (ArticleSettings.DataSourceSettings != null)
+            {
+                ArticleSettings.DataSourceSettings.Decrypt();
+            }
+            if (OrderSettings.DataSourceSettings != null)
+            {
+                OrderSettings.DataSourceSettings.Decrypt();
+            }
+            if (DeliverySettings.DataSourceSettings != null)
+            {
+                DeliverySettings.DataSourceSettings.Decrypt();
+            }
+
+        }
+
+        public void Encrypt()
+        {
+            if (ArticleSettings.DataSourceSettings != null)
+            {
+                ArticleSettings.DataSourceSettings.Encrypt();
+            }
+            if (OrderSettings.DataSourceSettings != null)
+            {
+                OrderSettings.DataSourceSettings.Encrypt();
+            }
+            if (DeliverySettings.DataSourceSettings != null)
+            {
+                DeliverySettings.DataSourceSettings.Encrypt();
+            }
+        }
     }
 
     [XmlInclude(typeof(ArticleSettings)), XmlInclude(typeof(OrderSettings)), XmlInclude(typeof(DeliverySettings))]
@@ -35,11 +68,11 @@ namespace Ix4Models.SettingsDataModel
         public bool IsActivate { get; set; }
 
         public bool IncludeArticlesToRequest { get; set; }
-       
+
         public CustomDataSourceTypes SourceDataType { get; set; }
-        
+
         public SchedulerSettings Scheduler { get; set; }
-     
+
         public BaseDataSourceSettings DataSourceSettings { get; set; }
 
         [XmlIgnore]

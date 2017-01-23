@@ -24,6 +24,7 @@ namespace Ix4ServiceConfigurator.Controls
         public CustomerInfoControl()
         {
             InitializeComponent();
+            
         }
 
         public SecureString PasswordGet

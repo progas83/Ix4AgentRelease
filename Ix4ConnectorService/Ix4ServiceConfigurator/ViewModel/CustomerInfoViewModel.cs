@@ -26,31 +26,15 @@ namespace Ix4ServiceConfigurator.ViewModel
             ImportDataViewModel = new ImportDataSettingsViewModel(Customer.ImportDataSettings);
 
             ExportDataViewModel = new ExportDataSettingsViewModel(Customer.ExportDataSettings);
+            MailViewModel = new MailSettingsViewModel(Customer.MailSettings);
 
 
         }
+        public MailSettingsViewModel MailViewModel { get; set; }
 
-       public ImportDataSettingsViewModel ImportDataViewModel { get; set; }
+        public ImportDataSettingsViewModel ImportDataViewModel { get; set; }
 
         public ExportDataSettingsViewModel ExportDataViewModel { get; set; }
-
-        //private Ix4RequestProps _TabSelectedItem;
-
-        //public Ix4RequestProps TabSelectedItem
-        //{
-        //    get { return _TabSelectedItem; }
-        //    set { _TabSelectedItem = value; OnPropertyChanged("TabSelectedItem"); }
-        //}
-
-        //private int _TabSelectedIndex;
-
-        //public int TabSelectedIndex
-        //{
-        //    get { return _TabSelectedIndex; }
-        //    set { _TabSelectedIndex = value; OnPropertyChanged("TabSelectedIndex"); }
-        //}
-
-        // public ContentPresenter SendLicsRequestSettings { get; set; }
 
 
         public bool? ShowCustomerInfoWindow()
@@ -83,13 +67,6 @@ namespace Ix4ServiceConfigurator.ViewModel
                 Customer.Password = ConvertToUnsecureString(secureString);
             }
 
-            //Customer.PluginSettings = _compositor.SavePluginsSettings();
-            //if(Customer.ScheduleSettings.ScheduledIssues==null)
-            //{
-            //    Customer.ScheduleSettings.ScheduledIssues = new ScheduledItem[] {   new ScheduledItem(Ix4RequestProps.Articles, 0),
-            //                                                                        new ScheduledItem(Ix4RequestProps.Orders, 0),
-            //                                                                        new ScheduledItem(Ix4RequestProps.Deliveries, 0)};
-            //}
             XmlConfigurationManager.Instance.UpdateCustomerInformation(Customer);
 
             _view.DialogResult = true;

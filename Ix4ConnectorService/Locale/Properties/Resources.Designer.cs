@@ -151,6 +151,15 @@ namespace Locale.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to General Settings.
+        /// </summary>
+        public static string GeneralSettings {
+            get {
+                return ResourceManager.GetString("GeneralSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Include Articles to Request.
         /// </summary>
         public static string IncludeArticlesToRequest {
@@ -169,11 +178,29 @@ namespace Locale.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mail adress:.
+        /// </summary>
+        public static string MailAdress {
+            get {
+                return ResourceManager.GetString("MailAdress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Mail From.
         /// </summary>
         public static string MailFrom {
             get {
                 return ResourceManager.GetString("MailFrom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mail gateway settings.
+        /// </summary>
+        public static string MailGatewaySettings {
+            get {
+                return ResourceManager.GetString("MailGatewaySettings", resourceCulture);
             }
         }
         
@@ -331,6 +358,15 @@ namespace Locale.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Server statistics settings.
+        /// </summary>
+        public static string ServerStatisticsSettings {
+            get {
+                return ResourceManager.GetString("ServerStatisticsSettings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Service name:.
         /// </summary>
         public static string ServiceName {
@@ -354,6 +390,24 @@ namespace Locale.Properties {
         public static string SettingsButton {
             get {
                 return ResourceManager.GetString("SettingsButton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMTP server adress:.
+        /// </summary>
+        public static string SmtpServerAdress {
+            get {
+                return ResourceManager.GetString("SmtpServerAdress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SMTP server port:.
+        /// </summary>
+        public static string SmtpServerPort {
+            get {
+                return ResourceManager.GetString("SmtpServerPort", resourceCulture);
             }
         }
         

@@ -231,4 +231,22 @@
   <data name="WorkingHours" xml:space="preserve">
     <value>Working hours</value>
   </data>
+  <data name="GeneralSettings" xml:space="preserve">
+    <value>General Settings</value>
+  </data>
+  <data name="MailAdress" xml:space="preserve">
+    <value>Mail adress:</value>
+  </data>
+  <data name="MailGatewaySettings" xml:space="preserve">
+    <value>Mail gateway settings</value>
+  </data>
+  <data name="ServerStatisticsSettings" xml:space="preserve">
+    <value>Server statistics settings</value>
+  </data>
+  <data name="SmtpServerAdress" xml:space="preserve">
+    <value>SMTP server adress:</value>
+  </data>
+  <data name="SmtpServerPort" xml:space="preserve">
+    <value>SMTP server port:</value>
+  </data>
 </root>

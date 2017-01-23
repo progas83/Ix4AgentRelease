@@ -101,6 +101,7 @@
     <Compile Include="ViewModel\ImportDataItemViewModel.cs" />
     <Compile Include="ViewModel\ImportDataSettingsViewModel.cs" />
     <Compile Include="ViewModel\IPwd.cs" />
+    <Compile Include="ViewModel\MailSettingsViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\CustomerInfoViewModel.cs" />
     <Compile Include="ViewModel\MsSql\DBSettingsViewModel.cs" />
@@ -123,7 +124,7 @@
     <Compile Include="View\MsSql\MsSqlOrdersSettingsView.xaml.cs">
       <DependentUpon>MsSqlOrdersSettingsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\MsSql\PwdAssistant.cs" />
+    <Compile Include="View\PwdAssistant.cs" />
     <Page Include="Controls\CustomerInfoControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

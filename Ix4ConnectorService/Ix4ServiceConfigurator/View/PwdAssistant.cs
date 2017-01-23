@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 
-namespace Ix4ServiceConfigurator.View.MsSql
+namespace Ix4ServiceConfigurator.View
 {
     public static class PwdAssistant
     {

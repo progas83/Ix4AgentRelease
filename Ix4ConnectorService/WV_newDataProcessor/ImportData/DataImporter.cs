@@ -180,13 +180,8 @@ namespace WV_newDataProcessor.ImportData
                     {
                         order.ClientNo = ClientID;
 
-                        if (order.OrderNo.Equals("1702854"))
-                        {
-                          _loger.Log("Have found order with no " + order.OrderNo);
-                          order.Recipient.FirstName = "Württ.";
-                        }
 
-                        if (order.OrderNo.Equals("1702851"))
+                        if (order.OrderNo.Equals("1703434"))
                         {
                             _loger.Log("Have found order with no " + order.OrderNo);
                             order.Recipient.Name = "VBX/Fr.Spahlinger L6,14.OG-1405-07";

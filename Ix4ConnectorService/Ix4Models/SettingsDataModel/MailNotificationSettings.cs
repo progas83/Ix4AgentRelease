@@ -1,4 +1,6 @@
-﻿using Ix4Models.Enums;
+﻿using Ix4Models.CryptoModule;
+using Ix4Models.Enums;
+using Ix4Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,8 @@ using System.Xml.Serialization;
 
 namespace Ix4Models.SettingsDataModel
 {
-    public class MailNotificationSettings
+    [Serializable]
+    public class MailNotificationSettings : ICryptor
     {
         public string Host { get; set; }
         public int Port { get; set; }
@@ -18,12 +21,34 @@ namespace Ix4Models.SettingsDataModel
         public string MailPass { get; set; }
         public bool IsBodyHtml { get; set; }
         public NotificationRecipient[] Recipients { get; set; }
-
         public MailNotificationSettings()
         {
 
         }
 
+        public void Decrypt()
+        {
+            using (var cryptor = new Cryptor())
+            {
+                if (!string.IsNullOrEmpty(MailPass))
+                    MailPass = cryptor.Decrypt(MailPass);
+                if (!string.IsNullOrEmpty(MailPass))
+                    MailPass = cryptor.Decrypt(MailPass);
+
+            }
+        }
+
+        public void Encrypt()
+        {
+            using (var cryptor = new Cryptor())
+            {
+                if (!string.IsNullOrEmpty(MailPass))
+                    MailPass = cryptor.Encrypt(MailPass);
+                if (!string.IsNullOrEmpty(MailPass))
+                    MailPass = cryptor.Encrypt(MailPass);
+            }
+
+        }
     }
     [Serializable]
     public class NotificationRecipient
@@ -37,5 +62,8 @@ namespace Ix4Models.SettingsDataModel
 
         [XmlAttribute]
         public string MailRecipient { get; set; }
+
+        [XmlAttribute]
+        public bool Enable { get; set; }
     }
 }

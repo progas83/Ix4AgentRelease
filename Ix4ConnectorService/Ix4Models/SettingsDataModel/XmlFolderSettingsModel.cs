@@ -65,5 +65,15 @@ namespace Ix4Models.SettingsDataModel
             get { return _actionOnSuccess; }
             set { _actionOnSuccess = value; }
         }
+
+        public override void Decrypt()
+        {
+            //throw new NotImplementedException();
+        }
+
+        public override void Encrypt()
+        {
+            //throw new NotImplementedException();
+        }
     }
 }
