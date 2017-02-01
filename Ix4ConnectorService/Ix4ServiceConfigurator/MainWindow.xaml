@@ -23,7 +23,30 @@
     <DockPanel>
         <Menu Height="25" DockPanel.Dock="Top" VerticalAlignment="Top">
             <MenuItem Name="UILanguages" Header="{Binding Source={StaticResource Localization},Path=SelectLanguage}"/>
-            <MenuItem Header="{Binding Source={StaticResource Localization},Path=NotificationSettings}"/>
+            <MenuItem Name="UIRecipients" Header="{Binding Source={StaticResource Localization},Path=MailNotificationSettings}" ItemsSource="{Binding RecipientsMail}"  >
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="MenuItem">
+                        <Setter Property="Header" Value="{Binding RecipientAdress}"/>
+                        <Setter Property="IsChecked" Value="{Binding EnableRecipient,Mode=TwoWay}"/>
+                        <Setter Property="Command" Value="{Binding DataContext.MenuItemCommand,
+        RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Menu}}}" />
+                        <Setter Property="CommandParameter" Value="{Binding}"/>
+                        <Setter Property="IsCheckable" Value="True"/>
+                    </Style>
+                </MenuItem.ItemContainerStyle>
+                <!--<MenuItem.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            --><!--<CheckBox IsThreeState="False" IsChecked="{Binding EnableRecipient}" DockPanel.Dock="Left"/>--><!--
+                            <Label Content="{Binding RecipientAdress}" DockPanel.Dock="Left"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </MenuItem.ItemTemplate>-->
+            </MenuItem>
+            
+
+
+
         </Menu>
         <Grid DockPanel.Dock="Top">
             <Grid.ColumnDefinitions>

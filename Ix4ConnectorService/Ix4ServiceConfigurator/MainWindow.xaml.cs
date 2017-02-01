@@ -23,6 +23,7 @@ namespace Ix4ServiceConfigurator
             UIMainCustomerInfo.PasswordSet(_viewModel.Customer.Password);
             this.DataContext = _viewModel;
             InitLanguages();
+           // InitMailRecipientsMenu();
         }
 
         private void OnViewModelPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -32,7 +33,22 @@ namespace Ix4ServiceConfigurator
                 UIMainCustomerInfo.PasswordSet(_viewModel.Customer.Password);
             }
         }
-
+        private void InitMailRecipientsMenu()
+        {
+            
+           // MenuItem mailRecipientsMenu = null;
+            //if (!_viewModel.Customer.MailSettings.Equals(null))
+            //{
+            //    foreach(var recipient in _viewModel.Customer.MailSettings.Recipients)
+            //    {
+            //       MenuItem mailRecipientsMenu = new MenuItem();
+            //       // mailRecipientsMenu.Header = recipient.RecipientAdress;
+            //      //  mailRecipientsMenu.IsChecked = recipient.EnableRecipient;
+            //       // mailRecipientsMenu.Template = (ControlTemplate)TryFindResource("MenuItemRadioButtonRecipientTemplate");
+            //        UIRecipients.Items.Add(mailRecipientsMenu);
+            //    }
+            //}
+        }
         private void InitLanguages()
         {
             MenuItem langMenuItem = null;
@@ -43,6 +59,10 @@ namespace Ix4ServiceConfigurator
                 langMenuItem.Click += LangMenuItem_Click;
                 langMenuItem.Tag = cultureInfo;
                 langMenuItem.IsChecked = IsLanguageSelected(cultureInfo);
+                if(langMenuItem.IsChecked)
+                {
+                    SetCulture(cultureInfo);
+                }
                 langMenuItem.Template = (ControlTemplate)TryFindResource("MenuItemRadioButtonTemplate");
                 this.UILanguages.Items.Add(langMenuItem);
             }
@@ -54,7 +74,6 @@ namespace Ix4ServiceConfigurator
             if(Properties.Settings.Default.Language.Equals(culture.Name))
             {
                 result = true;
-                SetCulture(culture);
             }
             return result;
         }

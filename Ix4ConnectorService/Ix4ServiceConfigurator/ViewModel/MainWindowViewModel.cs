@@ -9,6 +9,8 @@ using RichTextContainer = SimplestLogger.VisualLogging.LogInfoArgs;
 using SimplestLogger.VisualLogging;
 using System.Windows.Data;
 using System.Globalization;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Ix4ServiceConfigurator.ViewModel
 {
@@ -20,21 +22,33 @@ namespace Ix4ServiceConfigurator.ViewModel
             InstallationCommand InstallationCommand = new InstallationCommand();
             InstallationCommand.ServiceInfoNeedToUpdate += OnServiceInfoNeedToUpdate;
             InstallServiceCommand = InstallationCommand;
-            UpdateCustomerInfo();
+            UpdateCustomerModel();
             MakeChangesCommad MakeChangesCommand = new MakeChangesCommad();
-            MakeChangesCommand.CustomInformationSaved += OnCustomerInfoNeedToUpdate;
+            MakeChangesCommand.CustomInformationSaved += OnCustomerModelNeedToUpdate;
             MakeChangesCmd = MakeChangesCommand;
             _checkServiceStatusTimer = new System.Timers.Timer(1000);
             _checkServiceStatusTimer.AutoReset = true;
             _checkServiceStatusTimer.Elapsed += OnCheckStatusTimerElapsed;
             _checkServiceStatusTimer.Enabled = true;
-
+            RecipientsMail = new ObservableCollection<MailRecipient>(Customer.MailSettings.Recipients);
+            RecipientsMail.CollectionChanged += RecipientsMail_CollectionChanged;
             SimplestLogger.VisualLogging.VisualLogger.Instance.LogEvent += OnLoggingEvent;
-
-            
+            MenuItemCommand = new SelectMailRecipientCommand();
+            MenuItemCommand.NeedToUpdate += MenuItemCommand_NeedToUpdate;
         }
 
-        
+        private void MenuItemCommand_NeedToUpdate(object sender, EventArgs e)
+        {
+            OnPropertyChanged("RecipientsMail");
+            //throw new NotImplementedException();
+        }
+
+        private void RecipientsMail_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            //throw new NotImplementedException();
+        }
+
+        public SelectMailRecipientCommand MenuItemCommand { get; set; }
 
         private void OnLoggingEvent(object sender, LogInfoArgs e)
         {
@@ -65,13 +79,12 @@ namespace Ix4ServiceConfigurator.ViewModel
         }
          
 
-        private void OnCustomerInfoNeedToUpdate(object sender, EventArgs e)
+        private void OnCustomerModelNeedToUpdate(object sender, EventArgs e)
         {
-            UpdateCustomerInfo();
-
+            UpdateCustomerModel();
         }
 
-        private void UpdateCustomerInfo()
+        private void UpdateCustomerModel()
         {
             Customer = XmlConfigurationManager.Instance.GetCustomerInformation();
             
@@ -105,6 +118,14 @@ namespace Ix4ServiceConfigurator.ViewModel
                 _customer = value;
                 OnPropertyChanged("Customer");
             }
+        }
+
+        //public MailRecipient RecipientsMail
+      //  private MailRecipient RecipientsMail;
+
+        public ObservableCollection<MailRecipient> RecipientsMail
+        {
+            get;set;
         }
 
         public ICommand InstallServiceCommand { get; private set; }

@@ -12,7 +12,7 @@
     <!--<UserControl.Resources>
         <locale:CultureResources x:Key="La"
     </UserControl.Resources>-->
-    <DockPanel>
+    <DockPanel >
         <!--<Label Height="50" HorizontalAlignment="Stretch" DockPanel.Dock="Top" Content="{Binding Source={StaticResource Localization}, Path=MailSettingsControl}"/>-->
         <Grid DockPanel.Dock="Top" Margin="5,5,5,10">
             <Grid.ColumnDefinitions>
@@ -20,6 +20,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
+                <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
@@ -36,6 +37,23 @@
             <Label Content="{Binding Source={StaticResource Localization}, Path=MailFrom}"  Grid.Row="4" />
             <Label Content="{Binding Source={StaticResource Localization}, Path=MailPass}"  Grid.Row="5" />
 
+            <DockPanel Grid.Row="6" LastChildFill="False" Margin="5" >
+                <Label DockPanel.Dock="Top" Content="{Binding Source={StaticResource Localization},Path=EnterRecipients}"
+                       HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                <TextBox DockPanel.Dock="Top" x:Name="UIRecipientMail" />
+                <!--<StackPanel HorizontalAlignment="Stretch" >
+                    <Label DockPanel.Dock="Top" Content="{Binding Source={StaticResource Localization},Path=EnterRecipients}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"/>
+                    <TextBox DockPanel.Dock="Top" Text="{Binding NextRecipient}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch"></TextBox>
+                </StackPanel>-->
+                <Button DockPanel.Dock="Top" HorizontalAlignment="Right" Margin="0,5,0,0" Command="{Binding AddRecipient}" 
+                        CommandParameter="{Binding ElementName=UIRecipientMail}">
+                    <DockPanel>
+                        <Image Height="19" Width="19" Source="pack://application:,,,/Icons/add_recipient.png"/>
+                        <Label Content="{Binding Source={StaticResource Localization}, Path=Add}" />
+                    </DockPanel>
+                </Button>
+            </DockPanel>
+
             <TextBox Text="{Binding Host}"  Grid.Column="1" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
             <TextBox Text="{Binding Port}" Grid.Column="1" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" PreviewTextInput="PreviewDigitInput"/>
             <TextBox Text="{Binding TimeOut}" Grid.Column="1" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Stretch" PreviewTextInput="PreviewDigitInput"/>
@@ -45,6 +63,21 @@
             <PasswordBox x:Name="UIPwdBox" Grid.Column="1" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Stretch" 
                          l:PwdAssistant.BindPassword="true"
                    l:PwdAssistant.BoundPassword="{Binding Path=MailPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"      />
+            <ListBox x:Name="UIRecipientsList" Grid.Column="1" Grid.Row="6" ItemsSource="{Binding Recipients}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel>
+                            <CheckBox Height="19" Width="19" IsThreeState="False" IsChecked="{Binding EnableRecipient}"/>
+                            <Label Content="{Binding RecipientAdress}"/>
+
+                            <Button Command="{Binding ElementName=UIRecipientsList, Path=DataContext.RemoveRecipient}" CommandParameter="{Binding}">
+                                <Image Height="19" Width="19" Source="pack://application:,,,/Icons/remove_recipient.png" />
+                            </Button>
+
+                        </DockPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </DockPanel>
     

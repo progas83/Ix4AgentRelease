@@ -32,6 +32,13 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
@@ -50,11 +57,10 @@
     <Compile Include="BaseViewModel.cs" />
     <Compile Include="CryptoModule\Cryptor.cs" />
     <Compile Include="CurrentServiceInformation.cs" />
-    <Compile Include="CustomDataSourceTypes.cs" />
+    <Compile Include="Enums\CustomDataSourceTypes.cs" />
     <Compile Include="DataProviders\MsSqlDataProvider\MsSqlDataProvider.cs" />
     <Compile Include="DataProviders\XmlDataProvider\XmlDataProvider.cs" />
     <Compile Include="DbConnectionStringBuilder.cs" />
-    <Compile Include="EDLastUpdate.cs" />
     <Compile Include="Enums\MailLogLevel.cs" />
     <Compile Include="Enums\XmlFolderTypes.cs" />
     <Compile Include="Enums\XmlResultHandleActions.cs" />
@@ -63,7 +69,6 @@
     <Compile Include="Interfaces\IDataProcessor.cs" />
     <Compile Include="Interfaces\IDataProvider.cs" />
     <Compile Include="Interfaces\INameMetadata.cs" />
-    <Compile Include="Interfaces\IPluginSettings.cs" />
     <Compile Include="Enums\Ix4ImportDataTypes.cs" />
     <Compile Include="Properties\LastUpdate.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -82,7 +87,6 @@
     <Compile Include="Schema\WV\Wv_ExportData.cs" />
     <Compile Include="Schema\WV\WV_ExportInventureData.cs" />
     <Compile Include="SettingsDataModel\BaseDataSourceSettings.cs" />
-    <Compile Include="SettingsDataModel\CsvPluginSettings.cs" />
     <Compile Include="SettingsDataModel\CustomerInfo.cs" />
     <Compile Include="SettingsDataModel\ExportDataItemSettings.cs" />
     <Compile Include="SettingsDataModel\ExportDataSettings.cs" />
@@ -93,7 +97,6 @@
     <Compile Include="SettingsDataModel\SchedulerSettings.cs" />
     <Compile Include="SettingsDataModel\TimeSign.cs" />
     <Compile Include="SettingsDataModel\XmlFolderSettingsModel.cs" />
-    <Compile Include="SettingsDataModel\XmlPluginSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schema\LICSResponse.cs">
       <DependentUpon>LICSResponse.xsd</DependentUpon>
@@ -118,7 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SinplestLogger\SimplestLogger.csproj">
-      <Project>{18B499E8-956D-45C0-A9F7-6314CC00B777}</Project>
+      <Project>{18b499e8-956d-45c0-a9f7-6314cc00b777}</Project>
       <Name>SimplestLogger</Name>
     </ProjectReference>
   </ItemGroup>

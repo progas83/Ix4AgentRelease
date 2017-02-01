@@ -73,9 +73,12 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AutomaticalServiceInstaller.cs" />
+    <Compile Include="Commands\AddMailRecipientCommand.cs" />
     <Compile Include="Commands\DbConnectionCommand.cs" />
     <Compile Include="Commands\InstallationCommand.cs" />
     <Compile Include="Commands\MakeChangesCommad.cs" />
+    <Compile Include="Commands\RemoveMailRecipientCommand.cs" />
+    <Compile Include="Commands\SelectMailRecipientCommand.cs" />
     <Compile Include="Controls\CustomerInfoControl.xaml.cs">
       <DependentUpon>CustomerInfoControl.xaml</DependentUpon>
     </Compile>
@@ -231,7 +234,9 @@
       <Name>SimplestLogger</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Icons\remove_recipient.png" />
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\Ix4Logo.jpg" />
   </ItemGroup>
@@ -243,6 +248,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Icons\yellow-ball.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Icons\add_recipient.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

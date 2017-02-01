@@ -249,4 +249,13 @@
   <data name="SmtpServerPort" xml:space="preserve">
     <value>SMTP server port:</value>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+  </data>
+  <data name="EnterRecipients" xml:space="preserve">
+    <value>Enter recipient's mail</value>
+  </data>
+  <data name="MailNotificationSettings" xml:space="preserve">
+    <value>Mail Recipients</value>
+  </data>
 </root>

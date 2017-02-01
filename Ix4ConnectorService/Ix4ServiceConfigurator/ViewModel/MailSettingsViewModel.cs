@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Ix4Models.SettingsDataModel;
 using Ix4Models;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using Ix4ServiceConfigurator.Commands;
 
 namespace Ix4ServiceConfigurator.ViewModel
 {
@@ -12,9 +15,22 @@ namespace Ix4ServiceConfigurator.ViewModel
     {
         private MailNotificationSettings _mailSettings;
 
+        public event EventHandler CanExecuteChanged;
+
         public MailSettingsViewModel(MailNotificationSettings mailSettings)
         {
             this._mailSettings = mailSettings;
+            
+            Recipients = new ObservableCollection<MailRecipient>(_mailSettings.Recipients);// (mailSettings.Recipients);
+            Recipients.CollectionChanged += OnRecipientsCollectionChanged;
+           // Recipients.Add(new MailRecipient() { RecipientAdress = "test@terst.tu", EnableRecipient = true });
+            RemoveRecipient = new RemoveMailRecipientCommand(Recipients);
+            AddRecipient = new AddMailRecipientCommand(Recipients);
+        }
+
+        private void OnRecipientsCollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            _mailSettings.Recipients = Recipients.ToArray();
         }
 
         public string Host
@@ -76,7 +92,21 @@ namespace Ix4ServiceConfigurator.ViewModel
                 OnPropertyChanged("MailPass");
             }
         }
-        public bool IsBodyHtml { get; set; }
-        public NotificationRecipient[] Recipients { get; set; }
+       // public bool IsBodyHtml { get; set; }
+        public ObservableCollection<MailRecipient> Recipients { get; set; }
+
+        public ICommand RemoveRecipient { get; set; }
+
+        public ICommand AddRecipient { get; set; }
+
+        //public bool CanExecute(object parameter)
+        //{
+        //    return true;//  throw new NotImplementedException();
+        //}
+
+        //public void Execute(object parameter)
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }

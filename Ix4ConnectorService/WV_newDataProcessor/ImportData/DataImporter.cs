@@ -22,12 +22,21 @@ namespace WV_newDataProcessor.ImportData
         public event EventHandler<DataReportEventArgs> ImportOperationReportEvent;
         // private UpdateTimeWatcher _updateTimeWatcher;
         protected IProxyIx4WebService _ix4WebServiceConnector;
+
+        private Dictionary<string, string> _abbrevDict = null; 
         public DataImporter(ImportDataSettings importDataSettings,IProxyIx4WebService ix4WebServiceConnector)//, UpdateTimeWatcher updateTimeWatcher)
         {
             _importDataSettings = importDataSettings;
             _ix4WebServiceConnector = ix4WebServiceConnector;
             _importDataProvider = new ImportDataSourcesBuilder(importDataSettings);
+            
            // _updateTimeWatcher = updateTimeWatcher;// new UpdateTimeWatcher(CustomerSettings.ImportDataSettings, CustomerSettings.ExportDataSettings);
+        }
+
+        private void FillAbbreviations(out Dictionary<string, string> abbrevDict)
+        {
+            abbrevDict = new Dictionary<string, string>();
+            abbrevDict.Add("Württembergisch", "Württ.");
         }
        
         private void SendReportOnOperationComlete(ExportDataReport report)
@@ -179,12 +188,16 @@ namespace WV_newDataProcessor.ImportData
                     foreach (LICSRequestOrder order in orders)
                     {
                         order.ClientNo = ClientID;
-
-
-                        if (order.OrderNo.Equals("1703434"))
+                        if (order.OrderNo.Equals("1704866"))
                         {
-                            _loger.Log("Have found order with no " + order.OrderNo);
-                            order.Recipient.Name = "VBX/Fr.Spahlinger L6,14.OG-1405-07";
+                            _loger.Log(string.Format("Have found order with no {0} and FirstName {1}",order.OrderNo,order.Recipient.FirstName));
+                            order.Recipient.FirstName = "Württ.";
+                        }
+                        if (order.OrderNo.Equals("1705639"))
+                        {
+                            _loger.Log(string.Format("Have found order with no {0} and FirstName {1}", order.OrderNo, order.Recipient.FirstName));
+                            order.Recipient.AdditionalName = order.Recipient.Name.Replace("Alexander Kretzer", string.Empty); ;
+                            order.Recipient.Name = "Alexander Kretzer";
                         }
                     }
                     request.OrderImport = orders.ToArray<LICSRequestOrder>();

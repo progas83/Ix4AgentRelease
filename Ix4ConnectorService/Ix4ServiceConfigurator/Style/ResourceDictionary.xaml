@@ -56,4 +56,55 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+
+    <!--<ControlTemplate x:Key="MenuItemRadioButtonRecipientTemplate" TargetType="{x:Type MenuItem}">
+        <Grid SnapsToDevicePixels="True">
+            <Rectangle x:Name="Bg" Fill="{TemplateBinding Background}" RadiusY="2" RadiusX="2" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="1"/>
+            <Rectangle x:Name="InnerBorder" Margin="1" RadiusY="2" RadiusX="2"/>
+            <RadioButton Background="Transparent" GroupName="MENUITEM_GRP1" IsHitTestVisible="False" IsChecked="{Binding IsChecked}">
+                <RadioButton.Resources>
+                    <Style TargetType="Themes:BulletChrome">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                    </Style>
+                </RadioButton.Resources>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition MinWidth="5" SharedSizeGroup="MenuItemIconColumnGroup" />
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Border x:Name="GlyphPanel" BorderBrush="#FFCDD3E6" BorderThickness="0" Background="#FFE6EFF4" CornerRadius="3" Height="22" Margin="0" HorizontalAlignment="Left" Visibility="Hidden" Width="22">
+                        <Path x:Name="Glyph" Data="M0,5.1L1.7,5.2 3.4,7.1 8,0.4 9.2,0 3.3,10.8z" Fill="#FF0C12A1" FlowDirection="LeftToRight" Height="11" Width="9"/>
+                    </Border>
+                    <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" Grid.Column="1" ContentStringFormat="{TemplateBinding HeaderStringFormat}" 
+                                          ContentSource="{Binding RecipientAdress}" Margin="10,0,10,0" RecognizesAccessKey="True" VerticalAlignment="Center" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </Grid>
+            </RadioButton>
+        </Grid>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Visibility" TargetName="GlyphPanel" Value="Visible"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+                --><!--<Setter Property="IsCheckable" Value="True"/>--><!--
+            </Trigger>
+            <Trigger Property="IsHighlighted" Value="True">
+                <Setter Property="Fill" TargetName="Bg">
+                    <Setter.Value>
+                        <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                            <GradientStop Color="#34C5EBFF" Offset="0"/>
+                            <GradientStop Color="#3481D8FF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Stroke" TargetName="Bg" Value="#8071CBF1"/>
+                <Setter Property="Stroke" TargetName="InnerBorder" Value="#40FFFFFF"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Foreground" Value="#FF9A9A9A"/>
+                <Setter Property="Background" TargetName="GlyphPanel" Value="#FFEEE9E9"/>
+                <Setter Property="BorderBrush" TargetName="GlyphPanel" Value="#FFDBD6D6"/>
+                <Setter Property="Fill" TargetName="Glyph" Value="#FF848589"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>-->
 </ResourceDictionary>

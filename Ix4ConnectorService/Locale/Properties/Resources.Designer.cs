@@ -88,6 +88,15 @@ namespace Locale.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Add.
+        /// </summary>
+        public static string Add {
+            get {
+                return ResourceManager.GetString("Add", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Additional parameters.
         /// </summary>
         public static string AdditionalParameters {
@@ -129,6 +138,15 @@ namespace Locale.Properties {
         public static string EnableSSL {
             get {
                 return ResourceManager.GetString("EnableSSL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter recipient&apos;s mail.
+        /// </summary>
+        public static string EnterRecipients {
+            get {
+                return ResourceManager.GetString("EnterRecipients", resourceCulture);
             }
         }
         
@@ -210,6 +228,15 @@ namespace Locale.Properties {
         public static string MailHost {
             get {
                 return ResourceManager.GetString("MailHost", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Mail Recipients.
+        /// </summary>
+        public static string MailNotificationSettings {
+            get {
+                return ResourceManager.GetString("MailNotificationSettings", resourceCulture);
             }
         }
         

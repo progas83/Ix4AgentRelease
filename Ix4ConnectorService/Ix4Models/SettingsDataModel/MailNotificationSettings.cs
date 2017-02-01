@@ -20,10 +20,10 @@ namespace Ix4Models.SettingsDataModel
         public string MailFrom { get; set; }
         public string MailPass { get; set; }
         public bool IsBodyHtml { get; set; }
-        public NotificationRecipient[] Recipients { get; set; }
+        public MailRecipient[] Recipients { get; set; }
         public MailNotificationSettings()
         {
-
+            Recipients = new MailRecipient[0];
         }
 
         public void Decrypt()
@@ -51,9 +51,9 @@ namespace Ix4Models.SettingsDataModel
         }
     }
     [Serializable]
-    public class NotificationRecipient
+    public class MailRecipient
     {
-        public NotificationRecipient()
+        public MailRecipient()
         {
 
         }
@@ -61,9 +61,26 @@ namespace Ix4Models.SettingsDataModel
         public MailLogLevel LogLevel { get; set; }
 
         [XmlAttribute]
-        public string MailRecipient { get; set; }
+        public string RecipientAdress { get; set; }
 
-        [XmlAttribute]
-        public bool Enable { get; set; }
+        [XmlAttribute(AttributeName = "Enable")]
+        public bool EnableRecipient { get; set; }
+
+        //public override bool Equals(object obj)
+        //{
+        //    if (obj == null)
+        //        return false;
+        //    MailRecipient recip = obj as MailRecipient;
+
+        //    if (recip == null)
+        //        return false;
+
+        //    return RecipientAdress.Equals(recip.RecipientAdress);
+        //}
+
+        //public override int GetHashCode()
+        //{
+        //    return base.GetHashCode();
+        //}
     }
 }
