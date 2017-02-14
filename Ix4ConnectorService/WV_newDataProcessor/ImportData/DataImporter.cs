@@ -23,7 +23,7 @@ namespace WV_newDataProcessor.ImportData
         // private UpdateTimeWatcher _updateTimeWatcher;
         protected IProxyIx4WebService _ix4WebServiceConnector;
 
-        private Dictionary<string, string> _abbrevDict = null; 
+       // private Dictionary<string, string> _abbrevDict = null; 
         public DataImporter(ImportDataSettings importDataSettings,IProxyIx4WebService ix4WebServiceConnector)//, UpdateTimeWatcher updateTimeWatcher)
         {
             _importDataSettings = importDataSettings;
@@ -33,11 +33,11 @@ namespace WV_newDataProcessor.ImportData
            // _updateTimeWatcher = updateTimeWatcher;// new UpdateTimeWatcher(CustomerSettings.ImportDataSettings, CustomerSettings.ExportDataSettings);
         }
 
-        private void FillAbbreviations(out Dictionary<string, string> abbrevDict)
-        {
-            abbrevDict = new Dictionary<string, string>();
-            abbrevDict.Add("Württembergisch", "Württ.");
-        }
+        //private void FillAbbreviations(out Dictionary<string, string> abbrevDict)
+        //{
+        //    abbrevDict = new Dictionary<string, string>();
+        //    abbrevDict.Add("Württembergisch", "Württ.");
+        //}
        
         private void SendReportOnOperationComlete(ExportDataReport report)
         {
@@ -134,18 +134,16 @@ namespace WV_newDataProcessor.ImportData
 
         public void ImportOrders()
         {
+            ExportDataReport report = new ExportDataReport(Ix4ImportDataTypes.Orders.ToString());
             try
             {
-                ExportDataReport report = new ExportDataReport(Ix4ImportDataTypes.Orders.ToString());
-                // int currentClientID = CustomerSettings.ClientID;
+                
                 LICSRequest request = new LICSRequest();
                 request.ClientId = ClientID;
                 List<LICSRequestOrder> orders = _importDataProvider.GetOrders();// _msSqlDataProvider.GetOrders(CustomerSettings.ImportDataSettings.OrderSettings.DataSourceSettings as MsSqlDeliveriesSettings);
                 if (!OrdersHasPositions(orders))
                 {
                     _loger.Log("There is no orders for importing");
-                    SendReportOnOperationComlete(report);
-                    //_updateTimeWatcher.SetLastUpdateTimeProperty(Ix4ImportDataTypes.Orders);
                     return;
                 }
 
@@ -153,91 +151,36 @@ namespace WV_newDataProcessor.ImportData
                 {
                     if (_cachedArticles == null)
                     {
-                        _loger.Log("There is no cheched articles for filling orders");
-                        List<LICSRequestArticle> articles = _importDataProvider.GetArticles();// _msSqlDataProvider.GetArticles(CustomerSettings.ImportDataSettings.ArticleSettings.DataSourceSettings);
-                        _cachedArticles = articles;
-                        if (_cachedArticles == null)
-                        {
-                            _loger.Log("WE CANNOT GET DELIVERIES WITHOUT ARTICLES");
-                            return;
-                        }
+                        _loger.Log("Caching articles");
+                        _cachedArticles = _importDataProvider.GetArticles();
+                        _loger.Log(string.Format("Were caching {0} articles",_cachedArticles.Count()));
                     }
                     List<LICSRequestArticle> articlesByOrders = new List<LICSRequestArticle>();
-                    foreach (LICSRequestOrder order in orders)
+
+
+                   foreach(var artNo in  orders.SelectMany(o => o.Positions).Select(p => p.ArticleNo).Distinct().ToList())
                     {
-                        order.ClientNo = ClientID;
-                        foreach (var position in order.Positions)
+                        LICSRequestArticle findArticle = GetArticleByNumber(artNo);
+                        if (findArticle == null)
                         {
-                            LICSRequestArticle findArticle = GetArticleByNumber(position.ArticleNo);
-                            if (findArticle == null)
-                            {
-                                _loger.Log("Cannot find article with no:  " + position.ArticleNo);
-                                _loger.Log("Delivery with wrong article position:  " + order.OrderNo);
-                            }
-                            else
-                            {
-                                articlesByOrders.Add(findArticle);
-                            }
+                            _loger.Log("Cannot find article with no:  " + artNo);
+                        }
+                        else
+                        {
+                            articlesByOrders.Add(findArticle);
                         }
                     }
-                    request.OrderImport = orders.ToArray<LICSRequestOrder>();
                     request.ArticleImport = articlesByOrders.ToArray<LICSRequestArticle>();
                 }
-                else
-                {
-                    foreach (LICSRequestOrder order in orders)
-                    {
-                        order.ClientNo = ClientID;
-                        if (order.OrderNo.Equals("1704866") || 
-                            order.OrderNo.Equals("1706666") ||
-                            order.OrderNo.Equals("1707638") )
-                        {
-                            _loger.Log(string.Format("Have found order with no {0} and FirstName {1}",order.OrderNo,order.Recipient.FirstName));
-                            order.Recipient.FirstName = "Württ.";
-                        }
-                        if (order.OrderNo.Equals("1705639"))
-                        {
-                            _loger.Log(string.Format("Have found order with no {0} and FirstName {1}", order.OrderNo, order.Recipient.FirstName));
-                            order.Recipient.AdditionalName = order.Recipient.Name.Replace("Alexander Kretzer", string.Empty); ;
-                            order.Recipient.Name = "Alexander Kretzer";
-                        }
-                        if (order.OrderNo.Equals("1706512"))
-                        {
-                            _loger.Log(string.Format("Have found order with no {0} and FirstName {1}", order.OrderNo, order.Recipient.FirstName));
-                            order.Recipient.Name = "MLP Hauptseminar 17 Wüstenrot";
-                            order.Recipient.AdditionalName = "Bausparkasse Stand 15  Tel015164302959";// order.Recipient.Name.Replace("Alexander Kretzer", string.Empty); ;
-                             //= "Alexander Kretzer";
-                        }
-                        if (order.OrderNo.Equals("1706513"))
-                        {
-                            _loger.Log(string.Format("Have found order with no {0} and FirstName {1}", order.OrderNo, order.Recipient.FirstName));
-                            order.Recipient.Name = "Frau Heike Moll OVB FKT 11.02.2017";
-                        }
-
-                        if (order.OrderNo.Equals("1707051"))
-                        {
-                            _loger.Log(string.Format("Have found order with no {0} and FirstName {1}", order.OrderNo, order.Recipient.FirstName));
-                            order.Recipient.Name = "Bruchsal-Bretten eG H.Feldle/H.Bechtler";
-                            order.Recipient.AdditionalName = "H.Bechtold-KLV/BAKO Schulungsunterlagen";// order.Recipient.Name.Replace("Alexander Kretzer", string.Empty); ;
-                                                                                                      //= "Alexander Kretzer";
-                        }
-                        if (order.OrderNo.Equals("1707095"))
-                        {
-                            _loger.Log(string.Format("Have found order with no {0} and FirstName {1}", order.OrderNo, order.Recipient.FirstName));
-                            order.Recipient.Name = "Bausparkasse AG z.Hd.Herrn Ulrich Seidel";
-                        }
-
-                    }
-                    request.OrderImport = orders.ToArray<LICSRequestOrder>();
-                }
+                orders.ForEach(o => o.ClientNo = ClientID);
+                request.OrderImport = orders.ToArray<LICSRequestOrder>();
                 report.CountOfHandled = orders.Count();
+
                 LICSResponse response = SendLicsRequestToIx4(request, "ordersFile.xml");
                 if(response!=null)
                 {
-
-                    _loger.Log("Orders result: " + response);
+                    _loger.Log("Import Orders result: " + response);
                     SimplestParcerLicsRequest(response,report);
-
                 }
                 if(report.CountOfFailures >0)
                 {
@@ -248,11 +191,14 @@ namespace WV_newDataProcessor.ImportData
                         fi.ItemContent = failOrderContent.SerializeObjectToString();
                     }
                 }
-                SendReportOnOperationComlete(report);
             }
             catch (Exception ex)
             {
                 _loger.Log(ex);
+            }
+            finally
+            {
+                SendReportOnOperationComlete(report);
             }
         }
 
