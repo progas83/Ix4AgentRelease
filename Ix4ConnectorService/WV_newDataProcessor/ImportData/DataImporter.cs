@@ -188,7 +188,9 @@ namespace WV_newDataProcessor.ImportData
                     foreach (LICSRequestOrder order in orders)
                     {
                         order.ClientNo = ClientID;
-                        if (order.OrderNo.Equals("1704866"))
+                        if (order.OrderNo.Equals("1704866") || 
+                            order.OrderNo.Equals("1706666") ||
+                            order.OrderNo.Equals("1707638") )
                         {
                             _loger.Log(string.Format("Have found order with no {0} and FirstName {1}",order.OrderNo,order.Recipient.FirstName));
                             order.Recipient.FirstName = "Württ.";
@@ -199,6 +201,32 @@ namespace WV_newDataProcessor.ImportData
                             order.Recipient.AdditionalName = order.Recipient.Name.Replace("Alexander Kretzer", string.Empty); ;
                             order.Recipient.Name = "Alexander Kretzer";
                         }
+                        if (order.OrderNo.Equals("1706512"))
+                        {
+                            _loger.Log(string.Format("Have found order with no {0} and FirstName {1}", order.OrderNo, order.Recipient.FirstName));
+                            order.Recipient.Name = "MLP Hauptseminar 17 Wüstenrot";
+                            order.Recipient.AdditionalName = "Bausparkasse Stand 15  Tel015164302959";// order.Recipient.Name.Replace("Alexander Kretzer", string.Empty); ;
+                             //= "Alexander Kretzer";
+                        }
+                        if (order.OrderNo.Equals("1706513"))
+                        {
+                            _loger.Log(string.Format("Have found order with no {0} and FirstName {1}", order.OrderNo, order.Recipient.FirstName));
+                            order.Recipient.Name = "Frau Heike Moll OVB FKT 11.02.2017";
+                        }
+
+                        if (order.OrderNo.Equals("1707051"))
+                        {
+                            _loger.Log(string.Format("Have found order with no {0} and FirstName {1}", order.OrderNo, order.Recipient.FirstName));
+                            order.Recipient.Name = "Bruchsal-Bretten eG H.Feldle/H.Bechtler";
+                            order.Recipient.AdditionalName = "H.Bechtold-KLV/BAKO Schulungsunterlagen";// order.Recipient.Name.Replace("Alexander Kretzer", string.Empty); ;
+                                                                                                      //= "Alexander Kretzer";
+                        }
+                        if (order.OrderNo.Equals("1707095"))
+                        {
+                            _loger.Log(string.Format("Have found order with no {0} and FirstName {1}", order.OrderNo, order.Recipient.FirstName));
+                            order.Recipient.Name = "Bausparkasse AG z.Hd.Herrn Ulrich Seidel";
+                        }
+
                     }
                     request.OrderImport = orders.ToArray<LICSRequestOrder>();
                 }
