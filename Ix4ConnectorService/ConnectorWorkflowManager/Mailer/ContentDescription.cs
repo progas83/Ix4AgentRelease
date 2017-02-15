@@ -1,7 +1,7 @@
-﻿using SinplestLogger.Properties;
+﻿using ConnectorWorkflowManager.Properties;
 using System.Text;
 
-namespace SinplestLogger.Mailer
+namespace ConnectorWorkflowManager.Mailer
 {
     public class ContentDescription
     {

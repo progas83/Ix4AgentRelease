@@ -7,9 +7,11 @@
         xmlns:controls="clr-namespace:Ix4ServiceConfigurator.Controls"
         xmlns:core="clr-namespace:System;assembly=mscorlib"
         xmlns:dataModels="clr-namespace:Ix4Models;assembly=Ix4Models"
+        SizeToContent="Height"
         mc:Ignorable="d" Style="{StaticResource MainWindowsStyle}"
-        
-        Title="Ix4-Agent Settings" SizeToContent="WidthAndHeight">
+        MaxWidth="800"
+        Title="Ix4-Agent Settings" 
+        >
     <Window.Resources>
         <ObjectDataProvider x:Key="DataSourceType" MethodName="GetValues" ObjectType="{x:Type core:Enum}">
             <ObjectDataProvider.MethodParameters>
@@ -46,23 +48,28 @@
         <Button Height="50" Margin="10,0,5,0" IsDefault="True" HorizontalAlignment="Stretch" DockPanel.Dock="Top" Command="{Binding}"
                 CommandParameter="{Binding ElementName=UIUserInfo}" Content="Save Information"/>
 
-        <TabControl  >
+        <TabControl Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}" >
 
             <TabItem Header="Send data to Ix4Interface" DataContext="{Binding ImportDataViewModel}" MaxWidth="800" >
-                <DockPanel>
+                <DockPanel >
                     <controls:ImportDataItemControl  DataContext="{Binding ArticlesSettings}" DockPanel.Dock="Top"/>
                     <controls:ImportDataItemControl  DataContext="{Binding OrdersSettings}" DockPanel.Dock="Top" />
                     <controls:ImportDataItemControl  DataContext="{Binding DeliveriesSettings}" DockPanel.Dock="Top" />
                 </DockPanel>
             </TabItem>
             <TabItem Header="Recieve data from Ix4Interface" MaxWidth="800" DataContext="{Binding ExportDataViewModel}">
-                <DockPanel Height="400" Width="Auto">
+                <DockPanel Height="400" Width="Auto" >
                     <Button Content="{Binding Source={StaticResource Localization},Path=AddNewExportType}" Command="{Binding}" Height="30" DockPanel.Dock="Top" HorizontalAlignment="Left" MinWidth="50" Margin="10"/>
-                    <ListBox ItemsSource="{Binding ExportDataItems}" ScrollViewer.CanContentScroll="False" >
+                    <ListBox ItemsSource="{Binding ExportDataItems}" ScrollViewer.CanContentScroll="False" HorizontalAlignment="Left" HorizontalContentAlignment="Left" >
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Left"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
                             <DataTemplate>
-                                <Border BorderThickness="2" BorderBrush="Gray">
-                                    <DockPanel HorizontalAlignment="Stretch">
+                                <Border BorderThickness="2" BorderBrush="Gray" Margin="4">
+                                    <DockPanel HorizontalAlignment="Stretch" >
                                         <DockPanel DockPanel.Dock="Top"  Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}">
                                             <CheckBox IsThreeState="False" IsChecked="{Binding IsActive}" Content="{Binding Source={StaticResource Localization},Path=Activate}"
                                                       DockPanel.Dock="Left" Margin="5,5,0,0"/>

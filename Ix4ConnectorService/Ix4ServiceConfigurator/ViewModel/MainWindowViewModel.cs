@@ -30,22 +30,8 @@ namespace Ix4ServiceConfigurator.ViewModel
             _checkServiceStatusTimer.AutoReset = true;
             _checkServiceStatusTimer.Elapsed += OnCheckStatusTimerElapsed;
             _checkServiceStatusTimer.Enabled = true;
-            RecipientsMail = new ObservableCollection<MailRecipient>(Customer.MailSettings.Recipients);
-            RecipientsMail.CollectionChanged += RecipientsMail_CollectionChanged;
             SimplestLogger.VisualLogging.VisualLogger.Instance.LogEvent += OnLoggingEvent;
             MenuItemCommand = new SelectMailRecipientCommand();
-            MenuItemCommand.NeedToUpdate += MenuItemCommand_NeedToUpdate;
-        }
-
-        private void MenuItemCommand_NeedToUpdate(object sender, EventArgs e)
-        {
-            OnPropertyChanged("RecipientsMail");
-            //throw new NotImplementedException();
-        }
-
-        private void RecipientsMail_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
-        {
-            //throw new NotImplementedException();
         }
 
         public SelectMailRecipientCommand MenuItemCommand { get; set; }
@@ -117,15 +103,17 @@ namespace Ix4ServiceConfigurator.ViewModel
             {
                 _customer = value;
                 OnPropertyChanged("Customer");
+                OnPropertyChanged("RecipientsMail");
             }
         }
 
         //public MailRecipient RecipientsMail
       //  private MailRecipient RecipientsMail;
 
-        public ObservableCollection<MailRecipient> RecipientsMail
+       // public ObservableCollection<MailRecipient> RecipientsMail
+       public MailRecipient[] RecipientsMail
         {
-            get;set;
+            get { return Customer.MailSettings.Recipients; }
         }
 
         public ICommand InstallServiceCommand { get; private set; }

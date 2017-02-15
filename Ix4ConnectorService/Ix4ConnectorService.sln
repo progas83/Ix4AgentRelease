@@ -23,8 +23,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Clients", "Clients", "{8FF8
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WV_newDataProcessor", "WV_newDataProcessor\WV_newDataProcessor.csproj", "{9C0001FA-A703-4A96-BFCA-AD2FDCBA8BD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebStatisticsClient", "WebStatisticsClient\WebStatisticsClient.csproj", "{93F3AE92-6011-4ADC-B98B-E274348FB55A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -66,10 +64,6 @@ Global
 		{9C0001FA-A703-4A96-BFCA-AD2FDCBA8BD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C0001FA-A703-4A96-BFCA-AD2FDCBA8BD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C0001FA-A703-4A96-BFCA-AD2FDCBA8BD7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{93F3AE92-6011-4ADC-B98B-E274348FB55A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{93F3AE92-6011-4ADC-B98B-E274348FB55A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{93F3AE92-6011-4ADC-B98B-E274348FB55A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{93F3AE92-6011-4ADC-B98B-E274348FB55A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

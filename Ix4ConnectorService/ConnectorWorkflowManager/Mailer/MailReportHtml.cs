@@ -1,8 +1,8 @@
-﻿using SinplestLogger.Properties;
+﻿using ConnectorWorkflowManager.Properties;
 using System;
 using System.Text;
 
-namespace SinplestLogger.Mailer
+namespace ConnectorWorkflowManager.Mailer
 {
     internal class MailReportHtml
     {

@@ -1,5 +1,4 @@
-﻿using SinplestLogger.Mailer;
-using System;
+﻿using System;
 using System.IO;
 
 namespace SimplestLogger
@@ -15,7 +14,7 @@ namespace SimplestLogger
 
         private static readonly string _loggerFileName = string.Format("{0}{1}", System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "\\logger{0}.log");// @"C:\Ilya\ServiceProgram\configuration.xml";// "configuration.xml";
         private static string LoggerFileName { get { return _loggerFileName; } }
-
+        public static event EventHandler<Exception> LoggedExceptionEvent;
 
         private Logger()
         {
@@ -89,7 +88,11 @@ namespace SimplestLogger
             Log(exception.ToString());
        //     Log("Exception message");
        //     Log(exception.Message);
-            MailLogger.Instance.LogMail(new ContentDescription("Undescribed exception", exception.ToString()));
+       if(LoggedExceptionEvent!=null)
+            {
+                LoggedExceptionEvent(this, exception);
+            }
+         //   MailLogger.Instance.LogMail(new ContentDescription("Undescribed exception", exception.ToString()));
         }
 
         public void Log(object o, string propertyName)

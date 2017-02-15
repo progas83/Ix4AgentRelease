@@ -7,7 +7,6 @@ using System.Data;
 using System.Reflection;
 using SimplestLogger;
 using Ix4Models.Interfaces;
-using SinplestLogger.Mailer;
 
 namespace Ix4Models.DataProviders.MsSqlDataProvider
 {
@@ -253,8 +252,8 @@ namespace Ix4Models.DataProviders.MsSqlDataProvider
                             else
                             {
                                 string exceptionMessage = "There isn't positions in order No " + orderItem.OrderNo;
-                                _loger.Log(exceptionMessage);
-                                MailLogger.Instance.LogMail(new ContentDescription("Order without position", exceptionMessage));
+                                _loger.Log(new Exception("There isn't positions in order No " + orderItem.OrderNo));
+ ///////////                               MailLogger.Instance.LogMail(new ContentDescription("Order without position", exceptionMessage));
                             }
                         }
                         catch(Exception ex)

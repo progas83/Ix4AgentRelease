@@ -3,7 +3,6 @@ using Ix4Models;
 using Ix4Models.Reports;
 using Ix4Models.SettingsDataModel;
 using SimplestLogger;
-using SinplestLogger.Mailer;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -318,7 +317,8 @@ namespace WV_newDataProcessor.ImportData
 
                             failureItems.Add(failureItem);
                             status = 3;
-                            MailLogger.Instance.LogMail(new ContentDescription(string.Format("Order {0} was not imported", ord.OrderNo), string.Format("Message: {0}", ord.Message)));
+                            _loger.Log(new Exception(string.Format("Order {0} was not imported.{1}Message: {2}", ord.OrderNo, Environment.NewLine, ord.Message)));
+ ////                           MailLogger.Instance.LogMail(new ContentDescription(string.Format("Order {0} was not imported", ord.OrderNo), string.Format("Message: {0}", ord.Message)));
                         }
                        
                         _loger.Log(string.Format("Has updated order with NO = {0}  new status = {1}", ord.OrderNo, status));

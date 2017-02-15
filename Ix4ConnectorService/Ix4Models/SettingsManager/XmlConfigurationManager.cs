@@ -78,5 +78,21 @@ namespace Ix4Models.SettingsManager
             }
 
         }
+
+        public void UpdateMailRecipientStatus(MailRecipient recipient)
+        {
+            XmlDocument doc = new XmlDocument();
+            doc.Load(CurrentServiceInformation.FileName);
+            XmlNodeList recipientsNodes = doc.GetElementsByTagName("MailRecipient");
+            foreach(XmlNode recipNode in recipientsNodes)
+            {
+                if(recipNode.Attributes!=null && recipNode.Attributes["RecipientAdress"]!=null && recipNode.Attributes["RecipientAdress"].Value.Equals(recipient.RecipientAdress))
+                {
+                    recipNode.Attributes["Enable"].Value = recipient.EnableRecipient.ToString().ToLower();
+                    doc.Save(CurrentServiceInformation.FileName);
+                    break;
+                }
+            }
+        }
     }
 }

@@ -8,7 +8,7 @@
               xmlns:l="clr-namespace:Ix4ServiceConfigurator.View"
              mc:Ignorable="d" 
              Background="{DynamicResource {x:Static SystemColors.GradientInactiveCaptionBrushKey}}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="350" d:DesignWidth="300">
     <!--<UserControl.Resources>
         <locale:CultureResources x:Key="La"
     </UserControl.Resources>-->
@@ -16,8 +16,8 @@
         <!--<Label Height="50" HorizontalAlignment="Stretch" DockPanel.Dock="Top" Content="{Binding Source={StaticResource Localization}, Path=MailSettingsControl}"/>-->
         <Grid DockPanel.Dock="Top" Margin="5,5,5,10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*" MinWidth="70"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -64,17 +64,46 @@
                          l:PwdAssistant.BindPassword="true"
                    l:PwdAssistant.BoundPassword="{Binding Path=MailPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"      />
             <ListBox x:Name="UIRecipientsList" Grid.Column="1" Grid.Row="6" ItemsSource="{Binding Recipients}">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListBox.ItemContainerStyle>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <DockPanel>
-                            <CheckBox Height="19" Width="19" IsThreeState="False" IsChecked="{Binding EnableRecipient}"/>
-                            <Label Content="{Binding RecipientAdress}"/>
+                        <!--<Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="20"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="20"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" HorizontalAlignment="Left" Height="19" Width="19" IsThreeState="False" IsChecked="{Binding EnableRecipient}"/>
+                            <Label Grid.Column="1" Content="{Binding RecipientAdress}" HorizontalAlignment="Stretch"/>
 
-                            <Button Command="{Binding ElementName=UIRecipientsList, Path=DataContext.RemoveRecipient}" CommandParameter="{Binding}">
+                            <Button Grid.Column="2" HorizontalAlignment="Right" Command="{Binding ElementName=UIRecipientsList, Path=DataContext.RemoveRecipient}" CommandParameter="{Binding}">
+                                <Image Height="19" Width="19" Source="pack://application:,,,/Icons/remove_recipient.png" />
+                            </Button>
+                        </Grid>-->
+                        <DockPanel Margin="1,2,2,1" HorizontalAlignment="Stretch" >
+                            <CheckBox DockPanel.Dock="Left" VerticalAlignment="Center" IsThreeState="False" IsChecked="{Binding EnableRecipient}">
+                                <CheckBox.LayoutTransform>
+                                    <ScaleTransform ScaleX="2" ScaleY="2" />
+                                </CheckBox.LayoutTransform>
+                            </CheckBox>
+                            
+                            <Label DockPanel.Dock="Left" HorizontalAlignment="Stretch"  VerticalContentAlignment="Center"  Content="{Binding RecipientAdress}"/>
+
+                            <Button DockPanel.Dock="Right" HorizontalAlignment="Right"  Command="{Binding ElementName=UIRecipientsList, Path=DataContext.RemoveRecipient}" CommandParameter="{Binding}">
                                 <Image Height="19" Width="19" Source="pack://application:,,,/Icons/remove_recipient.png" />
                             </Button>
 
+                            
+
                         </DockPanel>
+                        <!--<DockPanel LastChildFill="True">
+                          
+                           
+                        </DockPanel>-->
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>

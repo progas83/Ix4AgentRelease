@@ -11,9 +11,9 @@ using System.ComponentModel.Composition;
 using Ix4Models.Interfaces;
 using System.Reflection;
 using System.ComponentModel.Composition.Hosting;
-using SinplestLogger.Mailer;
 using Ix4Models.Reports;
-using WebStatisticsClient;
+using ConnectorWorkflowManager.WebStatisticsClient;
+using ConnectorWorkflowManager.Mailer;
 
 namespace ConnectorWorkflowManager
 {
@@ -28,7 +28,7 @@ namespace ConnectorWorkflowManager
 
         private static Logger _loger = Logger.GetLogger();
         private Ix4StatisticClient _ix4StatisticClient = new Ix4StatisticClient("http://93.77.219.73/");
-
+        private MailLogger _mailLoggerAgent;
         private WorkflowManager()
         {
             AssembleCustomerDataComponents();
@@ -36,6 +36,16 @@ namespace ConnectorWorkflowManager
             _currentDataProcessor = GetDataProcessor(_customerSettings.UserName + _customerSettings.ClientID); //("ilyatest1111");// 
             _currentDataProcessor.LoadSettings(_customerSettings);
             _currentDataProcessor.OperationReportEvent += OnOperationReportEvent;
+            Logger.LoggedExceptionEvent += OnLoggedExceptionEvent;
+           
+            _mailLoggerAgent = new MailLogger(_customerSettings.UserName, _customerSettings.MailSettings);
+           // _mailLoggerAgent.LogMail(new ContentDescription("Undescribed exception", "Test"));
+           // _loger.Log(new Exception("Test Exception"));
+        }
+
+        private void OnLoggedExceptionEvent(object sender, Exception e)
+        {
+            _mailLoggerAgent.LogMail(new ContentDescription("Undescribed exception", e.Message));
         }
 
         private void OnOperationReportEvent(object sender, DataReportEventArgs e)
@@ -127,23 +137,6 @@ namespace ConnectorWorkflowManager
         }
         private bool _isBusy = false;
 
-        //public ExportDataReport GetTestData()
-        //{
-        //    ExportDataReport dataReport = new ExportDataReport("Test");
-        //    dataReport.LVSClientID = 15151212;
-        //    dataReport.CountOfHandled = 100;
-        //    dataReport.CountOfFailures = 2;
-        //    dataReport.FailureItems = new List<FailureItem> { new FailureItem() {  ExceptionMessage= "TestException 1", ItemContent = "Item Content 1"},
-        //                                                        new FailureItem() {  ExceptionMessage= "TestException 2", ItemContent = "Item Content 3"}}.ToArray();
-
-        //    dataReport.OperationDate = DateTime.Now;
-        //    dataReport.OperationInfo = "Test operation";
-        //    dataReport.Status = -100;
-        //    dataReport.CountOfSuccess = 98;
-
-        //    return dataReport;
-        //}
-
         private void OnTimedEvent(object sender, ElapsedEventArgs e)
         {
             if (!_isBusy && _currentDataProcessor != null)
@@ -170,7 +163,7 @@ namespace ConnectorWorkflowManager
                     finally
                     {
                         _isBusy = false;
-                        MailLogger.Instance.SendMailReport();
+                        _mailLoggerAgent.SendMailReport();
                         EnableTimerPrecisely();
                     }
                 }
