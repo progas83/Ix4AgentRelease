@@ -54,6 +54,7 @@
     <Compile Include="ExportData\INVDBdataExported.cs" />
     <Compile Include="ImportData\DataImporter.cs" />
     <Compile Include="ImportData\ImportDataSourcesBuilder.cs" />
+    <Compile Include="ImportData\LICSResponseImportDataAnalizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ExportData\SAdataExporter.cs" />
     <Compile Include="SqlTableCollaborator.cs" />

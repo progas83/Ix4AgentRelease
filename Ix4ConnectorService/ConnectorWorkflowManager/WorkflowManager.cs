@@ -33,14 +33,12 @@ namespace ConnectorWorkflowManager
         {
             AssembleCustomerDataComponents();
             _customerSettings = XmlConfigurationManager.Instance.GetCustomerInformation();
-            _currentDataProcessor = GetDataProcessor(_customerSettings.UserName + _customerSettings.ClientID); //("ilyatest1111");// 
+            _currentDataProcessor = GetDataProcessor(_customerSettings.UserName + _customerSettings.ClientID);
             _currentDataProcessor.LoadSettings(_customerSettings);
             _currentDataProcessor.OperationReportEvent += OnOperationReportEvent;
             Logger.LoggedExceptionEvent += OnLoggedExceptionEvent;
            
             _mailLoggerAgent = new MailLogger(_customerSettings.UserName, _customerSettings.MailSettings);
-           // _mailLoggerAgent.LogMail(new ContentDescription("Undescribed exception", "Test"));
-           // _loger.Log(new Exception("Test Exception"));
         }
 
         private void OnLoggedExceptionEvent(object sender, Exception e)

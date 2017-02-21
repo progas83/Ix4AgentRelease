@@ -21,23 +21,16 @@ namespace WV_newDataProcessor.ImportData
         public event EventHandler<DataReportEventArgs> ImportOperationReportEvent;
         // private UpdateTimeWatcher _updateTimeWatcher;
         protected IProxyIx4WebService _ix4WebServiceConnector;
-
+        private LICSResponseImportDataAnalizer _resultImportDataAnalizer;
        // private Dictionary<string, string> _abbrevDict = null; 
-        public DataImporter(ImportDataSettings importDataSettings,IProxyIx4WebService ix4WebServiceConnector)//, UpdateTimeWatcher updateTimeWatcher)
+        public DataImporter(ImportDataSettings importDataSettings,IProxyIx4WebService ix4WebServiceConnector)
         {
             _importDataSettings = importDataSettings;
             _ix4WebServiceConnector = ix4WebServiceConnector;
             _importDataProvider = new ImportDataSourcesBuilder(importDataSettings);
-            
-           // _updateTimeWatcher = updateTimeWatcher;// new UpdateTimeWatcher(CustomerSettings.ImportDataSettings, CustomerSettings.ExportDataSettings);
+            _resultImportDataAnalizer = new LICSResponseImportDataAnalizer();
         }
 
-        //private void FillAbbreviations(out Dictionary<string, string> abbrevDict)
-        //{
-        //    abbrevDict = new Dictionary<string, string>();
-        //    abbrevDict.Add("Württembergisch", "Württ.");
-        //}
-       
         private void SendReportOnOperationComlete(ExportDataReport report)
         {
             if (report != null)
@@ -171,14 +164,22 @@ namespace WV_newDataProcessor.ImportData
                     }
                     request.ArticleImport = articlesByOrders.ToArray<LICSRequestArticle>();
                 }
+                //foreach(LICSRequestOrder o in orders)
+                //{
+                //    o.ClientNo = ClientID;
+                //}
                 orders.ForEach(o => o.ClientNo = ClientID);
+                _resultImportDataAnalizer.AutoFixOrdersExceptions(orders);
                 request.OrderImport = orders.ToArray<LICSRequestOrder>();
                 report.CountOfHandled = orders.Count();
 
                 LICSResponse response = SendLicsRequestToIx4(request, "ordersFile.xml");
+
+
                 if(response!=null)
                 {
                     _loger.Log("Import Orders result: " + response);
+                    _resultImportDataAnalizer.CheckImportOrderResult(response.OrderImport);
                     SimplestParcerLicsRequest(response,report);
                 }
                 if(report.CountOfFailures >0)
