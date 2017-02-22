@@ -78,8 +78,8 @@ namespace WV_newDataProcessor.ImportData
                     }
                     else
                     {
+                        _logger.Log(string.Format("Recipients Name is too long in order {0}. We need cut this part: {1}.", orderWithError.OrderNo, extraStringFromName));
                         extraStringFromName = string.Empty;
-
                     }
                 }
                 orderWithError.Recipient.AdditionalName = string.Format("{0} {1}", extraStringFromName, orderWithError.Recipient.AdditionalName).Trim();
