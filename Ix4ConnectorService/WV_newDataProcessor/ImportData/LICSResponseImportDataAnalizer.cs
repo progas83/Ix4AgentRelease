@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace WV_newDataProcessor.ImportData
 {
-    class LICSResponseImportDataAnalizer
+    public class LICSResponseImportDataAnalizer
     {
         private SimplestLogger.Logger _logger = SimplestLogger.Logger.GetLogger();
         private List<string> _ordersWithErrors = new List<string>();
@@ -42,7 +40,7 @@ namespace WV_newDataProcessor.ImportData
                 {
                     try
                     {
-                        Fix9010002OrderException(orderForFixing);
+                       Fix9010002OrderException(orderForFixing);
                         _ordersWithErrors.Remove(orderForFixing.OrderNo);
                     }
                     catch (Exception ex)
@@ -55,17 +53,17 @@ namespace WV_newDataProcessor.ImportData
         }
 
 
-        private void Fix9010002OrderException(LICSRequestOrder orderWithError)
+        protected void Fix9010002OrderException(LICSRequestOrder orderWithError)
         {
             _logger.Log(string.Format("Order with exception state BEFORE FIXING: Name = {0}, FirstName = {1} , AdditionalName = {2}", orderWithError.Recipient.Name, orderWithError.Recipient.FirstName, orderWithError.Recipient.AdditionalName));
-            int nameLenghtLimit = 50;
+            int nameLenghtLimit = 49;
             int specificFullNamesLength = orderWithError.Recipient.Name.Length + orderWithError.Recipient.FirstName.Length;
             if (specificFullNamesLength > nameLenghtLimit)
             {
                 int maxNameLength = nameLenghtLimit - orderWithError.Recipient.FirstName.Length;
 
                 int lastSpaceIndex = orderWithError.Recipient.Name.Substring(0, maxNameLength - 1).LastIndexOf(' ');
-
+                _logger.Log($"Last spaceindex = {lastSpaceIndex}");
                 string extraStringFromName = orderWithError.Recipient.Name.Substring(lastSpaceIndex, orderWithError.Recipient.Name.Length - lastSpaceIndex).Trim();
                 orderWithError.Recipient.Name = orderWithError.Recipient.Name.Remove(lastSpaceIndex, orderWithError.Recipient.Name.Length - lastSpaceIndex).Trim();
 
