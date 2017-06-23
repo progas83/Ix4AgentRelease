@@ -42,11 +42,7 @@ namespace WV_newDataProcessor
                 invDbExporter.ExportOperationReportEvent -= OnProcessReportResult;
 
                
-                DataExporter grDataExporter = _exportDataBuilder.GetDataExporter("GR");
-                grDataExporter.ExportOperationReportEvent += OnProcessReportResult;
-                grDataExporter.SettingAllowToStart = _updateTimeWatcher.TimeToCheck("GR");
-                grDataExporter.ExportData(); 
-                grDataExporter.ExportOperationReportEvent -= OnProcessReportResult;
+               
                 
                 DataExporter saDataExporter = _exportDataBuilder.GetDataExporter("SA");
                 saDataExporter.ExportOperationReportEvent += OnProcessReportResult;
@@ -79,49 +75,14 @@ namespace WV_newDataProcessor
                
                 gsDataExporter.ExportOperationReportEvent -= OnProcessReportResult;
                 gpDataExporter.ExportOperationReportEvent -= OnProcessReportResult;
+
+                DataExporter grDataExporter = _exportDataBuilder.GetDataExporter("GR");
+                grDataExporter.ExportOperationReportEvent += OnProcessReportResult;
+                grDataExporter.SettingAllowToStart = _updateTimeWatcher.TimeToCheck("GR");
+                grDataExporter.ExportData();
+                grDataExporter.ExportOperationReportEvent -= OnProcessReportResult;
             }
         }
-
-        //private bool AllowToExportData(ExportDataItemSettings exportDataItemSettings)
-        //{
-        //    bool result = false;
-        //    if(exportDataItemSettings!=null)
-        //    {
-        //        bool timeToCkeck = _updateTimeWatcher.TimeToCheck(exportDataItemSettings.ExportDataTypeName);
-        //        result = exportDataItemSettings != null
-        //        && exportDataItemSettings.IsActive
-        //        && exportDataItemSettings.IsNowWorkingTime && timeToCkeck;
-        //    }
-
-        //    return result;
-        //}
-
-
-        //private bool AllowToImportData(Ix4ImportDataTypes importDataType)
-        //{
-        //    bool result = false;
-        //    if(_updateTimeWatcher.TimeToCheck(importDataType.ToString()))
-        //    {
-        //        switch (importDataType)
-        //        {
-        //            case Ix4ImportDataTypes.Articles:
-        //                result = _customerSettings.ImportDataSettings.ArticleSettings.IsActivate &&
-        //                            _customerSettings.ImportDataSettings.ArticleSettings.IsNowWorkingTime;
-        //                break;
-        //            case Ix4ImportDataTypes.Deliveries:
-        //                result = _customerSettings.ImportDataSettings.DeliverySettings.IsActivate &&
-        //                         _customerSettings.ImportDataSettings.DeliverySettings.IsNowWorkingTime;
-        //                break;
-        //            case Ix4ImportDataTypes.Orders:
-        //                result = _customerSettings.ImportDataSettings.OrderSettings.IsActivate &&
-        //                            _customerSettings.ImportDataSettings.OrderSettings.IsNowWorkingTime;
-        //                break;
-        //            default:
-        //                break;
-        //        }
-        //    }
-        //    return result;
-        //}
 
         private void OnProcessReportResult(object sender, DataReportEventArgs e)
         {
@@ -166,7 +127,7 @@ namespace WV_newDataProcessor
             _customerSettings = customerSettings;
            _ix4WebServiceConnector = Ix4ConnectorManager.Instance.GetRegisteredIx4WebServiceInterface(_customerSettings.ClientID, _customerSettings.UserName, _customerSettings.Password, _customerSettings.ServiceEndpoint);
            _updateTimeWatcher = new UpdateTimeWatcher(_customerSettings.ImportDataSettings, _customerSettings.ExportDataSettings);
-            _dataImporter = new DataImporter(_customerSettings.ImportDataSettings, _ix4WebServiceConnector);//, _updateTimeWatcher);
+            _dataImporter = new DataImporter(_customerSettings.ImportDataSettings, _ix4WebServiceConnector);
             _dataImporter.ClientID = _customerSettings.ClientID;
             _dataImporter.ImportOperationReportEvent += OnProcessReportResult;
             _exportDataBuilder = new ExportDataBuilder(_customerSettings.ExportDataSettings, _ix4WebServiceConnector);

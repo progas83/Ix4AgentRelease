@@ -10,13 +10,12 @@ using System.Xml.Linq;
 
 namespace WV_newDataProcessor
 {
-    //public delegate void OnCompleteNextOperation();
     public abstract class DataExporter
     {
         private static readonly string _archiveFolder = string.Format("{0}\\{1}", System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "ArchiveData");
         protected static Logger _loger = Logger.GetLogger();
         protected string FileFullName { get { return string.Format("{0}\\{1}.xml", _archiveFolder, ExportDataName); } }
-        private IProxyIx4WebService Ix4InterfaceService;
+        private IProxyIx4WebService _ix4InterfaceService;
         public event EventHandler<DataReportEventArgs> ExportOperationReportEvent;
         protected abstract void ProcessExportedData(XDocument exportedData);
 
@@ -30,9 +29,9 @@ namespace WV_newDataProcessor
         public DataExporter(IProxyIx4WebService ix4InterfaceService, string exportDataName)
         {
             ExportDataName = exportDataName;
-            Ix4InterfaceService = ix4InterfaceService;
+            _ix4InterfaceService = ix4InterfaceService;
             CheckArchiveFolder();
-            
+
         }
         private void CheckArchiveFolder()
         {
@@ -54,7 +53,7 @@ namespace WV_newDataProcessor
 
         protected void ShippingTypeElementConvert(XElement shipingTypeElement)
         {
-            if (shipingTypeElement != null )
+            if (shipingTypeElement != null)
             {
                 int mSGPos_ShippingTypeField = Convert.ToInt32(shipingTypeElement.Value);
 
@@ -118,11 +117,12 @@ namespace WV_newDataProcessor
                 }
                 else
                 {
-                    var streamWriter = new StreamWriter(new FileStream(FileFullName, FileMode.Create));
-                    streamWriter.Write(exportedData.OuterXml);
-                    streamWriter.Flush();
-                    streamWriter.Close();
-                    streamWriter.Dispose();
+                    using (var streamWriter = new StreamWriter(new FileStream(FileFullName, FileMode.Create)))
+                    {
+                        streamWriter.Write(exportedData.OuterXml);
+                        streamWriter.Flush();
+                        streamWriter.Close();
+                    }
                 }
                 MakeReserveCopyFile(exportedData);
                 result = true;
@@ -139,21 +139,22 @@ namespace WV_newDataProcessor
                 do
                 {
                     attemptLookForFile++;
-                    dataFileName = string.Format("{0}{1}",FileFullName, attemptLookForFile);
+                    dataFileName = string.Format("{0}{1}", FileFullName, attemptLookForFile);
                 }
                 while (File.Exists(dataFileName));
-                var streamWriter = new StreamWriter(new FileStream(dataFileName, FileMode.Create));
-                streamWriter.Write(exportedData.OuterXml);
-                streamWriter.Flush();
-                streamWriter.Close();
-                streamWriter.Dispose();
+                using (var streamWriter = new StreamWriter(new FileStream(dataFileName, FileMode.Create)))
+                {
+                    streamWriter.Write(exportedData.OuterXml);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _loger.Log("Exception in MakeReserveCopyFile");
                 _loger.Log(ex);
             }
-            
+
         }
         public void ExportData()
         {
@@ -170,14 +171,14 @@ namespace WV_newDataProcessor
                 SendReportOnOperationComlete();
                 AfterExportDataOperationComplete();
             }
-            
+
         }
 
         protected virtual void AfterExportDataOperationComplete()
         {
             if (NextExportOperation == null)
                 return;
-            if (Report.Status>=0 && Report.CountOfFailures==0 )//&& Report.SuccessfullHandledItems>0)
+            if (Report.Status >= 0 && Report.CountOfFailures == 0)//&& Report.SuccessfullHandledItems>0)
             {
                 NextExportOperation();
             }
@@ -185,7 +186,7 @@ namespace WV_newDataProcessor
 
         private void SendReportOnOperationComlete()
         {
-            if(Report!=null)
+            if (Report != null)
             {
                 Report.OperationDate = DateTime.Now;
                 EventHandler<DataReportEventArgs> reportEvent = ExportOperationReportEvent;
@@ -224,7 +225,7 @@ namespace WV_newDataProcessor
             {
                 try
                 {
-                    XmlNode invdbData =  Ix4InterfaceService.ExportData(ExportDataName, null);
+                    XmlNode invdbData = _ix4InterfaceService.ExportData(ExportDataName, null);
                     if (SaveExportedDataToFile(invdbData))
                     {
                         doc = XDocument.Load(FileFullName);

@@ -3,13 +3,12 @@ using Ix4Models.Reports;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
+using System.Data;
 
 namespace WV_newDataProcessor
 {
-   public class GRdataExporter : DataExporter
+    public class GRdataExporter : DataExporter
     {
         private readonly DateTime _defaultDateTime = new DateTime(1970, 1, 1);
         private IDataTargetCollaborator _storageCollaborator;
@@ -31,10 +30,44 @@ namespace WV_newDataProcessor
                     _loger.Log(string.Format("Have got {0} of {1} items", messagesCount, ExportDataName));
                     if (messagesCount > 0)
                     {
+                        string itemsNoRange = string.Empty;
+                        List<string> grItemNumbers = grMessages.Select(m => m.Element("MSGPos_ItemNo").Value).ToList();
 
-                        // foreach (var message in grMessages)
-                        var message = grMessages.FirstOrDefault(m => m.Element("MSGPos_Supplier") != null);
+                        foreach (string grItemNo in grItemNumbers)
+                        {
+                            itemsNoRange = $"{itemsNoRange}'{grItemNo}',";
+                        }
+                        itemsNoRange = itemsNoRange.Remove(itemsNoRange.Length - 1);
+                        string _dbBeposConnection = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=lms10dat; User ID=sa;Password=sa";
+                        //string _dbBeposConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Integrated Security=SSPI";
+                        IDataTargetCollaborator beposTableCollaborator = new SqlTableCollaborator(_dbBeposConnection, null);
+                        Dictionary<string, string> bePosIds = beposTableCollaborator.GetData<Dictionary<string, string>>(string.Empty, HandleDataTableResult,
+                                        string.Format("SELECT min(BEPosID) as BEPosID, ArtikelNR from BEPos WHERE ArtikelNR IN ({0}) group by ArtikelNR", itemsNoRange));
+                        foreach (string itemNo in grItemNumbers.Except(bePosIds.Keys))
+                        {
+                            _loger.Log($"There is no corresponds record BEPosID for IrtikelNR = {itemNo}");
+                            string elementWithoutRecordInDB = grMessages.FirstOrDefault(i => i.Element("MSGPos_ItemNo").Value.Equals(itemNo))?.ToString();
+                            _loger.Log(elementWithoutRecordInDB);
+                        }
+
+
+                        foreach (var message in grMessages)
+                        {
+
+                            if (message.Element("MSGPos_Supplier") == null)
                             {
+                                message.Add(new XElement("MSGPos_Supplier"));
+                            }
+
+                            message.Element("MSGPos_Supplier").Value = "145001";
+
+                            if (message.Element("MSGPos_PurchaseOrder") == null)
+                            {
+                                message.Add(new XElement("MSGPos_PurchaseOrder"));
+                            }
+
+                            message.Element("MSGPos_PurchaseOrder").Value = bePosIds[message.Element("MSGPos_ItemNo").Value];
+
                             if (message.Element("MSGHeader_LastUpdate") != null && !string.IsNullOrEmpty(message.Element("MSGHeader_LastUpdate").Value))
                             {
                                 CheckLastUpdateCorrectData(message.Element("MSGHeader_LastUpdate"));
@@ -42,18 +75,12 @@ namespace WV_newDataProcessor
 
                             ShippingTypeElementConvert(message.Element("MSGPos_ShippingType"));
 
-                            //XElement amountElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_Amount"));
                             ConvertElementValueDoubleToInt(message.Element("MSGPos_Amount"));
 
                             ConvertElementValueDoubleToInt(message.Element("MSGPos_ResAmount"));
-                            //  OperationResult saveMsgHeaderResult = new OperationResult(string.Format("Save GP MsgHeader"));
                             int recordHeaderNumber = _storageCollaborator.SaveData(message.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGHeader")).ToList(), "MsgHeader");
                             if (recordHeaderNumber > 0)
                             {
-                                //  saveMsgHeaderResult.ItemOperationSuccess = true;
-                                //   report.Operations.Add(saveMsgHeaderResult);
-                                //      OperationResult saveMsgPosResult = new OperationResult(string.Format("Save GP MsgPos"));
-
                                 XElement headerIdElement = new XElement("MSGPos_HeaderID");
                                 headerIdElement.Value = recordHeaderNumber.ToString();
                                 message.Add(headerIdElement);
@@ -62,7 +89,6 @@ namespace WV_newDataProcessor
                                 List<XElement> msgPosElemens = message.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos")).ToList<XElement>();
                                 if (_storageCollaborator.SaveData(msgPosElemens, "MsgPos") > 0)
                                 {
-                                    // saveMsgPosResult.ItemOperationSuccess = true;
                                     message.Remove();
                                     exportedDataDocument.Save(FileFullName);
                                     Report.CountOfSuccess++;
@@ -75,11 +101,9 @@ namespace WV_newDataProcessor
                                     fi.ExceptionMessage = resultMessage;
                                     fi.ItemContent = message.ToString();
                                     failureItems.Add(fi);
-                                    Report.CountOfFailures++;//= groupItem.Count();
+                                    Report.CountOfFailures++;
                                     _loger.Log(resultMessage);
                                 }
-                                //  report.Operations.Add(saveMsgPosResult);
-
                             }
                             else
                             {
@@ -106,7 +130,18 @@ namespace WV_newDataProcessor
             Report.FailureItems = failureItems.ToArray();
         }
 
-
+        private Dictionary<string, string> HandleDataTableResult(DataTable arg)
+        {
+            Dictionary<string, string> result = new Dictionary<string, string>();
+            if (arg != null)
+            {
+                foreach (var data in arg.AsEnumerable())
+                {
+                    result.Add(data["ArtikelNR"].ToString(), data["BEPosID"].ToString());
+                }
+            }
+            return result;
+        }
 
         private void CheckLastUpdateCorrectData(XElement lastUpdateElement)
         {

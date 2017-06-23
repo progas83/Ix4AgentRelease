@@ -16,7 +16,8 @@ namespace WV_newDataProcessor
 
         private string _dbInventurdatenConnection = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=Inventurdaten_schuon; User ID=sa;Password=sa";
         private string _dbInterfaceDilosLMSConnection = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=InterfaceDilosLMS; User ID=sa;Password=sa";
-        
+        //  private string _dbBEPosTableTestConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Initial Catalog = InterfaceDilosLMS; Integrated Security=SSPI";
+        private string _dbInterfaceDilosLMSTestConnection = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=InterfaceDilosLMSTest; User ID=sa;Password=sa";
 
         private static Logger _loger = Logger.GetLogger();
         private ExportDataSettings _exportDataSettings;
@@ -52,7 +53,7 @@ namespace WV_newDataProcessor
                     dataExporter = new CAdataExporter(_ix4WebServiceConnector, new SqlTableCollaborator(_dbInterfaceDilosLMSConnection, new DataTableMapper[] { LoadMsgHeaderDataMapper(), LoadMsgPosDataMapper() }));
                     break;
                 case "GR":
-                    dataExporter = new GRdataExporter(_ix4WebServiceConnector, new SqlTableCollaborator(_dbInterfaceDilosLMSConnection, new DataTableMapper[] { LoadMsgHeaderDataMapper(), LoadMsgPosDataMapper() }));
+                    dataExporter = new GRdataExporter(_ix4WebServiceConnector, new SqlTableCollaborator(_dbInterfaceDilosLMSTestConnection, new DataTableMapper[] { LoadMsgHeaderDataMapper(), LoadMsgPosDataMapper() }));
                     break;
                 default:
                     throw new NotImplementedException("Wasn't implement dataExporter for " + exportDataName);
