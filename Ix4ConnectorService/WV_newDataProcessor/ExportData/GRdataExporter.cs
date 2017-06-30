@@ -31,7 +31,7 @@ namespace WV_newDataProcessor
                     if (messagesCount > 0)
                     {
                         string itemsNoRange = string.Empty;
-                        List<string> grItemNumbers = grMessages.Select(m => m.Element("MSGPos_ItemNo").Value).ToList();
+                        List<string> grItemNumbers = grMessages.Select(m => m.Element("MSGPos_ItemNo").Value).Distinct().ToList();
 
                         foreach (string grItemNo in grItemNumbers)
                         {
@@ -42,7 +42,14 @@ namespace WV_newDataProcessor
                         //string _dbBeposConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Integrated Security=SSPI";
                         IDataTargetCollaborator beposTableCollaborator = new SqlTableCollaborator(_dbBeposConnection, null);
                         Dictionary<string, string> bePosIds = beposTableCollaborator.GetData<Dictionary<string, string>>(string.Empty, HandleDataTableResult,
-                                        string.Format("SELECT min(BEPosID) as BEPosID, ArtikelNR from BEPos WHERE ArtikelNR IN ({0}) group by ArtikelNR", itemsNoRange));
+                                        string.Format("SELECT min(BEPosID) as BEPosID, ArtikelNR from BEPos WHERE Status=0 and Datum>getdate()-365 and ArtikelID is not null and ArtikelNR IN ({0}) group by ArtikelNR", itemsNoRange));
+                        _loger.Log($"Count of keys = {bePosIds.Count}");
+
+                        foreach (var d in bePosIds)
+                        {
+                            _loger.Log($" ArtikelNR = {d.Key} BEPosID = {d.Value}");
+                        }
+
                         foreach (string itemNo in grItemNumbers.Except(bePosIds.Keys))
                         {
                             _loger.Log($"There is no corresponds record BEPosID for IrtikelNR = {itemNo}");
@@ -50,10 +57,18 @@ namespace WV_newDataProcessor
                             _loger.Log(elementWithoutRecordInDB);
                         }
 
-
+                        int mark = 0;
                         foreach (var message in grMessages)
                         {
+                            if(!bePosIds.Keys.Contains(message.Element("MSGPos_ItemNo").Value))
+                            {
+                                mark++;
+                                _loger.Log($"Skip MSG WITH ItmNo = {message.Element("MSGPos_ItemNo").Value}");
+                                _loger.Log($"Skipped items {mark}");
+                                continue;
+                            }
 
+                            _loger.Log($"Start handle MSGPos_ItemNo = {message.Element("MSGPos_ItemNo").Value}");
                             if (message.Element("MSGPos_Supplier") == null)
                             {
                                 message.Add(new XElement("MSGPos_Supplier"));
@@ -66,6 +81,7 @@ namespace WV_newDataProcessor
                                 message.Add(new XElement("MSGPos_PurchaseOrder"));
                             }
 
+                            //message.Element("MSGPos_ItemNo").Value
                             message.Element("MSGPos_PurchaseOrder").Value = bePosIds[message.Element("MSGPos_ItemNo").Value];
 
                             if (message.Element("MSGHeader_LastUpdate") != null && !string.IsNullOrEmpty(message.Element("MSGHeader_LastUpdate").Value))
@@ -137,7 +153,7 @@ namespace WV_newDataProcessor
             {
                 foreach (var data in arg.AsEnumerable())
                 {
-                    result.Add(data["ArtikelNR"].ToString(), data["BEPosID"].ToString());
+                    result.Add(data["ArtikelNR"].ToString().Trim(), data["BEPosID"].ToString().Trim());
                 }
             }
             return result;

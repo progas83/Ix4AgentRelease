@@ -25,7 +25,7 @@ namespace ConnectorWorkflowManager
         private CustomerInfo _customerSettings;
         protected Timer _timer;
         private static object _padlock = new object();
-        private static readonly long RElapsedEvery = 60 * 1 * 1000;
+        private static readonly long RElapsedEvery = 1 * 1 * 1000;
 
 
         private static Logger _loger = Logger.GetLogger();
@@ -121,7 +121,7 @@ namespace ConnectorWorkflowManager
                 if (_timer == null)
                 {
                     _timer = new System.Timers.Timer(RElapsedEvery);
-                    _timer.AutoReset = true;
+                    _timer.AutoReset = false;
 
                     _timer.Elapsed += OnTimedEvent;
 
@@ -141,7 +141,7 @@ namespace ConnectorWorkflowManager
         {
             if (!_isBusy && _currentDataProcessor != null)
             {
-                if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
+               // if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
                 {
                     _timer.Enabled = false;
                     _isBusy = true;
@@ -162,7 +162,7 @@ namespace ConnectorWorkflowManager
                     }
                     finally
                     {
-                        _isBusy = false;
+                       // _isBusy = false;
                         _mailLoggerAgent.SendMailReport();
                         EnableTimerPrecisely();
                     }
