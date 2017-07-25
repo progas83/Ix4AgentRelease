@@ -81,8 +81,10 @@ namespace WV_newDataProcessor
                                 message.Add(new XElement("MSGPos_PurchaseOrder"));
                             }
 
-                            //message.Element("MSGPos_ItemNo").Value
-                            message.Element("MSGPos_PurchaseOrder").Value = bePosIds[message.Element("MSGPos_ItemNo").Value];
+                            if(message.Element("MSGPos_OrderType")?.Value!=null && !message.Element("MSGPos_OrderType").Value.Equals("1"))
+                            {
+                                message.Element("MSGPos_PurchaseOrder").Value = bePosIds[message.Element("MSGPos_ItemNo").Value];
+                            }
 
                             if (message.Element("MSGHeader_LastUpdate") != null && !string.IsNullOrEmpty(message.Element("MSGHeader_LastUpdate").Value))
                             {
@@ -112,7 +114,7 @@ namespace WV_newDataProcessor
                                 }
                                 else
                                 {
-                                    string resultMessage = string.Format("Can't save MsgHeader. MSGPos_ItemNo = {0}", message.Element("MSGPos_ItemNo").Value ?? "Unknown WakopfID");
+                                    string resultMessage = string.Format("Can't save MsgPos. MSGPos_ItemNo = {0}", message.Element("MSGPos_ItemNo").Value ?? "Unknown WakopfID");
                                     FailureItem fi = new FailureItem();
                                     fi.ExceptionMessage = resultMessage;
                                     fi.ItemContent = message.ToString();
