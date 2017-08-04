@@ -305,7 +305,7 @@ namespace WV_newDataProcessor.ImportData
                     foreach (var ord in objResponse.OrderImport.Order)
                     {
                         int status = 2;
-                        if (ord.State == 1)
+                        if (ord.State == 1 || ord.State== -8000000)
                         {
                             status = 5;
                             SendToDB(ord.OrderNo, status);

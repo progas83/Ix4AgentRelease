@@ -53,6 +53,18 @@ namespace WV_newDataProcessor
                             ShippingTypeElementConvert(message.Element("MSGPos_ShippingType"));
 
                             //XElement amountElement = msgPosElemens.FirstOrDefault(x => x.Name.LocalName.Equals("MSGPos_Amount"));
+                            if(message.Element("MSGPos_Amount")==null)
+                            {
+                                string resultMessage = string.Format("Can't save GP message. There is no MSGPos_Amount value. MSGPos_WAKopfID = {0}", message.Element("MSGPos_WAKopfID").Value ?? "Unknown WakopfID");
+                                FailureItem fi = new FailureItem();
+                                fi.ExceptionMessage = resultMessage;
+                                fi.ItemContent = message.ToString();
+                                failureItems.Add(fi);
+                                Report.CountOfFailures++;//= groupItem.Count();
+                                _loger.Log(resultMessage);
+                                _loger.Log(fi.ItemContent);
+                                continue;
+                            }
                             ConvertElementValueDoubleToInt(message.Element("MSGPos_Amount"));
 
                             ConvertElementValueDoubleToInt(message.Element("MSGPos_ResAmount"));
@@ -80,7 +92,7 @@ namespace WV_newDataProcessor
                                 }
                                 else
                                 {
-                                    string resultMessage = string.Format("Can't save MsgHeader. MSGPos_WAKopfID = {0}", message.Element("MSGPos_WAKopfID").Value ?? "Unknown WakopfID");
+                                    string resultMessage = string.Format("Can't save MsgPos. MSGPos_WAKopfID = {0}", message.Element("MSGPos_WAKopfID").Value ?? "Unknown WakopfID");
                                     FailureItem fi = new FailureItem();
                                     fi.ExceptionMessage = resultMessage;
                                     fi.ItemContent = message.ToString();
