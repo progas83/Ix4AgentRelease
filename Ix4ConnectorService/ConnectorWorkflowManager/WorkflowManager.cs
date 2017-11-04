@@ -121,7 +121,7 @@ namespace ConnectorWorkflowManager
                 if (_timer == null)
                 {
                     _timer = new System.Timers.Timer(RElapsedEvery);
-                    _timer.AutoReset = false;
+                    _timer.AutoReset = true;
 
                     _timer.Elapsed += OnTimedEvent;
 
@@ -141,7 +141,7 @@ namespace ConnectorWorkflowManager
         {
             if (!_isBusy && _currentDataProcessor != null)
             {
-               // if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
+               if (DateTime.Now.Minute == 30 || DateTime.Now.Minute == 0)
                 {
                     _timer.Enabled = false;
                     _isBusy = true;
@@ -162,7 +162,7 @@ namespace ConnectorWorkflowManager
                     }
                     finally
                     {
-                       // _isBusy = false;
+                        _isBusy = false;
                         _mailLoggerAgent.SendMailReport();
                         EnableTimerPrecisely();
                     }
