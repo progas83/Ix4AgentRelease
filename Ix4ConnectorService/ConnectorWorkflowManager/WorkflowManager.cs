@@ -29,7 +29,7 @@ namespace ConnectorWorkflowManager
 
 
         private static Logger _loger = Logger.GetLogger();
-        private Ix4StatisticClient _ix4StatisticClient = new Ix4StatisticClient("http://93.77.219.73/");
+       // private Ix4StatisticClient _ix4StatisticClient = new Ix4StatisticClient("http://93.77.219.73/");
         private MailLogger _mailLoggerAgent;
         private WorkflowManager()
         {
@@ -55,7 +55,7 @@ namespace ConnectorWorkflowManager
                 e.Report.LVSClientID = _customerSettings.ClientID;
                 e.Report.OperationDate = DateTime.Now;
                 _loger.Log(string.Format(" {0} messages has been completed", e.Report.DataTypeName));
-                _ix4StatisticClient.PostReport(e.Report);
+                //_ix4StatisticClient.PostReport(e.Report);
                 _loger.Log(string.Format("Report has been sent"));
             }
             catch (Exception ex)

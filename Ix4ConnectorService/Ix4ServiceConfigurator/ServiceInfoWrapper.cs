@@ -40,7 +40,7 @@ namespace Ix4ServiceConfigurator
         {
         }
 
-        private ServiceController CurrentService
+        public ServiceController CurrentService
         {
             get
             {

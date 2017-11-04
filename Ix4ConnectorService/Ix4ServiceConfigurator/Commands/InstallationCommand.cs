@@ -34,6 +34,7 @@ namespace Ix4ServiceConfigurator.Commands
                 }
                 else
                 {
+                    ServiceInfoWrapper.Instance.CurrentService.Stop();
                     AutomaticalServiceInstaller.UninstallService();
                 }
 

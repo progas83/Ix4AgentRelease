@@ -20,6 +20,10 @@ namespace WV_newDataProcessor
         private string _dbInterfaceDilosLMSTestConnection = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=InterfaceDilosLMSTest; User ID=sa;Password=sa";
         private string _dbInterfaceIX4LMS_korrekturenConnection = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=InterfaceIX4LMS_korrekturen; User ID=sa;Password=sa";
 
+        
+
+        
+
         private static Logger _loger = Logger.GetLogger();
         private ExportDataSettings _exportDataSettings;
         private IProxyIx4WebService _ix4WebServiceConnector;
