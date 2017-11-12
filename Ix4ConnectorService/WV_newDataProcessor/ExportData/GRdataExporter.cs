@@ -43,7 +43,7 @@ namespace WV_newDataProcessor
 
                         _loger.Log($"Unique itemsNo  = {itemsNoRange}");
                         string _dbBeposConnection = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=lms10dat; User ID=sa;Password=sa";
-                        //string _dbBeposConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Integrated Security=SSPI";
+
                         IDataTargetCollaborator beposTableCollaborator = new SqlTableCollaborator(_dbBeposConnection, null);
 
                         string getBeposIdQuery = string.Format("SELECT min(BEPosID) as BEPosID, ArtikelNR from BEPos WHERE Status=0 and Datum>getdate()-365 and ArtikelID is not null and ArtikelNR IN ({0}) group by ArtikelNR", itemsNoRange);
@@ -62,8 +62,6 @@ namespace WV_newDataProcessor
                         foreach (string itemNo in grItemNumbers.Except(bePosIds.Keys))
                         {
                             _loger.Log($"There is no corresponds record BEPosID for ArtikelNR = {itemNo}");
-                            //string elementWithoutRecordInDB = grMessages.FirstOrDefault(i => i.Element("MSGPos_ItemNo").Value.Equals(itemNo))?.ToString();
-                            //_loger.Log(elementWithoutRecordInDB);
                         }
 
                         int mark = 0;
