@@ -1,12 +1,12 @@
-﻿using SimplestLogger;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
+using SimplestLogger;
 
 namespace WV_newDataProcessor
 {
@@ -22,20 +22,20 @@ namespace WV_newDataProcessor
         }
         protected static Logger _loger = Logger.GetLogger();
 
-        public int SaveData(IEnumerable<XElement> exportedDataElements,string tableName)
+        public int SaveData(IEnumerable<XElement> exportedDataElements, string tableName)
         {
             int recordNumber = -1;
-            IDataMapper dataMapper = _dataToTableMappers.FirstOrDefault(mapper=>mapper.TableName.Equals(tableName));
-            if(dataMapper==null)
+            IDataMapper dataMapper = _dataToTableMappers.FirstOrDefault(mapper => mapper.TableName.Equals(tableName));
+            if (dataMapper == null)
             {
-                _loger.Log(string.Format("There is no mapper for {0} table",tableName));
+                _loger.Log(string.Format("There is no mapper for {0} table", tableName));
                 return -1;
             }
-            
-            StringBuilder colums= new StringBuilder();
+
+            StringBuilder colums = new StringBuilder();
             StringBuilder values = new StringBuilder();
             IEnumerable<KeyValuePair<string, string>> mappedData = dataMapper.GetTablesFieldsAndValuesQuery(exportedDataElements);
-            foreach(KeyValuePair<string,string> mappedFieldValue in mappedData)
+            foreach (KeyValuePair<string, string> mappedFieldValue in mappedData)
             {
                 colums.Append(string.Format("[{0}],", mappedFieldValue.Key));
                 values.Append(string.Format("'{0}',", mappedFieldValue.Value));
@@ -62,17 +62,17 @@ namespace WV_newDataProcessor
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _loger.Log(ex);
             }
-           
+
             return recordNumber;
         }
 
         public T GetData<T>(string fromName, Func<DataTable, T> predicate, string cmdText = "") where T : new()
         {
-            T result = (T) GetDefaultValue(typeof(T));
+            T result = (T)GetDefaultValue(typeof(T));
             try
             {
                 using (var dbConnection = new SqlConnection(_dbConnectionString))
@@ -86,7 +86,7 @@ namespace WV_newDataProcessor
                     result = predicate(dt);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _loger.Log(ex);
             }
@@ -100,6 +100,82 @@ namespace WV_newDataProcessor
                 return Activator.CreateInstance(t);
 
             return null;
+        }
+
+        private readonly string msgHeaderTableName = "MsgHeader";
+        private readonly string msgPosTableName = "MsgPos";
+
+
+        private int SaveInSpecificTable(SqlCommand sqlCommand, XElement exportedDataElement, string tableName)
+        {
+            int insertItemNumber = -1;
+            IDataMapper dataMapper = _dataToTableMappers.FirstOrDefault(mapper => mapper.TableName.Equals(tableName));
+            if (dataMapper == null)
+            {
+                throw new Exception($"Data mapper for table {tableName} wasn't initialized");
+            }
+
+            StringBuilder colums = new StringBuilder();
+            StringBuilder values = new StringBuilder();
+            IEnumerable<KeyValuePair<string, string>> mappedData = dataMapper.GetTablesFieldsAndValuesQuery(exportedDataElement.Descendants().Where(x => x.Name.LocalName.StartsWith(tableName, true, CultureInfo.CurrentCulture)));
+
+            foreach (KeyValuePair<string, string> mappedFieldValue in mappedData)
+            {
+                colums.Append(string.Format("[{0}],", mappedFieldValue.Key));
+                values.Append(string.Format("'{0}',", mappedFieldValue.Value));
+            }
+
+            sqlCommand.CommandText = string.Format("INSERT INTO {0} ({1})  VALUES ({2});SELECT SCOPE_IDENTITY() AS LastItemID;", tableName, colums.ToString().TrimEnd(','), values.ToString().TrimEnd(','));
+
+            SqlDataReader dr = sqlCommand.ExecuteReader();
+            dr.Read();
+            insertItemNumber = Convert.ToInt32(dr["LastItemID"]); // Convert.ToInt32("-1");// dr.GetSchemaTable().Columns["LastItemID"]);
+            _loger.Log($"New record was insert into {tableName} with index = {insertItemNumber}");
+            if (insertItemNumber <= 0)
+            {
+                throw new Exception($"Error record to table {tableName}");
+            }
+            return insertItemNumber;
+        }
+        public bool SaveExportDataTransaction(XElement exportedDataElement, bool needFindExistedMsgHeader = false)
+        {
+            bool transactionResult = false;
+
+            try
+            {
+                using (var connection = new SqlConnection(_dbConnectionString))
+                {
+                    connection.Open();
+                    SqlCommand sqlCommand = connection.CreateCommand();
+                    SqlTransaction sqlTransaction = connection.BeginTransaction();
+                    sqlCommand.Connection = connection;
+                    sqlCommand.Transaction = sqlTransaction;
+
+                    try
+                    {
+                        int headerRecordId = this.SaveInSpecificTable(sqlCommand, exportedDataElement, msgHeaderTableName);
+
+                        XElement headerIdElement = new XElement("MSGPos_HeaderID");
+                        headerIdElement.Value = headerRecordId.ToString();
+                        exportedDataElement.Add(headerIdElement);
+                        this.SaveInSpecificTable(sqlCommand, exportedDataElement, msgPosTableName);
+                        sqlTransaction.Commit();
+                        transactionResult = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        _loger.Log("Transaction error");
+                        sqlTransaction.Rollback();
+                        _loger.Log(ex);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                _loger.Log(ex);
+            }
+
+            return transactionResult;
         }
     }
 }

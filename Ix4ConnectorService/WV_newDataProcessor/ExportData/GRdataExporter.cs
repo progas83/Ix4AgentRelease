@@ -20,11 +20,13 @@ namespace WV_newDataProcessor
         protected override void ProcessExportedData(XDocument exportedDataDocument)
         {
             Report = new ExportDataReport(ExportDataName);
-            List<FailureItem> failureItems = new List<FailureItem>();
+         //   List<FailureItem> failureItems = new List<FailureItem>();
             try
             {
                 if (exportedDataDocument != null)
                 {
+
+                    // Get messages or from storage or from web service
                     IEnumerable<XElement> grMessages = exportedDataDocument.Descendants("MSG").ToList();
                     int messagesCount = grMessages.Count();
                     _loger.Log(string.Format("Have got {0} of {1} items", messagesCount, ExportDataName));
@@ -38,11 +40,15 @@ namespace WV_newDataProcessor
                             itemsNoRange = $"{itemsNoRange}'{grItemNo}',";
                         }
                         itemsNoRange = itemsNoRange.Remove(itemsNoRange.Length - 1);
+
+                        _loger.Log($"Unique itemsNo  = {itemsNoRange}");
                         string _dbBeposConnection = @"Data Source=192.168.50.3\sql,1433;Network Library=DBMSSOCN;Initial Catalog=lms10dat; User ID=sa;Password=sa";
                         //string _dbBeposConnection = @"Data Source =DESKTOP-PC\SQLEXPRESS2012;Integrated Security=SSPI";
                         IDataTargetCollaborator beposTableCollaborator = new SqlTableCollaborator(_dbBeposConnection, null);
-                        Dictionary<string, string> bePosIds = beposTableCollaborator.GetData<Dictionary<string, string>>(string.Empty, HandleDataTableResult,
-                                        string.Format("SELECT min(BEPosID) as BEPosID, ArtikelNR from BEPos WHERE Status=0 and Datum>getdate()-365 and ArtikelID is not null and ArtikelNR IN ({0}) group by ArtikelNR", itemsNoRange));
+
+                        string getBeposIdQuery = string.Format("SELECT min(BEPosID) as BEPosID, ArtikelNR from BEPos WHERE Status=0 and Datum>getdate()-365 and ArtikelID is not null and ArtikelNR IN ({0}) group by ArtikelNR", itemsNoRange);
+                        _loger.Log($"Bepos ids query: {getBeposIdQuery}");
+                        Dictionary<string, string> bePosIds = beposTableCollaborator.GetData<Dictionary<string, string>>(string.Empty, HandleDataTableResult, getBeposIdQuery);
                         _loger.Log($"Count of keys = {bePosIds.Count}");
 
                         foreach (var d in bePosIds)
@@ -50,16 +56,20 @@ namespace WV_newDataProcessor
                             _loger.Log($" ArtikelNR = {d.Key} BEPosID = {d.Value}");
                         }
 
+
+
+
                         foreach (string itemNo in grItemNumbers.Except(bePosIds.Keys))
                         {
-                            _loger.Log($"There is no corresponds record BEPosID for IrtikelNR = {itemNo}");
-                            string elementWithoutRecordInDB = grMessages.FirstOrDefault(i => i.Element("MSGPos_ItemNo").Value.Equals(itemNo))?.ToString();
-                            _loger.Log(elementWithoutRecordInDB);
+                            _loger.Log($"There is no corresponds record BEPosID for ArtikelNR = {itemNo}");
+                            //string elementWithoutRecordInDB = grMessages.FirstOrDefault(i => i.Element("MSGPos_ItemNo").Value.Equals(itemNo))?.ToString();
+                            //_loger.Log(elementWithoutRecordInDB);
                         }
 
                         int mark = 0;
                         foreach (var message in grMessages)
                         {
+                            //Skip GR message without BEPosId
                             if(!bePosIds.Keys.Contains(message.Element("MSGPos_ItemNo").Value))
                             {
                                 mark++;
@@ -73,8 +83,8 @@ namespace WV_newDataProcessor
                             {
                                 message.Add(new XElement("MSGPos_Supplier"));
                             }
-
                             message.Element("MSGPos_Supplier").Value = "145001";
+
 
                             if (message.Element("MSGPos_PurchaseOrder") == null)
                             {
@@ -96,42 +106,14 @@ namespace WV_newDataProcessor
                             ConvertElementValueDoubleToInt(message.Element("MSGPos_Amount"));
 
                             ConvertElementValueDoubleToInt(message.Element("MSGPos_ResAmount"));
-                            int recordHeaderNumber = _storageCollaborator.SaveData(message.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGHeader")).ToList(), "MsgHeader");
-                            if (recordHeaderNumber > 0)
-                            {
-                                XElement headerIdElement = new XElement("MSGPos_HeaderID");
-                                headerIdElement.Value = recordHeaderNumber.ToString();
-                                message.Add(headerIdElement);
-                                exportedDataDocument.Save(FileFullName);
 
-                                List<XElement> msgPosElemens = message.Descendants().Where(x => x.Name.LocalName.StartsWith("MSGPos")).ToList<XElement>();
-                                if (_storageCollaborator.SaveData(msgPosElemens, "MsgPos") > 0)
-                                {
-                                    message.Remove();
-                                    exportedDataDocument.Save(FileFullName);
-                                    Report.CountOfSuccess++;
-                                    _loger.Log(string.Format("GR Msg POS element with MSGPos_ItemNo = {0} succesfully saved", message.Element("MSGPos_ItemNo").Value ?? "Unknown value"));
-                                }
-                                else
-                                {
-                                    string resultMessage = string.Format("Can't save MsgPos. MSGPos_ItemNo = {0}", message.Element("MSGPos_ItemNo").Value ?? "Unknown WakopfID");
-                                    FailureItem fi = new FailureItem();
-                                    fi.ExceptionMessage = resultMessage;
-                                    fi.ItemContent = message.ToString();
-                                    failureItems.Add(fi);
-                                    Report.CountOfFailures++;
-                                    _loger.Log(resultMessage);
-                                }
-                            }
-                            else
+
+                            bool saveInDbResult = _storageCollaborator.SaveExportDataTransaction(message);
+
+                            if(saveInDbResult)
                             {
-                                string resultMessage = string.Format("Can't save MsgHeader. MSGPos_ItemNo = {0}", message.Element("MSGPos_ItemNo").Value ?? "Unknown WakopfID");
-                                FailureItem fi = new FailureItem();
-                                fi.ExceptionMessage = resultMessage;
-                                fi.ItemContent = message.ToString();
-                                failureItems.Add(fi);
-                                Report.CountOfFailures++;//= groupItem.Count();
-                                _loger.Log(resultMessage);
+                                message.Remove();
+                                exportedDataDocument.Save(FileFullName);
                             }
                         }
                     }
@@ -145,7 +127,7 @@ namespace WV_newDataProcessor
                 Report.Status = -1;
             }
 
-            Report.FailureItems = failureItems.ToArray();
+            //Report.FailureItems = failureItems.ToArray();
         }
 
         private Dictionary<string, string> HandleDataTableResult(DataTable arg)
