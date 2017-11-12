@@ -135,6 +135,7 @@ namespace WV_newDataProcessor
             {
                 throw new Exception($"Error record to table {tableName}");
             }
+            dr.Close();
             return insertItemNumber;
         }
         public bool SaveExportDataTransaction(XElement exportedDataElement, bool needFindExistedMsgHeader = false)
@@ -167,6 +168,7 @@ namespace WV_newDataProcessor
                         _loger.Log("Transaction error");
                         sqlTransaction.Rollback();
                         _loger.Log(ex);
+                        _loger.Log("Transaction rolled back");
                     }
                 }
             }
