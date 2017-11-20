@@ -58,16 +58,13 @@ namespace WV_newDataProcessor
                         }
 
 
-
-
                         foreach (string itemNo in grItemNumbers.Except(bePosIds.Keys))
                         {
-                            StringBuilder sb = new StringBuilder();
-                            string message = $"There is no corresponds record BEPosID for ArtikelNR = {itemNo} {Environment.NewLine}";
-                            sb.Append(message);
-                            _loger.Log(message);
-                            _loger.Log(new Exception(sb.ToString()));
+                            string message = $"There is no corresponds record BEPosID for ArtikelNR = {itemNo}";
+                            _loger.Log(new Exception(message));
                         }
+                       
+
 
                         int mark = 0;
                         foreach (var message in grMessages)
@@ -87,21 +84,16 @@ namespace WV_newDataProcessor
                                 message.Add(new XElement("MSGPos_Supplier"));
                             }
 
-                            // if 1 => supplier should be 145001
-                            if (message.Element("MSGPos_OrderType").Value == "0")
-                            {
-                                message.Element("MSGPos_Supplier").Value = "145001";
-                            }
-
 
                             if (message.Element("MSGPos_PurchaseOrder") == null)
                             {
                                 message.Add(new XElement("MSGPos_PurchaseOrder"));
                             }
 
-                            if(message.Element("MSGPos_OrderType")?.Value!=null && !message.Element("MSGPos_OrderType").Value.Equals("1"))
+                            if(message.Element("MSGPos_OrderType")?.Value!=null && message.Element("MSGPos_OrderType").Value == "0")
                             {
                                 message.Element("MSGPos_PurchaseOrder").Value = bePosIds[message.Element("MSGPos_ItemNo").Value];
+                                message.Element("MSGPos_Supplier").Value = "145001";
                             }
 
                             if (message.Element("MSGHeader_LastUpdate") != null && !string.IsNullOrEmpty(message.Element("MSGHeader_LastUpdate").Value))
