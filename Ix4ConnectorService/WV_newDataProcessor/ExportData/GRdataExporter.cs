@@ -83,7 +83,7 @@ namespace WV_newDataProcessor
                             }
 
                             // if 1 => supplier should be 145001
-                            if (message.Element("MSGPos_OrderType").Value == "1")
+                            if (message.Element("MSGPos_OrderType").Value == "0")
                             {
                                 message.Element("MSGPos_Supplier").Value = "145001";
                             }
