@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using System.Data;
+using System.Text;
 
 namespace WV_newDataProcessor
 {
@@ -61,7 +62,11 @@ namespace WV_newDataProcessor
 
                         foreach (string itemNo in grItemNumbers.Except(bePosIds.Keys))
                         {
-                            _loger.Log($"There is no corresponds record BEPosID for ArtikelNR = {itemNo}");
+                            StringBuilder sb = new StringBuilder();
+                            string message = $"There is no corresponds record BEPosID for ArtikelNR = {itemNo} {Environment.NewLine}";
+                            sb.Append(message);
+                            _loger.Log(message);
+                            _loger.Log(new Exception(sb.ToString()));
                         }
 
                         int mark = 0;

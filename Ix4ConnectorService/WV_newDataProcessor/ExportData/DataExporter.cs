@@ -237,6 +237,10 @@ namespace WV_newDataProcessor
                 }
 
             }
+            else
+            {
+                _loger.Log($"Can't export {this.ExportDataName} because of stored data wasn't handle");
+            }
             return doc;
         }
     }
