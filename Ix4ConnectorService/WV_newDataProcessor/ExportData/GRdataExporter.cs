@@ -81,7 +81,12 @@ namespace WV_newDataProcessor
                             {
                                 message.Add(new XElement("MSGPos_Supplier"));
                             }
-                            message.Element("MSGPos_Supplier").Value = "145001";
+
+                            // if 1 => supplier should be 145001
+                            if (message.Element("MSGPos_OrderType").Value == "1")
+                            {
+                                message.Element("MSGPos_Supplier").Value = "145001";
+                            }
 
 
                             if (message.Element("MSGPos_PurchaseOrder") == null)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading;
 
 namespace SimplestLogger
 {
@@ -7,7 +8,7 @@ namespace SimplestLogger
     {
         private static Logger _logger;
         private static object _padlock = new object();
-        private static StreamWriter _streamWriterFile;
+
         private const string _newLine = "      -Date: {0} | Time: {1}----";
         string _logFileName = string.Empty;
         string _currentDate = string.Empty;
@@ -37,32 +38,37 @@ namespace SimplestLogger
             return _logger;
         }
 
-      
-        private static object _streamLock = new object();
+
+         private static object _streamLock = new object();
+
+        /// <summary>
+        /// Thread locker
+        /// </summary>
+        ///private ReaderWriterLockSlim _cacheLock = new ReaderWriterLockSlim();
 
         public void Log(string message)
         {
-            lock (_streamLock)
+           /// _cacheLock.EnterWriteLock();
+
+            lock(_streamLock)
             {
-                if (!_currentDate.Equals(DateTime.Now.ToShortDateString()))
-                {
-                    InitCurrentLogFilePath();
-                }
                 try
                 {
-                    _streamWriterFile = new StreamWriter(new FileStream(_logFileName, System.IO.FileMode.Append));
-                    _streamWriterFile.WriteLine(string.Format("{0}      {1}", message, string.Format(_newLine, _currentDate, DateTime.Now.ToLongTimeString())));
-                    _streamWriterFile.Flush();
+                    if (!_currentDate.Equals(DateTime.Now.ToShortDateString()))
+                    {
+                        InitCurrentLogFilePath();
+                    }
+                    using (var fileStream = new FileStream(_logFileName, System.IO.FileMode.Append))
+                    using (var _streamWriterFile = new StreamWriter(fileStream))
+                    {
+                        _streamWriterFile.WriteLine(string.Format("{0}      {1}", message, string.Format(_newLine, _currentDate, DateTime.Now.ToLongTimeString())));
+                        _streamWriterFile.Flush();
+                    }
 
                 }
-                finally
+                catch
                 {
-                    if (_streamWriterFile != null)
-                    {
-                        _streamWriterFile.Close();
-                        _streamWriterFile.Dispose();
-                        _streamWriterFile = null;
-                    }
+
                 }
             }
         }
@@ -86,13 +92,13 @@ namespace SimplestLogger
         public void Log(Exception exception)
         {
             Log(exception.ToString());
-       //     Log("Exception message");
-       //     Log(exception.Message);
-       if(LoggedExceptionEvent!=null)
+            //     Log("Exception message");
+            //     Log(exception.Message);
+            if (LoggedExceptionEvent != null)
             {
                 LoggedExceptionEvent(this, exception);
             }
-         //   MailLogger.Instance.LogMail(new ContentDescription("Undescribed exception", exception.ToString()));
+            //   MailLogger.Instance.LogMail(new ContentDescription("Undescribed exception", exception.ToString()));
         }
 
         public void Log(object o, string propertyName)
