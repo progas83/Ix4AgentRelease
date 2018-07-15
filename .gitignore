@@ -34,3 +34,8 @@ _ReSharper*/
 [Tt]est[Rr]esult*
 /[Bb]uild/
 *.[Dd]ot[Ss]ettings.*
+
+/Ix4ConnectorService/.vs/Ix4ConnectorService/v15/Server/sqlite3/db.lock
+/Ix4ConnectorService/.vs/Ix4ConnectorService/v15/Server/sqlite3/storage.ide
+/Ix4ConnectorService/.vs/Ix4ConnectorService/v15/Server/sqlite3/storage.ide-shm
+/Ix4ConnectorService/.vs/Ix4ConnectorService/v15/Server/sqlite3/storage.ide-wal
